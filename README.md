@@ -9,3 +9,6 @@ https://difains.github.io/friday-prayer-schedule/
 - firebase realtime database 커넥팅
 - UI 개선
 - 입력/뷰 화면 구성
+
+### 250529
+- firebase realtime database 커넥팅 이슈로 롤백
