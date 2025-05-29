@@ -91,7 +91,7 @@ document.getElementById('inputDate').addEventListener('change', function() {
   }
 });
 
-// 추가 버튼
+// 추가 버튼 (중복 체크)
 document.getElementById('addBtn').onclick = function() {
   const date = document.getElementById('inputDate').value;
   const role = document.getElementById('inputRole').value;
@@ -106,13 +106,33 @@ document.getElementById('addBtn').onclick = function() {
     alert('매월 금요일만 선택이 가능합니다');
     return;
   }
-  prayerRef.push({ date, role, name }, (err) => {
-    if (!err) {
-      setDatePickerToFridays();
-      document.getElementById('inputRole').value = '';
-      document.getElementById('inputName').value = '';
-      fetchAndRenderList();
+  
+  // 중복 체크 - 전체 데이터에서 동일한 날짜/역할/이름 조합 확인
+  prayerRef.once('value', snapshot => {
+    let isDuplicate = false;
+    if (snapshot.exists()) {
+      snapshot.forEach(child => {
+        const item = child.val();
+        if (item.date === date && item.role === role && item.name === name) {
+          isDuplicate = true;
+        }
+      });
     }
+    
+    if (isDuplicate) {
+      alert('이미 동일한 날짜, 역할, 이름이 등록되어 있습니다.');
+      return;
+    }
+    
+    // 중복 아니면 추가
+    prayerRef.push({ date, role, name }, (err) => {
+      if (!err) {
+        setDatePickerToFridays();
+        document.getElementById('inputRole').value = '';
+        document.getElementById('inputName').value = '';
+        fetchAndRenderList();
+      }
+    });
   });
 };
 

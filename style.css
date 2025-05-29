@@ -341,7 +341,6 @@ body {
     transform: translateY(0);
   }
 }
-/* 폴드4 및 중간 해상도 대응 */
 @media (max-width: 920px) and (min-width: 700px) {
   .input-section {
     flex-wrap: wrap;
