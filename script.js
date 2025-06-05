@@ -142,8 +142,10 @@ function fetchAndRenderList() {
     const data = snapshot.val();
     const container = document.getElementById('schedule-container');
     container.innerHTML = '';
+    const controlsBar = document.getElementById('controls-bar');
     if (!data) {
-      container.innerHTML = '<div style="color:#888;text-align:center;">데이터가 없습니다.</div>';
+      container.innerHTML = '<div style="color:#888;text-align:center;">아직 섬김이 입력되지 않았습니다.</div>';
+      controlsBar.style.display = 'none';
       return;
     }
     // 날짜별 역할별 그룹핑, 키도 저장
@@ -160,9 +162,11 @@ function fetchAndRenderList() {
     });
     const dates = Object.keys(grouped).sort();
     if (dates.length === 0) {
-      container.innerHTML = '<div style="color:#888;text-align:center;">데이터가 없습니다.</div>';
+      container.innerHTML = '<div style="color:#888;text-align:center;">아직 섬김이 입력되지 않았습니다.</div>';
+      controlsBar.style.display = 'none';
       return;
     }
+    controlsBar.style.display = '';
 
     // 콘티/유튜브 데이터 불러오기
     setlistRef.once('value', setlistSnap => {
@@ -170,7 +174,7 @@ function fetchAndRenderList() {
       youtubeRef.once('value', youtubeSnap => {
         const youtubes = youtubeSnap.val() || {};
 
-        dates.forEach((date) => {
+        dates.forEach((date, idx) => {
           const dateIndex = date.replace(/-/g,'');
           const setlistValue = setlists[date] || '';
           const youtubeValue = youtubes[date] || '';
@@ -179,6 +183,8 @@ function fetchAndRenderList() {
             '싱어': [],
             '메인건반': [],
             '세컨건반': [],
+            '어쿠스틱 기타': [],
+            '일렉 기타': [],
             '드럼': [],
             '베이스': [],
             '엔지니어': []
@@ -186,13 +192,16 @@ function fetchAndRenderList() {
           grouped[date].forEach(item => {
             if (roles[item.role]) roles[item.role].push({ name: item.name, key: item._key });
           });
+          const badge = idx === 0
+            ? `<span class="date-badge all">전교인기도회</span>`
+            : `<span class="date-badge">금요기도회</span>`;
           const itemDiv = document.createElement('div');
           itemDiv.className = 'schedule-item';
           itemDiv.innerHTML = `
             <div class="date-header" data-index="${dateIndex}">
-              <div class="date">${date}</div>
-              <div class="event-type">금요기도회</div>
-              <div class="toggle-icon">▼</div>
+              ${badge}
+              <span class="date">${date}</span>
+              <span class="toggle-icon">▼</span>
             </div>
             <div class="content" id="content-${dateIndex}">
               <div class="leader-section">
@@ -200,7 +209,7 @@ function fetchAndRenderList() {
                 <div class="leader-name ${roles['찬양인도'].length ? '' : 'leader-empty'}">
                   ${roles['찬양인도'].map(obj => `
                     <span class="member-tag">${obj.name}
-                      <button class="delete-btn" data-key="${obj.key}" data-role="찬양인도" data-name="${obj.name}">삭제</button>
+                      <button class="delete-btn" data-key="${obj.key}" data-role="찬양인도" data-name="${obj.name}" title="삭제"><span aria-label="삭제" role="img">🗑️</span></button>
                     </span>
                   `).join('') || '미정'}
                 </div>
@@ -211,7 +220,7 @@ function fetchAndRenderList() {
                   <div class="member-list">
                     ${roles['싱어'].map(obj => `
                       <span class="member-tag">${obj.name}
-                        <button class="delete-btn" data-key="${obj.key}" data-role="싱어" data-name="${obj.name}">삭제</button>
+                        <button class="delete-btn" data-key="${obj.key}" data-role="싱어" data-name="${obj.name}" title="삭제"><span aria-label="삭제" role="img">🗑️</span></button>
                       </span>
                     `).join('') || '<span style="color:#bbb;">없음</span>'}
                   </div>
@@ -221,25 +230,35 @@ function fetchAndRenderList() {
                   <div class="member-list">
                     ${roles['메인건반'].map(obj => `
                       <span class="member-tag">${obj.name} (메인건반)
-                        <button class="delete-btn" data-key="${obj.key}" data-role="메인건반" data-name="${obj.name}">삭제</button>
+                        <button class="delete-btn" data-key="${obj.key}" data-role="메인건반" data-name="${obj.name}" title="삭제"><span aria-label="삭제" role="img">🗑️</span></button>
                       </span>
                     `).join('')}
                     ${roles['세컨건반'].map(obj => `
                       <span class="member-tag">${obj.name} (세컨건반)
-                        <button class="delete-btn" data-key="${obj.key}" data-role="세컨건반" data-name="${obj.name}">삭제</button>
+                        <button class="delete-btn" data-key="${obj.key}" data-role="세컨건반" data-name="${obj.name}" title="삭제"><span aria-label="삭제" role="img">🗑️</span></button>
+                      </span>
+                    `).join('')}
+                    ${roles['어쿠스틱 기타'].map(obj => `
+                      <span class="member-tag">${obj.name} (어쿠스틱 기타)
+                        <button class="delete-btn" data-key="${obj.key}" data-role="어쿠스틱 기타" data-name="${obj.name}" title="삭제"><span aria-label="삭제" role="img">🗑️</span></button>
+                      </span>
+                    `).join('')}
+                    ${roles['일렉 기타'].map(obj => `
+                      <span class="member-tag">${obj.name} (일렉 기타)
+                        <button class="delete-btn" data-key="${obj.key}" data-role="일렉 기타" data-name="${obj.name}" title="삭제"><span aria-label="삭제" role="img">🗑️</span></button>
                       </span>
                     `).join('')}
                     ${roles['드럼'].map(obj => `
                       <span class="member-tag">${obj.name} (드럼)
-                        <button class="delete-btn" data-key="${obj.key}" data-role="드럼" data-name="${obj.name}">삭제</button>
+                        <button class="delete-btn" data-key="${obj.key}" data-role="드럼" data-name="${obj.name}" title="삭제"><span aria-label="삭제" role="img">🗑️</span></button>
                       </span>
                     `).join('')}
                     ${roles['베이스'].map(obj => `
                       <span class="member-tag">${obj.name} (베이스)
-                        <button class="delete-btn" data-key="${obj.key}" data-role="베이스" data-name="${obj.name}">삭제</button>
+                        <button class="delete-btn" data-key="${obj.key}" data-role="베이스" data-name="${obj.name}" title="삭제"><span aria-label="삭제" role="img">🗑️</span></button>
                       </span>
                     `).join('')}
-                    ${(!roles['메인건반'].length && !roles['세컨건반'].length && !roles['드럼'].length && !roles['베이스'].length) ? '<span style="color:#bbb;">없음</span>' : ''}
+                    ${(!roles['메인건반'].length && !roles['세컨건반'].length && !roles['어쿠스틱 기타'].length && !roles['일렉 기타'].length && !roles['드럼'].length && !roles['베이스'].length) ? '<span style="color:#bbb;">없음</span>' : ''}
                   </div>
                 </div>
                 <div class="role-group">
@@ -247,7 +266,7 @@ function fetchAndRenderList() {
                   <div class="member-list">
                     ${roles['엔지니어'].map(obj => `
                       <span class="member-tag">${obj.name}
-                        <button class="delete-btn" data-key="${obj.key}" data-role="엔지니어" data-name="${obj.name}">삭제</button>
+                        <button class="delete-btn" data-key="${obj.key}" data-role="엔지니어" data-name="${obj.name}" title="삭제"><span aria-label="삭제" role="img">🗑️</span></button>
                       </span>
                     `).join('') || '<span style="color:#bbb;">없음</span>'}
                   </div>
