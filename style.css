@@ -263,26 +263,32 @@ body {
   cursor: pointer;
   display: flex;
   align-items: center;
+  gap: 6px;
 }
 .member-tag:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 .delete-btn {
-  background: none;
+  background: #dee2e6;
+  color: #6c757d;
   border: none;
-  color: #adb5bd;
-  font-size: 1.1em;
-  margin-left: 6px;
+  border-radius: 12px;
+  padding: 2px 8px;
+  font-size: 0.75rem;
+  font-weight: 600;
   cursor: pointer;
-  padding: 0 2px;
-  vertical-align: middle;
+  transition: all 0.2s;
   display: inline-flex;
   align-items: center;
-  transition: color 0.2s;
+  justify-content: center;
+  min-width: 38px;
+  height: 20px;
 }
 .delete-btn:hover {
-  color: #868e96;
+  background: #adb5bd;
+  color: #495057;
+  transform: scale(1.05);
 }
 .additional-info {
   display: grid;

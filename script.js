@@ -209,7 +209,7 @@ function fetchAndRenderList() {
                 <div class="leader-name ${roles['찬양인도'].length ? '' : 'leader-empty'}">
                   ${roles['찬양인도'].map(obj => `
                     <span class="member-tag">${obj.name}
-                      <button class="delete-btn" data-key="${obj.key}" data-role="찬양인도" data-name="${obj.name}" title="삭제"><span aria-label="삭제" role="img">🗑️</span></button>
+                      <button class="delete-btn" data-key="${obj.key}" data-role="찬양인도" data-name="${obj.name}">삭제</button>
                     </span>
                   `).join('') || '미정'}
                 </div>
@@ -220,7 +220,7 @@ function fetchAndRenderList() {
                   <div class="member-list">
                     ${roles['싱어'].map(obj => `
                       <span class="member-tag">${obj.name}
-                        <button class="delete-btn" data-key="${obj.key}" data-role="싱어" data-name="${obj.name}" title="삭제"><span aria-label="삭제" role="img">🗑️</span></button>
+                        <button class="delete-btn" data-key="${obj.key}" data-role="싱어" data-name="${obj.name}">삭제</button>
                       </span>
                     `).join('') || '<span style="color:#bbb;">없음</span>'}
                   </div>
@@ -230,32 +230,32 @@ function fetchAndRenderList() {
                   <div class="member-list">
                     ${roles['메인건반'].map(obj => `
                       <span class="member-tag">${obj.name} (메인건반)
-                        <button class="delete-btn" data-key="${obj.key}" data-role="메인건반" data-name="${obj.name}" title="삭제"><span aria-label="삭제" role="img">🗑️</span></button>
+                        <button class="delete-btn" data-key="${obj.key}" data-role="메인건반" data-name="${obj.name}">삭제</button>
                       </span>
                     `).join('')}
                     ${roles['세컨건반'].map(obj => `
                       <span class="member-tag">${obj.name} (세컨건반)
-                        <button class="delete-btn" data-key="${obj.key}" data-role="세컨건반" data-name="${obj.name}" title="삭제"><span aria-label="삭제" role="img">🗑️</span></button>
+                        <button class="delete-btn" data-key="${obj.key}" data-role="세컨건반" data-name="${obj.name}">삭제</button>
                       </span>
                     `).join('')}
                     ${roles['어쿠스틱 기타'].map(obj => `
                       <span class="member-tag">${obj.name} (어쿠스틱 기타)
-                        <button class="delete-btn" data-key="${obj.key}" data-role="어쿠스틱 기타" data-name="${obj.name}" title="삭제"><span aria-label="삭제" role="img">🗑️</span></button>
+                        <button class="delete-btn" data-key="${obj.key}" data-role="어쿠스틱 기타" data-name="${obj.name}">삭제</button>
                       </span>
                     `).join('')}
                     ${roles['일렉 기타'].map(obj => `
                       <span class="member-tag">${obj.name} (일렉 기타)
-                        <button class="delete-btn" data-key="${obj.key}" data-role="일렉 기타" data-name="${obj.name}" title="삭제"><span aria-label="삭제" role="img">🗑️</span></button>
+                        <button class="delete-btn" data-key="${obj.key}" data-role="일렉 기타" data-name="${obj.name}">삭제</button>
                       </span>
                     `).join('')}
                     ${roles['드럼'].map(obj => `
                       <span class="member-tag">${obj.name} (드럼)
-                        <button class="delete-btn" data-key="${obj.key}" data-role="드럼" data-name="${obj.name}" title="삭제"><span aria-label="삭제" role="img">🗑️</span></button>
+                        <button class="delete-btn" data-key="${obj.key}" data-role="드럼" data-name="${obj.name}">삭제</button>
                       </span>
                     `).join('')}
                     ${roles['베이스'].map(obj => `
                       <span class="member-tag">${obj.name} (베이스)
-                        <button class="delete-btn" data-key="${obj.key}" data-role="베이스" data-name="${obj.name}" title="삭제"><span aria-label="삭제" role="img">🗑️</span></button>
+                        <button class="delete-btn" data-key="${obj.key}" data-role="베이스" data-name="${obj.name}">삭제</button>
                       </span>
                     `).join('')}
                     ${(!roles['메인건반'].length && !roles['세컨건반'].length && !roles['어쿠스틱 기타'].length && !roles['일렉 기타'].length && !roles['드럼'].length && !roles['베이스'].length) ? '<span style="color:#bbb;">없음</span>' : ''}
@@ -266,7 +266,7 @@ function fetchAndRenderList() {
                   <div class="member-list">
                     ${roles['엔지니어'].map(obj => `
                       <span class="member-tag">${obj.name}
-                        <button class="delete-btn" data-key="${obj.key}" data-role="엔지니어" data-name="${obj.name}" title="삭제"><span aria-label="삭제" role="img">🗑️</span></button>
+                        <button class="delete-btn" data-key="${obj.key}" data-role="엔지니어" data-name="${obj.name}">삭제</button>
                       </span>
                     `).join('') || '<span style="color:#bbb;">없음</span>'}
                   </div>
@@ -350,14 +350,28 @@ document.addEventListener('click', function(e) {
   }
 });
 
-// 삭제 버튼 이벤트
+// 삭제 버튼 이벤트 (커스텀 confirm)
 document.addEventListener('click', function(e) {
   if (e.target.classList.contains('delete-btn')) {
+    e.stopPropagation(); // 이벤트 버블링 방지
     const key = e.target.getAttribute('data-key');
     const role = e.target.getAttribute('data-role');
     const name = e.target.getAttribute('data-name');
-    if (confirm(`정말로 ${name}(${role})을(를) 삭제하시겠습니까?`)) {
-      prayerRef.child(key).remove();
+    
+    // 커스텀 confirm 대화상자
+    const userChoice = confirm(`${name}(${role})을(를) 삭제하시겠습니까?\n\n확인: 네, 삭제할래요\n취소: 삭제안해요`);
+    
+    if (userChoice) {
+      // "네, 삭제할래요" 선택 시
+      prayerRef.child(key).remove().then(() => {
+        console.log(`${name}(${role}) 삭제 완료`);
+      }).catch((error) => {
+        console.error('삭제 중 오류:', error);
+        alert('삭제 중 오류가 발생했습니다.');
+      });
+    } else {
+      // "삭제안해요" 선택 시 - 아무것도 하지 않음
+      console.log('삭제 취소됨');
     }
   }
 });
@@ -423,7 +437,4 @@ function isValidYouTubeUrl(url) {
   return pattern.test(url);
 }
 function extractYouTubeVideoId(url) {
-  const regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
-  const match = url.match(regExp);
-  return (match && match[7].length === 11) ? match[7] : null;
-}
+  const reg
