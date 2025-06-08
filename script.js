@@ -143,11 +143,13 @@ function fetchAndRenderList() {
     const container = document.getElementById('schedule-container');
     container.innerHTML = '';
     const controlsBar = document.getElementById('controls-bar');
+    
     if (!data) {
       container.innerHTML = '<div style="color:#888;text-align:center;">아직 섬김이 입력되지 않았습니다.</div>';
       controlsBar.style.display = 'none';
       return;
     }
+    
     // 날짜별 역할별 그룹핑, 키도 저장
     const grouped = {};
     Object.entries(data).forEach(([key, item]) => {
@@ -160,12 +162,14 @@ function fetchAndRenderList() {
         grouped[item.date].push({ ...item, _key: key });
       }
     });
+    
     const dates = Object.keys(grouped).sort();
     if (dates.length === 0) {
       container.innerHTML = '<div style="color:#888;text-align:center;">아직 섬김이 입력되지 않았습니다.</div>';
       controlsBar.style.display = 'none';
       return;
     }
+    
     controlsBar.style.display = '';
 
     // 콘티/유튜브 데이터 불러오기
@@ -189,12 +193,17 @@ function fetchAndRenderList() {
             '베이스': [],
             '엔지니어': []
           };
+          
           grouped[date].forEach(item => {
-            if (roles[item.role]) roles[item.role].push({ name: item.name, key: item._key });
+            if (roles[item.role]) {
+              roles[item.role].push({ name: item.name, key: item._key });
+            }
           });
+          
           const badge = idx === 0
             ? `<span class="date-badge all">전교인기도회</span>`
             : `<span class="date-badge">금요기도회</span>`;
+            
           const itemDiv = document.createElement('div');
           itemDiv.className = 'schedule-item';
           itemDiv.innerHTML = `
@@ -297,6 +306,7 @@ function fetchAndRenderList() {
             handleYoutubePreview(youtubeInput);
           }
         });
+        
         setTimeout(() => {
           // 첫 번째 자동 펼침
           if (dates.length > 0) {
@@ -437,4 +447,7 @@ function isValidYouTubeUrl(url) {
   return pattern.test(url);
 }
 function extractYouTubeVideoId(url) {
-  const reg
+  const regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
+  const match = url.match(regExp);
+  return (match && match[7].length === 11) ? match[7] : null;
+}
