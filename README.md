@@ -5,9 +5,6 @@ https://difains.github.io/friday-prayer-schedule/
 
 
 #update
-### 250826 08:00
-- UI/UX Renewal
-
 ### 250605 10:20
 - 최상단 타이틀: "서울중앙교회 금요기도회 찬양팀"
 - 입력 영역: 년/월 선택 → 안내문구/입력폼(날짜, 역할, 이름, 추가)
