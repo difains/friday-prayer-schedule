@@ -1,453 +1,937 @@
-// 1. Firebase 설정 (자신의 firebaseConfig로 교체)
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyDZ07GNmuDrtbca1t-D4elMZM8_JRWrE7E",
-  authDomain: "test-250529.firebaseapp.com",
-  databaseURL: "https://test-250529-default-rtdb.firebaseio.com",
-  projectId: "test-250529",
-  storageBucket: "test-250529.firebasestorage.app",
-  messagingSenderId: "428973129250",
-  appId: "1:428973129250:web:bdb74560e9e8f752fed47b",
-  measurementId: "G-3CN4ESPNJ7"
-};
+// Seoul Central Church Friday Prayer Worship Team Schedule Management System
+// Firebase JSON 기반 완벽 호환 시스템 (Firebase Config 포함)
+// Created: 2025
 
-firebase.initializeApp(firebaseConfig);
-const db = firebase.database();
-const prayerRef = db.ref('prayerList');
-const setlistRef = db.ref('setlists');
-const youtubeRef = db.ref('youtubeLinks');
-
-let currentYear = new Date().getFullYear();
-let currentMonth = new Date().getMonth() + 1;
-
-function updateMonthTitle() {
-  document.getElementById('monthTitle').textContent = `${currentYear}년 ${currentMonth}월`;
-}
-updateMonthTitle();
-
-// 오늘 날짜를 yyyy-mm-dd로 반환
-function getTodayStr() {
-  const today = new Date();
-  const yyyy = today.getFullYear();
-  const mm = String(today.getMonth() + 1).padStart(2, '0');
-  const dd = String(today.getDate()).padStart(2, '0');
-  return `${yyyy}-${mm}-${dd}`;
-}
-
-// 월 이동 버튼
-document.getElementById('prevMonthBtn').onclick = () => {
-  currentMonth--;
-  if (currentMonth < 1) {
-    currentMonth = 12;
-    currentYear--;
+class FridayPrayerScheduleManager {
+  constructor() {
+    console.log('FridayPrayerScheduleManager 시작 - Firebase Config 포함');
+    
+    // 🔥 Firebase Configuration - 실제 프로젝트 정보로 수정 필요
+    this.firebaseConfig = {
+      apiKey: "AIzaSyDZ07GNmuDrtbca1t-D4elMZM8_JRWrE7E",
+      authDomain: "test-250529.firebaseapp.com", 
+      databaseURL: "https://test-250529-default-rtdb.firebaseio.com",
+      projectId: "test-250529",
+      storageBucket: "test-250529.firebasestorage.app",
+      messagingSenderId: "428973129250",
+      appId: "1:428973129250:web:bdb74560e9e8f752fed47b"
+    };
+    
+    // Initialize core properties based on Firebase JSON structure
+    this.prayerList = {}; // Firebase prayerList 구조 그대로 사용
+    this.setlists = {}; // Firebase setlists 구조 그대로 사용
+    this.youtubeLinks = {}; // Firebase youtubeLinks 구조 그대로 사용
+    this.currentDate = new Date();
+    this.allExpanded = true;
+    
+    // Firebase 연동 상태 추적
+    this.firebaseReady = false;
+    this.dataLoaded = false;
+    this.firstLoadComplete = false;
+    
+    // Role configuration with emojis and priority order (Firebase JSON 기반)
+    this.roleConfig = {
+      '찬양인도': { emoji: '🎤', order: 1 },
+      '싱어': { emoji: '🎵', order: 2 },
+      '메인건반': { emoji: '🎹', order: 3 },
+      '세컨건반': { emoji: '⌨️', order: 4 },
+      '어쿠스틱 기타': { emoji: '🎸', order: 5 },
+      '일렉 기타': { emoji: '🎸', order: 6 },
+      '드럼': { emoji: '🥁', order: 7 },
+      '베이스': { emoji: '🎸', order: 8 },
+      '엔지니어': { emoji: '🎚️', order: 9 }
+    };
+    
+    // Firebase database reference
+    this.db = null;
+    
+    // Initialize the application
+    this.init();
   }
-  updateMonthTitle();
-  setDatePickerToFridays();
-  fetchAndRenderList();
-};
-document.getElementById('nextMonthBtn').onclick = () => {
-  currentMonth++;
-  if (currentMonth > 12) {
-    currentMonth = 1;
-    currentYear++;
-  }
-  updateMonthTitle();
-  setDatePickerToFridays();
-  fetchAndRenderList();
-};
 
-// 금요일만 선택 가능하게 min/max 설정 + 오늘 날짜 기본값
-function setDatePickerToFridays() {
-  const inputDate = document.getElementById('inputDate');
-  const min = new Date(currentYear, currentMonth - 1, 1);
-  const max = new Date(currentYear, currentMonth, 0);
-  inputDate.min = min.toISOString().slice(0, 10);
-  inputDate.max = max.toISOString().slice(0, 10);
-
-  // 오늘이 현재 월에 속하면 오늘로, 아니면 그 달의 첫째 금요일로
-  const todayStr = getTodayStr();
-  if (
-    Number(todayStr.slice(0, 4)) === currentYear &&
-    Number(todayStr.slice(5, 7)) === currentMonth
-  ) {
-    inputDate.value = todayStr;
-  } else {
-    // 첫째 금요일
-    let d = new Date(currentYear, currentMonth - 1, 1);
-    while (d.getDay() !== 5) d.setDate(d.getDate() + 1);
-    inputDate.value = d.toISOString().slice(0, 10);
-  }
-}
-setDatePickerToFridays();
-
-document.getElementById('inputDate').addEventListener('change', function() {
-  const val = this.value;
-  if (val) {
-    const d = new Date(val);
-    if (d.getDay() !== 5) {
-      alert('매월 금요일만 선택이 가능합니다');
-      this.value = '';
+  // Initialize Firebase and setup application
+  init() {
+    console.log('앱 초기화 시작');
+    
+    // DOM이 완전히 로드될 때까지 기다림
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', () => {
+        this.setupApplication();
+      });
+    } else {
+      this.setupApplication();
     }
   }
-});
 
-// 추가 버튼 (중복 체크)
-document.getElementById('addBtn').onclick = function() {
-  const date = document.getElementById('inputDate').value;
-  const role = document.getElementById('inputRole').value;
-  const name = document.getElementById('inputName').value.trim();
+  // Setup application after DOM is ready
+  setupApplication() {
+    console.log('앱 설정 시작');
+    
+    // Firebase 초기화
+    this.initializeFirebase();
+    
+    this.bindEvents();
+    this.updateMonthDisplay();
+    this.setDefaultFridayDate();
+    this.setupDateValidation();
+    
+    console.log('앱 설정 완료');
+  }
 
-  if (!date || !role || !name) {
-    alert('날짜, 역할, 이름을 모두 입력해 주세요!');
-    return;
+  // Firebase 초기화 및 데이터 로드
+  initializeFirebase() {
+    try {
+      // Firebase 앱 초기화 (중복 방지)
+      if (!firebase.apps.length) {
+        firebase.initializeApp(this.firebaseConfig);
+      }
+      
+      this.db = firebase.database();
+      this.firebaseReady = true;
+      console.log('Firebase 연결 성공');
+      
+      // 실시간 데이터 리스너 설정 (Firebase JSON 구조 기반)
+      this.setupFirebaseListeners();
+      
+    } catch (error) {
+      console.error('Firebase 초기화 오류:', error);
+      console.log('로컬스토리지에서 데이터 로드 시도');
+      this.loadFromLocalStorage();
+    }
   }
-  const selectedDate = new Date(date);
-  if (selectedDate.getDay() !== 5) {
-    alert('매월 금요일만 선택이 가능합니다');
-    return;
+
+  // Firebase 실시간 리스너 설정 (Firebase JSON 구조와 정확히 일치)
+  setupFirebaseListeners() {
+    console.log('Firebase 실시간 리스너 설정 중...');
+    
+    // prayerList 실시간 리스너 - Firebase JSON과 동일한 구조
+    this.db.ref('prayerList').on('value', (snapshot) => {
+      this.prayerList = snapshot.val() || {};
+      console.log('prayerList 업데이트:', Object.keys(this.prayerList).length, '개 일정');
+      this.dataLoaded = true;
+      this.renderSchedules();
+      this.renderExtraInfo();
+      
+      // 로컬스토리지에 백업
+      this.saveToLocalStorage();
+      
+      // 성공 메시지 (첫 로드시만)
+      if (Object.keys(this.prayerList).length > 0 && !this.firstLoadComplete) {
+        this.showToast(`Firebase에서 ${Object.keys(this.prayerList).length}개 일정을 불러왔습니다!`, 'success');
+        this.firstLoadComplete = true;
+      }
+    });
+
+    // setlists 실시간 리스너 - Firebase JSON과 동일한 구조
+    this.db.ref('setlists').on('value', (snapshot) => {
+      this.setlists = snapshot.val() || {};
+      console.log('setlists 업데이트:', Object.keys(this.setlists).length, '개 날짜');
+      this.renderExtraInfo();
+    });
+
+    // youtubeLinks 실시간 리스너 - Firebase JSON과 동일한 구조
+    this.db.ref('youtubeLinks').on('value', (snapshot) => {
+      this.youtubeLinks = snapshot.val() || {};
+      console.log('youtubeLinks 업데이트:', Object.keys(this.youtubeLinks).length, '개 날짜');
+      this.renderExtraInfo();
+    });
+
+    this.showToast('Firebase 연결 완료! 실시간 동기화 중입니다.', 'success');
   }
-  
-  // 중복 체크 - 전체 데이터에서 동일한 날짜/역할/이름 조합 확인
-  prayerRef.once('value', snapshot => {
-    let isDuplicate = false;
-    if (snapshot.exists()) {
-      snapshot.forEach(child => {
-        const item = child.val();
-        if (item.date === date && item.role === role && item.name === name) {
-          isDuplicate = true;
+
+  // 로컬스토리지에서 데이터 로드 (Firebase 실패 시 백업)
+  loadFromLocalStorage() {
+    console.log('로컬스토리지에서 데이터 로드 중...');
+    
+    try {
+      const savedData = localStorage.getItem('fridayPrayerData');
+      if (savedData) {
+        const data = JSON.parse(savedData);
+        this.prayerList = data.prayerList || {};
+        this.setlists = data.setlists || {};
+        this.youtubeLinks = data.youtubeLinks || {};
+        
+        console.log('로컬스토리지 데이터 로드 완료:', Object.keys(this.prayerList).length, '개 일정');
+        this.dataLoaded = true;
+        this.renderSchedules();
+        this.renderExtraInfo();
+        
+        this.showToast('로컬 데이터를 불러왔습니다. Firebase 연결을 확인해주세요.', 'warning');
+      } else {
+        console.log('저장된 로컬 데이터가 없습니다.');
+        this.renderSchedules();
+        this.renderExtraInfo();
+      }
+    } catch (error) {
+      console.error('로컬스토리지 로드 오류:', error);
+      this.renderSchedules();
+      this.renderExtraInfo();
+    }
+  }
+
+  // 로컬스토리지에 데이터 백업
+  saveToLocalStorage() {
+    try {
+      const data = {
+        prayerList: this.prayerList,
+        setlists: this.setlists,
+        youtubeLinks: this.youtubeLinks,
+        lastUpdated: new Date().toISOString()
+      };
+      localStorage.setItem('fridayPrayerData', JSON.stringify(data));
+      console.log('로컬스토리지 백업 완료');
+    } catch (error) {
+      console.error('로컬스토리지 저장 오류:', error);
+    }
+  }
+
+  // Bind all event listeners
+  bindEvents() {
+    console.log('이벤트 바인딩 시작');
+    
+    // Month navigation
+    const prevMonthBtn = document.getElementById('prevMonth');
+    const nextMonthBtn = document.getElementById('nextMonth');
+    
+    if (prevMonthBtn) {
+      prevMonthBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        this.changeMonth(-1);
+      });
+    }
+    
+    if (nextMonthBtn) {
+      nextMonthBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        this.changeMonth(1);
+      });
+    }
+
+    // Form submission
+    const scheduleForm = document.getElementById('scheduleForm');
+    if (scheduleForm) {
+      scheduleForm.addEventListener('submit', (e) => this.handleFormSubmit(e));
+    }
+
+    // Toggle all schedules
+    const toggleBtn = document.getElementById('toggleAllSchedules');
+    if (toggleBtn) {
+      toggleBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        this.toggleAllSchedules();
+      });
+    }
+
+    // Modal events
+    const closeModalBtn = document.getElementById('closeEditModal');
+    const cancelBtn = document.getElementById('cancelEdit');
+    const saveBtn = document.getElementById('saveEdit');
+    
+    if (closeModalBtn) {
+      closeModalBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        this.closeModal();
+      });
+    }
+    
+    if (cancelBtn) {
+      cancelBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        this.closeModal();
+      });
+    }
+    
+    if (saveBtn) {
+      saveBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        this.saveEditedSchedule();
+      });
+    }
+
+    // Modal overlay click to close
+    const modalOverlay = document.querySelector('.modal-overlay');
+    if (modalOverlay) {
+      modalOverlay.addEventListener('click', (e) => {
+        if (e.target.classList.contains('modal-overlay')) {
+          this.closeModal();
         }
       });
     }
-    
-    if (isDuplicate) {
-      alert('이미 동일한 날짜, 역할, 이름이 등록되어 있습니다.');
-      return;
-    }
-    
-    // 중복 아니면 추가
-    prayerRef.push({ date, role, name }, (err) => {
-      if (!err) {
-        setDatePickerToFridays();
-        document.getElementById('inputRole').value = '';
-        document.getElementById('inputName').value = '';
-        fetchAndRenderList();
+
+    // Keyboard events
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        const modal = document.getElementById('editModal');
+        if (modal && !modal.classList.contains('hidden')) {
+          this.closeModal();
+        }
       }
     });
-  });
-};
 
-function fetchAndRenderList() {
-  prayerRef.off();
-  prayerRef.on('value', (snapshot) => {
-    const data = snapshot.val();
-    const container = document.getElementById('schedule-container');
-    container.innerHTML = '';
-    const controlsBar = document.getElementById('controls-bar');
-    
-    if (!data) {
-      container.innerHTML = '<div style="color:#888;text-align:center;">아직 섬김이 입력되지 않았습니다.</div>';
-      controlsBar.style.display = 'none';
-      return;
+    // Toast close
+    const toastCloseBtn = document.getElementById('toastClose');
+    if (toastCloseBtn) {
+      toastCloseBtn.addEventListener('click', () => this.hideToast());
     }
-    
-    // 날짜별 역할별 그룹핑, 키도 저장
-    const grouped = {};
-    Object.entries(data).forEach(([key, item]) => {
-      const d = new Date(item.date);
-      if (
-        d.getFullYear() === currentYear &&
-        d.getMonth() + 1 === currentMonth
-      ) {
-        if (!grouped[item.date]) grouped[item.date] = [];
-        grouped[item.date].push({ ...item, _key: key });
-      }
-    });
-    
-    const dates = Object.keys(grouped).sort();
-    if (dates.length === 0) {
-      container.innerHTML = '<div style="color:#888;text-align:center;">아직 섬김이 입력되지 않았습니다.</div>';
-      controlsBar.style.display = 'none';
-      return;
-    }
-    
-    controlsBar.style.display = '';
 
-    // 콘티/유튜브 데이터 불러오기
-    setlistRef.once('value', setlistSnap => {
-      const setlists = setlistSnap.val() || {};
-      youtubeRef.once('value', youtubeSnap => {
-        const youtubes = youtubeSnap.val() || {};
-
-        dates.forEach((date, idx) => {
-          const dateIndex = date.replace(/-/g,'');
-          const setlistValue = setlists[date] || '';
-          const youtubeValue = youtubes[date] || '';
-          const roles = {
-            '찬양인도': [],
-            '싱어': [],
-            '메인건반': [],
-            '세컨건반': [],
-            '어쿠스틱 기타': [],
-            '일렉 기타': [],
-            '드럼': [],
-            '베이스': [],
-            '엔지니어': []
-          };
-          
-          grouped[date].forEach(item => {
-            if (roles[item.role]) {
-              roles[item.role].push({ name: item.name, key: item._key });
-            }
-          });
-          
-          const badge = idx === 0
-            ? `<span class="date-badge all">전교인기도회</span>`
-            : `<span class="date-badge">금요기도회</span>`;
-            
-          const itemDiv = document.createElement('div');
-          itemDiv.className = 'schedule-item';
-          itemDiv.innerHTML = `
-            <div class="date-header" data-index="${dateIndex}">
-              ${badge}
-              <span class="date">${date}</span>
-              <span class="toggle-icon">▼</span>
-            </div>
-            <div class="content" id="content-${dateIndex}">
-              <div class="leader-section">
-                <div class="leader-title">찬양인도</div>
-                <div class="leader-name ${roles['찬양인도'].length ? '' : 'leader-empty'}">
-                  ${roles['찬양인도'].map(obj => `
-                    <span class="member-tag">${obj.name}
-                      <button class="delete-btn" data-key="${obj.key}" data-role="찬양인도" data-name="${obj.name}">삭제</button>
-                    </span>
-                  `).join('') || '미정'}
-                </div>
-              </div>
-              <div class="roles-grid">
-                <div class="role-group">
-                  <div class="role-title">🎤 싱어</div>
-                  <div class="member-list">
-                    ${roles['싱어'].map(obj => `
-                      <span class="member-tag">${obj.name}
-                        <button class="delete-btn" data-key="${obj.key}" data-role="싱어" data-name="${obj.name}">삭제</button>
-                      </span>
-                    `).join('') || '<span style="color:#bbb;">없음</span>'}
-                  </div>
-                </div>
-                <div class="role-group">
-                  <div class="role-title">🎹 악기</div>
-                  <div class="member-list">
-                    ${roles['메인건반'].map(obj => `
-                      <span class="member-tag">${obj.name} (메인건반)
-                        <button class="delete-btn" data-key="${obj.key}" data-role="메인건반" data-name="${obj.name}">삭제</button>
-                      </span>
-                    `).join('')}
-                    ${roles['세컨건반'].map(obj => `
-                      <span class="member-tag">${obj.name} (세컨건반)
-                        <button class="delete-btn" data-key="${obj.key}" data-role="세컨건반" data-name="${obj.name}">삭제</button>
-                      </span>
-                    `).join('')}
-                    ${roles['어쿠스틱 기타'].map(obj => `
-                      <span class="member-tag">${obj.name} (어쿠스틱 기타)
-                        <button class="delete-btn" data-key="${obj.key}" data-role="어쿠스틱 기타" data-name="${obj.name}">삭제</button>
-                      </span>
-                    `).join('')}
-                    ${roles['일렉 기타'].map(obj => `
-                      <span class="member-tag">${obj.name} (일렉 기타)
-                        <button class="delete-btn" data-key="${obj.key}" data-role="일렉 기타" data-name="${obj.name}">삭제</button>
-                      </span>
-                    `).join('')}
-                    ${roles['드럼'].map(obj => `
-                      <span class="member-tag">${obj.name} (드럼)
-                        <button class="delete-btn" data-key="${obj.key}" data-role="드럼" data-name="${obj.name}">삭제</button>
-                      </span>
-                    `).join('')}
-                    ${roles['베이스'].map(obj => `
-                      <span class="member-tag">${obj.name} (베이스)
-                        <button class="delete-btn" data-key="${obj.key}" data-role="베이스" data-name="${obj.name}">삭제</button>
-                      </span>
-                    `).join('')}
-                    ${(!roles['메인건반'].length && !roles['세컨건반'].length && !roles['어쿠스틱 기타'].length && !roles['일렉 기타'].length && !roles['드럼'].length && !roles['베이스'].length) ? '<span style="color:#bbb;">없음</span>' : ''}
-                  </div>
-                </div>
-                <div class="role-group">
-                  <div class="role-title">🔧 엔지니어</div>
-                  <div class="member-list">
-                    ${roles['엔지니어'].map(obj => `
-                      <span class="member-tag">${obj.name}
-                        <button class="delete-btn" data-key="${obj.key}" data-role="엔지니어" data-name="${obj.name}">삭제</button>
-                      </span>
-                    `).join('') || '<span style="color:#bbb;">없음</span>'}
-                  </div>
-                </div>
-              </div>
-              <div class="additional-info">
-                <div class="info-section">
-                  <div class="info-title">📋 콘티 리스트</div>
-                  <textarea class="setlist-area" placeholder="찬양 순서를 입력하세요..." id="setlist-${dateIndex}" data-date="${date}">${setlistValue}</textarea>
-                  <button class="save-btn" data-type="setlist" data-date="${date}">저장</button>
-                </div>
-                <div class="info-section">
-                  <div class="info-title">🎬 참고 유튜브</div>
-                  <input type="url" class="youtube-input" placeholder="유튜브 링크를 입력하세요" id="youtube-${dateIndex}" data-date="${date}" value="${youtubeValue}">
-                  <button class="save-btn" data-type="youtube" data-date="${date}">저장</button>
-                  <div class="youtube-preview" id="youtube-preview-${dateIndex}">
-                    <span>🔗 링크가 입력되면 미리보기가 표시됩니다</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          `;
-          container.appendChild(itemDiv);
-
-          // 유튜브 미리보기
-          const youtubeInput = itemDiv.querySelector('.youtube-input');
-          if (youtubeInput && youtubeInput.value) {
-            handleYoutubePreview(youtubeInput);
-          }
-        });
-        
-        setTimeout(() => {
-          // 첫 번째 자동 펼침
-          if (dates.length > 0) {
-            const firstIndex = dates[0].replace(/-/g,'');
-            const firstContent = document.getElementById(`content-${firstIndex}`);
-            const firstIcon = document.querySelector(`.date-header[data-index="${firstIndex}"] .toggle-icon`);
-            if (firstContent && firstIcon) {
-              firstContent.classList.add('expanded');
-              firstIcon.classList.add('rotated');
-            }
-          }
-        }, 200);
+    // Logo click to refresh
+    const logoLink = document.querySelector('.logo-link');
+    if (logoLink) {
+      logoLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        this.refreshPage();
       });
-    });
-  });
-}
-fetchAndRenderList();
-
-document.getElementById('expand-all').onclick = () => {
-  document.querySelectorAll('.content').forEach(c => c.classList.add('expanded'));
-  document.querySelectorAll('.toggle-icon').forEach(i => i.classList.add('rotated'));
-};
-document.getElementById('collapse-all').onclick = () => {
-  document.querySelectorAll('.content').forEach(c => c.classList.remove('expanded'));
-  document.querySelectorAll('.toggle-icon').forEach(i => i.classList.remove('rotated'));
-};
-
-document.addEventListener('click', function(e) {
-  if (e.target.closest('.date-header')) {
-    const header = e.target.closest('.date-header');
-    const dateIndex = header.getAttribute('data-index');
-    const content = document.getElementById(`content-${dateIndex}`);
-    const icon = header.querySelector('.toggle-icon');
-    const isExpanded = content.classList.contains('expanded');
-    if (isExpanded) {
-      content.classList.remove('expanded');
-      icon.classList.remove('rotated');
-    } else {
-      content.classList.add('expanded');
-      icon.classList.add('rotated');
     }
-  }
-});
-
-// 멤버 태그 클릭 효과
-document.addEventListener('click', function(e) {
-  if (e.target.classList.contains('member-tag')) {
-    if (navigator.vibrate) navigator.vibrate(50);
-    e.target.style.transform = 'scale(1.1)';
-    setTimeout(() => { e.target.style.transform = ''; }, 200);
-  }
-});
-
-// 삭제 버튼 이벤트 (커스텀 confirm)
-document.addEventListener('click', function(e) {
-  if (e.target.classList.contains('delete-btn')) {
-    e.stopPropagation(); // 이벤트 버블링 방지
-    const key = e.target.getAttribute('data-key');
-    const role = e.target.getAttribute('data-role');
-    const name = e.target.getAttribute('data-name');
     
-    // 커스텀 confirm 대화상자
-    const userChoice = confirm(`${name}(${role})을(를) 삭제하시겠습니까?\n\n확인: 네, 삭제할래요\n취소: 삭제안해요`);
-    
-    if (userChoice) {
-      // "네, 삭제할래요" 선택 시
-      prayerRef.child(key).remove().then(() => {
-        console.log(`${name}(${role}) 삭제 완료`);
-      }).catch((error) => {
-        console.error('삭제 중 오류:', error);
-        alert('삭제 중 오류가 발생했습니다.');
-      });
-    } else {
-      // "삭제안해요" 선택 시 - 아무것도 하지 않음
-      console.log('삭제 취소됨');
-    }
+    console.log('모든 이벤트 바인딩 완료');
   }
-});
 
-// 콘티/유튜브 저장 버튼 이벤트
-document.addEventListener('click', function(e) {
-  if (e.target.classList.contains('save-btn')) {
-    const type = e.target.getAttribute('data-type');
-    const date = e.target.getAttribute('data-date');
-    if (type === 'setlist') {
-      const textarea = document.querySelector(`.setlist-area[data-date="${date}"]`);
-      if (textarea) {
-        setlistRef.child(date).set(textarea.value || '');
-        alert('콘티 리스트가 저장되었습니다.');
-      }
-    } else if (type === 'youtube') {
-      const input = document.querySelector(`.youtube-input[data-date="${date}"]`);
+  // Date validation and restriction setup
+  setupDateValidation() {
+    const dateInputs = ['scheduleDate', 'editScheduleDate'];
+    
+    dateInputs.forEach(inputId => {
+      const input = document.getElementById(inputId);
       if (input) {
-        youtubeRef.child(date).set(input.value || '');
-        alert('유튜브 링크가 저장되었습니다.');
-        handleYoutubePreview(input);
+        const currentYear = new Date().getFullYear();
+        input.min = `${currentYear - 1}-01-01`;
+        input.max = `${currentYear + 5}-12-31`;
+        
+        input.addEventListener('change', (e) => this.validateFridaySelection(e));
+        input.addEventListener('input', (e) => this.validateFridaySelection(e));
       }
+    });
+  }
+
+  // Set default date to next Friday
+  setDefaultFridayDate() {
+    const nextFriday = this.getNextFriday(new Date());
+    const nextFridayString = this.formatDateForInput(nextFriday);
+    
+    const dateInput = document.getElementById('scheduleDate');
+    if (dateInput && !dateInput.value) {
+      dateInput.value = nextFridayString;
     }
   }
-});
 
-document.addEventListener('input', function(e) {
-  if (e.target.classList.contains('youtube-input')) {
-    handleYoutubePreview(e.target);
+  // Get next Friday from given date
+  getNextFriday(date) {
+    const result = new Date(date);
+    const dayOfWeek = result.getDay();
+    const daysUntilFriday = (5 - dayOfWeek + 7) % 7;
+    
+    if (daysUntilFriday === 0 && result.getHours() > 12) {
+      result.setDate(result.getDate() + 7);
+    } else {
+      result.setDate(result.getDate() + daysUntilFriday);
+    }
+    
+    return result;
   }
-});
 
-function handleYoutubePreview(input) {
-  const url = input.value;
-  const id = input.id.replace('youtube-', '');
-  const preview = document.getElementById(`youtube-preview-${id}`);
-  if (url && isValidYouTubeUrl(url)) {
-    const videoId = extractYouTubeVideoId(url);
-    if (videoId) {
-      preview.innerHTML = `
-        <div style="display: flex; align-items: center; gap: 10px;">
-          <img src="https://img.youtube.com/vi/${videoId}/mqdefault.jpg" 
-               style="width: 60px; height: 45px; border-radius: 4px;">
-          <div>
-            <div style="font-weight: 600; color: #333;">유튜브 영상 연결됨</div>
-            <div style="font-size: 0.75rem; color: #666;">클릭하여 새 탭에서 열기</div>
+  // Validate that selected date is a Friday
+  validateFridaySelection(e) {
+    const selectedDate = new Date(e.target.value);
+    const dayOfWeek = selectedDate.getDay();
+    
+    if (e.target.value && dayOfWeek !== 5) {
+      this.showToast('금요일만 선택할 수 있습니다.', 'error');
+      const nextFriday = this.getNextFriday(new Date());
+      e.target.value = this.formatDateForInput(nextFriday);
+    }
+  }
+
+  // Format date for HTML date input
+  formatDateForInput(date) {
+    return date.toISOString().split('T')[0];
+  }
+
+  // Format date for display (Korean format)
+  formatDateForDisplay(dateString) {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    
+    const weekdays = ['일', '월', '화', '수', '목', '금', '토'];
+    const weekday = weekdays[date.getDay()];
+    
+    return `${year}년 ${month}월 ${day}일 (${weekday})`;
+  }
+
+  // Check if date is first Friday of the month
+  isFirstFridayOfMonth(dateString) {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = date.getMonth();
+    
+    const firstDay = new Date(year, month, 1);
+    const firstFriday = this.getNextFriday(firstDay);
+    
+    if (firstFriday.getMonth() !== month) {
+      firstFriday.setDate(firstFriday.getDate() + 7);
+    }
+    
+    return date.toDateString() === firstFriday.toDateString();
+  }
+
+  // Handle form submission - Firebase prayerList에 직접 추가 (Firebase JSON 구조 준수)
+  handleFormSubmit(e) {
+    e.preventDefault();
+    
+    const formData = new FormData(e.target);
+    const scheduleData = {
+      date: formData.get('scheduleDate'),
+      role: formData.get('scheduleRole'),
+      name: formData.get('scheduleName').trim()
+    };
+    
+    if (!this.validateScheduleData(scheduleData)) {
+      return;
+    }
+    
+    // Firebase prayerList에 직접 추가 (Firebase JSON 구조와 동일)
+    if (this.firebaseReady) {
+      this.db.ref('prayerList').push(scheduleData)
+        .then(() => {
+          this.showToast(`${scheduleData.role} 역할로 ${scheduleData.name}님이 추가되었습니다.`, 'success');
+          e.target.reset();
+          this.setDefaultFridayDate();
+        })
+        .catch(error => {
+          console.error('일정 추가 오류:', error);
+          this.showToast('일정 추가 중 오류가 발생했습니다.', 'error');
+        });
+    } else {
+      // Firebase 연결 안된 경우 로컬에만 추가
+      const newKey = 'local_' + Date.now();
+      this.prayerList[newKey] = scheduleData;
+      this.saveToLocalStorage();
+      this.renderSchedules();
+      
+      this.showToast(`${scheduleData.role} 역할로 ${scheduleData.name}님이 추가되었습니다. (로컬 저장)`, 'warning');
+      e.target.reset();
+      this.setDefaultFridayDate();
+    }
+  }
+
+  // Validate schedule data
+  validateScheduleData(data) {
+    if (!data.date) {
+      this.showToast('날짜를 선택해주세요.', 'error');
+      return false;
+    }
+    
+    if (!data.role) {
+      this.showToast('역할을 선택해주세요.', 'error');
+      return false;
+    }
+    
+    if (!data.name) {
+      this.showToast('이름을 입력해주세요.', 'error');
+      return false;
+    }
+    
+    const selectedDate = new Date(data.date);
+    if (selectedDate.getDay() !== 5) {
+      this.showToast('금요일만 선택할 수 있습니다.', 'error');
+      return false;
+    }
+    
+    return true;
+  }
+
+  // Change month navigation
+  changeMonth(direction) {
+    const newDate = new Date(this.currentDate);
+    newDate.setMonth(newDate.getMonth() + direction);
+    this.currentDate = newDate;
+    
+    this.updateMonthDisplay();
+    this.renderSchedules();
+    this.renderExtraInfo();
+  }
+
+  // Update month display in header
+  updateMonthDisplay() {
+    const monthElement = document.getElementById('currentMonth');
+    if (monthElement) {
+      const year = this.currentDate.getFullYear();
+      const month = this.currentDate.getMonth() + 1;
+      monthElement.textContent = `${year}년 ${month}월`;
+    }
+  }
+
+  // Get schedules for current month from prayerList (Firebase JSON 구조 기반)
+  getCurrentMonthSchedules() {
+    const currentYear = this.currentDate.getFullYear();
+    const currentMonth = this.currentDate.getMonth();
+    
+    const schedules = [];
+    Object.keys(this.prayerList).forEach(key => {
+      const schedule = this.prayerList[key];
+      const scheduleDate = new Date(schedule.date);
+      
+      if (scheduleDate.getFullYear() === currentYear && 
+          scheduleDate.getMonth() === currentMonth) {
+        schedules.push({
+          ...schedule,
+          firebaseKey: key
+        });
+      }
+    });
+    
+    return schedules;
+  }
+
+  // Sort schedules by role order
+  sortSchedulesByRole(schedules) {
+    return schedules.sort((a, b) => {
+      const orderA = this.roleConfig[a.role]?.order || 999;
+      const orderB = this.roleConfig[b.role]?.order || 999;
+      return orderA - orderB;
+    });
+  }
+
+  // Group schedules by date
+  groupSchedulesByDate(schedules) {
+    const grouped = {};
+    
+    schedules.forEach(schedule => {
+      if (!grouped[schedule.date]) {
+        grouped[schedule.date] = [];
+      }
+      grouped[schedule.date].push(schedule);
+    });
+    
+    Object.keys(grouped).forEach(date => {
+      grouped[date] = this.sortSchedulesByRole(grouped[date]);
+    });
+    
+    return grouped;
+  }
+
+  // Render all schedules
+  renderSchedules() {
+    const container = document.getElementById('schedulesList');
+    if (!container) {
+      console.error('schedulesList 컨테이너를 찾을 수 없음');
+      return;
+    }
+    
+    const currentMonthSchedules = this.getCurrentMonthSchedules();
+    const totalSchedules = Object.keys(this.prayerList).length;
+    
+    if (currentMonthSchedules.length === 0) {
+      container.innerHTML = `
+        <div class="empty-state">
+          <div class="empty-state__icon">📅</div>
+          <h4 class="empty-state__title">등록된 일정이 없습니다</h4>
+          <p class="empty-state__text">위 폼에서 새로운 섬김 일정을 추가해보세요</p>
+          <p class="empty-state__debug">전체 일정 수: ${totalSchedules}개</p>
+        </div>
+      `;
+      return;
+    }
+    
+    const groupedSchedules = this.groupSchedulesByDate(currentMonthSchedules);
+    const sortedDates = Object.keys(groupedSchedules).sort();
+    
+    container.innerHTML = sortedDates.map(date => {
+      const schedules = groupedSchedules[date];
+      const isFirstFriday = this.isFirstFridayOfMonth(date);
+      const isExpanded = this.allExpanded ? 'expanded' : '';
+      const toggleIcon = this.allExpanded ? '▼' : '▶';
+      
+      return `
+        <div class="schedule-date-group">
+          <div class="schedule-date-header" onclick="scheduleManager.toggleDateGroup('${date}')">
+            <div class="schedule-date-info">
+              <h4 class="schedule-date-title">${this.formatDateForDisplay(date)}</h4>
+              ${isFirstFriday ? '<span class="schedule-badge">✨ 전교인 기도회</span>' : ''}
+            </div>
+            <span class="schedule-toggle ${!this.allExpanded ? 'collapsed' : ''}">${toggleIcon}</span>
+          </div>
+          <div class="schedule-items ${isExpanded}" id="items-${date}">
+            ${schedules.map(schedule => this.renderScheduleItem(schedule)).join('')}
           </div>
         </div>
       `;
-      preview.classList.add('show');
-      preview.style.cursor = 'pointer';
-      preview.onclick = () => window.open(url, '_blank');
+    }).join('');
+  }
+
+  // Render individual schedule item
+  renderScheduleItem(schedule) {
+    const roleConfig = this.roleConfig[schedule.role] || { emoji: '❓', order: 999 };
+    
+    return `
+      <div class="schedule-item">
+        <div class="schedule-item-info">
+          <span class="schedule-role-badge">
+            ${roleConfig.emoji} ${schedule.role}
+          </span>
+          <span class="schedule-name">${schedule.name}</span>
+        </div>
+        <div class="schedule-actions">
+          <button class="btn btn--secondary btn--xs" onclick="scheduleManager.editSchedule('${schedule.firebaseKey}')" type="button">
+            수정
+          </button>
+          <button class="btn btn--danger btn--xs" onclick="scheduleManager.deleteSchedule('${schedule.firebaseKey}')" type="button">
+            삭제
+          </button>
+        </div>
+      </div>
+    `;
+  }
+
+  // Toggle date group visibility
+  toggleDateGroup(date) {
+    const itemsContainer = document.getElementById(`items-${date}`);
+    const toggleIcon = itemsContainer?.parentNode.querySelector('.schedule-toggle');
+    
+    if (itemsContainer && toggleIcon) {
+      const isCurrentlyExpanded = itemsContainer.classList.contains('expanded');
+      
+      if (isCurrentlyExpanded) {
+        itemsContainer.classList.remove('expanded');
+        toggleIcon.textContent = '▶';
+        toggleIcon.classList.add('collapsed');
+      } else {
+        itemsContainer.classList.add('expanded');
+        toggleIcon.textContent = '▼';
+        toggleIcon.classList.remove('collapsed');
+      }
     }
-  } else {
-    preview.classList.remove('show');
-    preview.onclick = null;
-    preview.innerHTML = '<span>🔗 링크가 입력되면 미리보기가 표시됩니다</span>';
+  }
+
+  // Toggle all schedules
+  toggleAllSchedules() {
+    this.allExpanded = !this.allExpanded;
+    
+    const toggleText = document.getElementById('toggleText');
+    if (toggleText) {
+      toggleText.textContent = this.allExpanded ? '📁 모두 닫기' : '📂 모두 열기';
+    }
+    
+    this.renderSchedules();
+  }
+
+  // Edit schedule - Firebase key 사용 (Firebase JSON 구조 준수)
+  editSchedule(firebaseKey) {
+    const schedule = this.prayerList[firebaseKey];
+    if (!schedule) return;
+    
+    document.getElementById('editScheduleId').value = firebaseKey;
+    document.getElementById('editScheduleDate').value = schedule.date;
+    document.getElementById('editScheduleRole').value = schedule.role;
+    document.getElementById('editScheduleName').value = schedule.name;
+    
+    this.showModal();
+  }
+
+  // Save edited schedule - Firebase에서 직접 수정 (Firebase JSON 구조 준수)
+  saveEditedSchedule() {
+    const firebaseKey = document.getElementById('editScheduleId').value;
+    const date = document.getElementById('editScheduleDate').value;
+    const role = document.getElementById('editScheduleRole').value;
+    const name = document.getElementById('editScheduleName').value.trim();
+    
+    const scheduleData = { date, role, name };
+    if (!this.validateScheduleData(scheduleData)) {
+      return;
+    }
+    
+    if (this.firebaseReady) {
+      this.db.ref('prayerList').child(firebaseKey).update(scheduleData)
+        .then(() => {
+          this.closeModal();
+          this.showToast('일정이 수정되었습니다.', 'success');
+        })
+        .catch(error => {
+          console.error('일정 수정 오류:', error);
+          this.showToast('일정 수정 중 오류가 발생했습니다.', 'error');
+        });
+    } else {
+      // Firebase 연결 안된 경우 로컬에서만 수정
+      if (this.prayerList[firebaseKey]) {
+        this.prayerList[firebaseKey] = scheduleData;
+        this.saveToLocalStorage();
+        this.renderSchedules();
+        this.closeModal();
+        this.showToast('일정이 수정되었습니다. (로컬 저장)', 'warning');
+      }
+    }
+  }
+
+  // Delete schedule - Firebase에서 직접 삭제 (Firebase JSON 구조 준수)
+  deleteSchedule(firebaseKey) {
+    const schedule = this.prayerList[firebaseKey];
+    if (!schedule) return;
+    
+    if (confirm(`${schedule.name}님의 ${schedule.role} 일정을 삭제하시겠습니까?`)) {
+      if (this.firebaseReady) {
+        this.db.ref('prayerList').child(firebaseKey).remove()
+          .then(() => {
+            this.showToast('일정이 삭제되었습니다.', 'success');
+          })
+          .catch(error => {
+            console.error('일정 삭제 오류:', error);
+            this.showToast('일정 삭제 중 오류가 발생했습니다.', 'error');
+          });
+      } else {
+        // Firebase 연결 안된 경우 로컬에서만 삭제
+        delete this.prayerList[firebaseKey];
+        this.saveToLocalStorage();
+        this.renderSchedules();
+        this.showToast('일정이 삭제되었습니다. (로컬 저장)', 'warning');
+      }
+    }
+  }
+
+  // Show modal
+  showModal() {
+    const modal = document.getElementById('editModal');
+    if (modal) {
+      modal.classList.remove('hidden');
+      modal.setAttribute('aria-hidden', 'false');
+      
+      const firstInput = modal.querySelector('input, select');
+      if (firstInput) {
+        firstInput.focus();
+      }
+    }
+  }
+
+  // Close modal
+  closeModal() {
+    const modal = document.getElementById('editModal');
+    if (modal) {
+      modal.classList.add('hidden');
+      modal.setAttribute('aria-hidden', 'true');
+    }
+  }
+
+  // Render extra info section (Firebase JSON 구조의 setlists, youtubeLinks 활용)
+  renderExtraInfo() {
+    const container = document.getElementById('extraInfoContainer');
+    const section = document.getElementById('extraInfoSection');
+    
+    if (!container || !section) return;
+    
+    const currentMonthSchedules = this.getCurrentMonthSchedules();
+    const uniqueDates = [...new Set(currentMonthSchedules.map(s => s.date))].sort();
+    
+    if (uniqueDates.length === 0) {
+      section.style.display = 'none';
+      return;
+    }
+    
+    section.style.display = 'block';
+    
+    container.innerHTML = uniqueDates.map(date => {
+      const conti = this.setlists[date] || '';
+      const youtubeUrl = this.youtubeLinks[date] || '';
+      const isFirstFriday = this.isFirstFridayOfMonth(date);
+      
+      return `
+        <div class="extra-info-date-section">
+          <div class="extra-info-date-header">
+            <h4 class="extra-info-date-title">
+              ${this.formatDateForDisplay(date)}
+              ${isFirstFriday ? '<span class="schedule-badge">✨ 전교인 기도회</span>' : ''}
+            </h4>
+          </div>
+          <div class="extra-info-form">
+            <div class="form-group">
+              <label for="conti-${date}" class="form-label">콘티 (찬양 순서)</label>
+              <textarea 
+                id="conti-${date}" 
+                class="form-textarea" 
+                placeholder="찬양 순서나 특별한 안내사항을 입력하세요..."
+                onchange="scheduleManager.saveSetlist('${date}', this.value)"
+              >${conti}</textarea>
+            </div>
+            <div class="form-group">
+              <label for="youtube-${date}" class="form-label">유튜브 URL</label>
+              <input 
+                type="url" 
+                id="youtube-${date}" 
+                class="form-input" 
+                placeholder="https://www.youtube.com/watch?v=..."
+                value="${youtubeUrl}"
+                onchange="scheduleManager.saveYoutubeLink('${date}', this.value)"
+              >
+            </div>
+            <button 
+              type="button" 
+              class="btn btn--primary btn--sm"
+              onclick="scheduleManager.saveAllExtraInfo('${date}')"
+            >
+              저장
+            </button>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  // Save setlist to Firebase (Firebase JSON 구조 준수)
+  saveSetlist(date, value) {
+    if (this.firebaseReady) {
+      this.db.ref('setlists').child(date).set(value || null);
+    } else {
+      this.setlists[date] = value;
+      this.saveToLocalStorage();
+    }
+  }
+
+  // Save YouTube link to Firebase (Firebase JSON 구조 준수)
+  saveYoutubeLink(date, value) {
+    if (this.firebaseReady) {
+      this.db.ref('youtubeLinks').child(date).set(value || null);
+    } else {
+      this.youtubeLinks[date] = value;
+      this.saveToLocalStorage();
+    }
+  }
+
+  // Save all extra info for date (Firebase JSON 구조 준수)
+  saveAllExtraInfo(date) {
+    const conti = document.getElementById(`conti-${date}`)?.value || '';
+    const youtubeUrl = document.getElementById(`youtube-${date}`)?.value || '';
+    
+    if (this.firebaseReady) {
+      const updates = {};
+      updates[`setlists/${date}`] = conti || null;
+      updates[`youtubeLinks/${date}`] = youtubeUrl || null;
+      
+      this.db.ref().update(updates)
+        .then(() => {
+          this.showToast('추가 정보가 저장되었습니다.', 'success');
+        })
+        .catch(error => {
+          console.error('추가 정보 저장 오류:', error);
+          this.showToast('추가 정보 저장 중 오류가 발생했습니다.', 'error');
+        });
+    } else {
+      this.setlists[date] = conti;
+      this.youtubeLinks[date] = youtubeUrl;
+      this.saveToLocalStorage();
+      this.showToast('추가 정보가 저장되었습니다. (로컬 저장)', 'warning');
+    }
+  }
+
+  // Show toast message
+  showToast(message, type = 'success') {
+    const toast = document.getElementById('toast');
+    const toastMessage = document.getElementById('toastMessage');
+    
+    if (toast && toastMessage) {
+      toast.classList.remove('error', 'warning', 'info');
+      
+      if (type !== 'success') {
+        toast.classList.add(type);
+      }
+      
+      toastMessage.textContent = message;
+      toast.classList.remove('hidden');
+      
+      setTimeout(() => {
+        this.hideToast();
+      }, 5000);
+    }
+  }
+
+  // Hide toast message
+  hideToast() {
+    const toast = document.getElementById('toast');
+    if (toast) {
+      toast.classList.add('hidden');
+    }
+  }
+
+  // Refresh page
+  refreshPage() {
+    this.currentDate = new Date();
+    this.updateMonthDisplay();
+    this.setDefaultFridayDate();
+    this.renderSchedules();
+    this.renderExtraInfo();
+    this.showToast('페이지가 새로고침되었습니다.', 'info');
   }
 }
 
-function isValidYouTubeUrl(url) {
-  const pattern = /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/.+/;
-  return pattern.test(url);
-}
-function extractYouTubeVideoId(url) {
-  const regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
-  const match = url.match(regExp);
-  return (match && match[7].length === 11) ? match[7] : null;
-}
+// Initialize the schedule manager when DOM is loaded
+let scheduleManager;
+
+document.addEventListener('DOMContentLoaded', function() {
+  console.log('DOM 로드 완료, scheduleManager 생성');
+  scheduleManager = new FridayPrayerScheduleManager();
+  
+  window.scheduleManager = scheduleManager;
+  
+  console.log('scheduleManager 전역 등록 완료');
+});
+
+// Debug function for Firebase connection (Firebase JSON 기반 디버깅)
+window.debugFirebaseConnection = function() {
+  console.log('=== Firebase 연결 디버그 (Firebase JSON 기반) ===');
+  console.log('Firebase 앱:', window.firebase?.apps?.length || 0);
+  console.log('Database:', window.firebase?.database ? '✅' : '❌');
+  console.log('scheduleManager Firebase 상태:', scheduleManager?.firebaseReady);
+  console.log('prayerList 데이터 수:', Object.keys(scheduleManager?.prayerList || {}).length);
+  console.log('setlists 데이터 수:', Object.keys(scheduleManager?.setlists || {}).length);
+  console.log('youtubeLinks 데이터 수:', Object.keys(scheduleManager?.youtubeLinks || {}).length);
+  
+  // Firebase JSON 구조와 동일한지 확인
+  if (scheduleManager?.prayerList) {
+    const sampleKey = Object.keys(scheduleManager.prayerList)[0];
+    if (sampleKey) {
+      console.log('prayerList 샘플 데이터:', scheduleManager.prayerList[sampleKey]);
+    }
+  }
+};
+
+// Test function for Firebase data access (Firebase JSON 기반 테스트)
+window.testFirebaseAccess = function() {
+  console.log('=== Firebase 데이터 접근 테스트 ===');
+  
+  if (window.firebase && window.firebase.database) {
+    const db = firebase.database();
+    
+    // prayerList 접근 테스트
+    db.ref('prayerList').limitToFirst(1).once('value')
+      .then(snapshot => {
+        console.log('✅ prayerList 접근 성공');
+        console.log('샘플 데이터:', snapshot.val());
+      })
+      .catch(error => {
+        console.error('❌ prayerList 접근 실패:', error.code, error.message);
+      });
+      
+    // setlists 접근 테스트  
+    db.ref('setlists').limitToFirst(1).once('value')
+      .then(snapshot => {
+        console.log('✅ setlists 접근 성공');
+        console.log('샘플 데이터:', snapshot.val());
+      })
+      .catch(error => {
+        console.error('❌ setlists 접근 실패:', error.code, error.message);
+      });
+      
+    // youtubeLinks 접근 테스트
+    db.ref('youtubeLinks').limitToFirst(1).once('value')
+      .then(snapshot => {
+        console.log('✅ youtubeLinks 접근 성공');
+        console.log('샘플 데이터:', snapshot.val());
+      })
+      .catch(error => {
+        console.error('❌ youtubeLinks 접근 실패:', error.code, error.message);
+      });
+      
+  } else {
+    console.error('❌ Firebase가 초기화되지 않음');
+  }
+};
