@@ -380,13 +380,15 @@
       display: flex;
       gap: 8px;
       overflow-x: auto;
+      min-width: 0;
+      max-width: 100%;
       padding: 6px;
       background: var(--openui-sunk);
       border-radius: var(--openui-radius-xl);
       border: 1px solid var(--openui-border-default);
     }
     .openui-tab-item {
-      flex: 1;
+      flex: 1 0 auto;
       min-width: 102px;
       min-height: 78px;
       border: 1px solid transparent;
@@ -704,6 +706,8 @@
       border-radius: var(--openui-radius-3xl);
       padding: var(--openui-space-l);
       box-shadow: var(--openui-shadow-card);
+      min-width: 0;
+      max-width: 100%;
       display: flex;
       flex-direction: column;
       gap: var(--openui-space-m);
@@ -1436,6 +1440,7 @@
       selectedDate: _initDefault.selectedDate, // 이번 주(또는 가장 가까운) 금요일 자동 선택
       subSurface: "briefing", // briefing | editable | capture
       pastDateUnlocked: false, // 5번 보안 방안: 과거 금요일 실수 삭제 방지 기본 잠금
+      tabsScrollLeft: 0, // 주차 탭 가로 스크롤 위치 유지
       backupHistory: [], // 최근 정상 스냅샷 스택 (최대 5개)
       lastGoodTime: "초기 로드 완료",
       db: JSON.parse(JSON.stringify(INITIAL_FIREBASE_DB))
@@ -1682,6 +1687,8 @@
 
     function switchMonth(ym, preferredDate) {
       state.currentMonth = ym;
+      state.tabsScrollLeft = 0;
+      state._scrollActiveTabIntoView = true;
       const fridays = getFridaysOfMonth(ym);
       const todayIso = getTodayIsoString();
       if (preferredDate && fridays.includes(preferredDate)) {
@@ -1699,6 +1706,7 @@
 
     function jumpToDate(dateStr) {
       if (!dateStr) return;
+      state._scrollActiveTabIntoView = true;
       const ym = dateStr.slice(0, 7);
       if (state.currentMonth !== ym) {
         switchMonth(ym, dateStr);
@@ -1795,9 +1803,45 @@
     }
 
     function selectTab(key) {
+      const existingTabs = document.querySelector("#openuiRoot .openui-tabs");
+      if (existingTabs) {
+        state.tabsScrollLeft = existingTabs.scrollLeft;
+      }
+      state._scrollActiveTabIntoView = true;
       state.selectedDate = key;
       if (key === "matrix") state.subSurface = "briefing";
       renderMainSurface();
+    }
+
+    function restoreTabsScroll(preservedLeft) {
+      const newTabs = document.querySelector("#openuiRoot .openui-tabs");
+      if (!newTabs) return;
+      const applyScroll = () => {
+        newTabs.scrollLeft = preservedLeft || 0;
+        if (state._scrollActiveTabIntoView) {
+          const activeEl = newTabs.querySelector(".openui-tab-item.is-active");
+          if (activeEl) {
+            const elLeft = activeEl.offsetLeft;
+            const elRight = elLeft + activeEl.offsetWidth;
+            const viewLeft = newTabs.scrollLeft;
+            const viewRight = viewLeft + newTabs.clientWidth;
+            if (elLeft < viewLeft + 6) {
+              newTabs.scrollLeft = Math.max(0, elLeft - 6);
+            } else if (elRight > viewRight - 6) {
+              newTabs.scrollLeft = elRight - newTabs.clientWidth + 6;
+            }
+          }
+        }
+        state.tabsScrollLeft = newTabs.scrollLeft;
+      };
+      applyScroll();
+      requestAnimationFrame(() => {
+        applyScroll();
+        state._scrollActiveTabIntoView = false;
+      });
+      newTabs.addEventListener("scroll", () => {
+        state.tabsScrollLeft = newTabs.scrollLeft;
+      }, { passive: true });
     }
 
     function setSubSurface(surface) {
@@ -1810,6 +1854,8 @@
 
     function renderMainSurface() {
       const root = document.getElementById("openuiRoot");
+      const existingTabs = root.querySelector(".openui-tabs");
+      const preservedTabsScrollLeft = existingTabs ? existingTabs.scrollLeft : (state.tabsScrollLeft || 0);
       const fridays = getFridaysOfMonth(state.currentMonth);
       const [yearStr, monthStr] = state.currentMonth.split("-");
 
@@ -1896,6 +1942,7 @@
           ${tabsHtml}
           ${renderMonthlyTableCard(fridays)}
         `;
+        restoreTabsScroll(preservedTabsScrollLeft);
         updateOpenUILangCode();
         return;
       }
@@ -1924,8 +1971,10 @@
       const fallbackYtUrl = latestYtDate ? safeHttpUrl(state.db.youtubeLinks[latestYtDate] || "") : "";
       const hasYt = Boolean(state.db.youtubeLinks[dateStr]);
 
-      const kpiHtml = `
-        <section class="openui-snippet-block ${state.isAdmin ? '' : 'is-2col'}" aria-label="주간 핵심 지표 및 등록 권면 모션">
+      // 3. SnippetCardBlock (관리자 모드 전용: 파트 배정 현황 & 찬양 콘티 현황 & 카톡 공지)
+      const kpiHtml = state.isAdmin
+        ? `
+        <section class="openui-snippet-block" aria-label="주간 핵심 지표 및 등록 권면 모션">
           <!-- 좌측 카드: 파트 배정 현황 + 01 Sequence 모션 (미배정 파트 순차 하이라이트) -->
           <div class="openui-snippet-item is-motion-card">
             <div class="snippet-top-row">
@@ -2041,7 +2090,6 @@
             </div>
           </div>
 
-          ${state.isAdmin ? `
           <div class="openui-snippet-item is-motion-card" style="cursor:pointer;" onclick="setSubSurface('capture')">
             <div class="snippet-top-row">
               <div class="snippet-lhs">
@@ -2065,12 +2113,12 @@
               </div>
             </div>
           </div>
-          ` : ""}
         </section>
-      `;
+      `
+        : "";
 
-      // 4. Callout (과거 일정 잠금 상태 안내 + 미배정 파트 안내)
-      const pastLockBanner = isPastFriday(dateStr)
+      // 4. Callout (과거 일정 잠금 상태 안내는 관리자 모드 전용 + 미배정 파트 안내)
+      const pastLockBanner = (state.isAdmin && isPastFriday(dateStr))
         ? `
           <div class="openui-callout is-info" style="padding:10px 16px;">
             <div class="callout-body">
@@ -2142,6 +2190,7 @@
         ${followUpHtml}
       `;
 
+      restoreTabsScroll(preservedTabsScrollLeft);
       updateOpenUILangCode();
     }
 
@@ -2179,7 +2228,7 @@
       const monthContiDates = monthFridays.filter(f => f !== dateStr && state.db.setlists && state.db.setlists[f]);
       const recentContiDates = (monthContiDates.length ? monthContiDates : allSetlistDates.filter(d => d !== dateStr)).slice(0, 4);
 
-      const recentContiPreviewHtml = recentContiDates.length > 0
+      const recentContiPreviewHtml = (state.isAdmin && recentContiDates.length > 0)
         ? `
           <div style="margin-top:8px;padding:12px 14px;border-radius:var(--openui-radius-xl);background:var(--openui-sunk-light);border:1px solid var(--openui-border-default);display:flex;flex-direction:column;gap:10px;">
             <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;">
@@ -2238,8 +2287,8 @@
         : `
           <div class="openui-callout is-info">
             <div class="callout-body">
-              <span class="callout-title">${formatKoreanDate(dateStr, true)} 주간은 아직 찬양 콘티 입력 전입니다 (DB 전체 ${allSetlistDates.length}주분 보관 중)</span>
-              <span class="callout-desc">이 주간의 새 찬양 콘티를 등록하거나, 아래에서 다른 주차에 등록된 찬양 콘티와 참고 음원을 바로 확인하실 수 있습니다.</span>
+              <span class="callout-title">${formatKoreanDate(dateStr, true)} 등록된 찬양 콘티가 없습니다${state.isAdmin ? ` (DB 전체 ${allSetlistDates.length}주분 보관 중)` : ""}</span>
+              <span class="callout-desc">${state.isAdmin ? "이 주간의 새 찬양 콘티를 등록하거나, 아래에서 DB에 보관된 최근 찬양 콘티를 바로 확인하실 수 있습니다." : "선택하신 주차의 찬양 순서와 참고 유튜브 링크를 등록해 주세요."}</span>
             </div>
             <button type="button" class="openui-btn is-primary is-xs" onclick="openContiModal()">+ 이 주간 콘티 등록</button>
           </div>
@@ -2262,7 +2311,7 @@
             </div>
           </div>
         `
-        : (fallbackYtUrl
+        : ((state.isAdmin && fallbackYtUrl)
           ? `
             <div class="openui-callout is-info" style="padding:12px 14px;">
               <div class="callout-body">
@@ -2279,8 +2328,8 @@
           : `
             <div class="openui-callout is-info" style="padding:12px 14px;">
               <div class="callout-body">
-                <span class="callout-title">🎧 참고 음원 (YouTube 링크)</span>
-                <span class="callout-desc">유튜브 플레이리스트나 참고 영상을 연결해 주세요.</span>
+                <span class="callout-title">🎧 ${formatKoreanDate(dateStr, true)} 참고 음원 (YouTube 링크)</span>
+                <span class="callout-desc">이 주차에 등록된 참고 음원 링크가 없습니다. 유튜브 플레이리스트나 참고 영상을 연결해 주세요.</span>
               </div>
               <button type="button" class="openui-btn is-xs" onclick="openContiModal()">+ 참고 음원 등록</button>
             </div>
@@ -2307,7 +2356,7 @@
             <div class="openui-card-header">
               <div>
                 <h2 class="openui-card-title">찬양 콘티 &amp; 참고 음원</h2>
-                <p class="openui-card-sub">${parsedSetlist.headerNote ? `${parsedSetlist.headerNote}` : `${formatKoreanDate(dateStr, false)} 찬양 순서 및 참고 음원 (DB 콘티 ${allSetlistDates.length}주 · 음원 ${allYoutubeDates.length}건)`}</p>
+                <p class="openui-card-sub">${parsedSetlist.headerNote ? `${parsedSetlist.headerNote}` : `${formatKoreanDate(dateStr, false)} 찬양 순서 및 참고 음원${state.isAdmin ? ` (DB 콘티 ${allSetlistDates.length}주 · 음원 ${allYoutubeDates.length}건)` : ""}`}</p>
               </div>
               <button type="button" class="openui-btn is-primary is-xs" onclick="openContiModal()">${parsedSetlist.songs.length || ytUrl ? "콘티·음원 수정" : "+ 콘티·음원 등록"}</button>
             </div>
@@ -2808,4 +2857,4 @@ ${sampleRecs || '  // 등록된 일정 없음'}
     initRealtimeFirebase();
   </script>
 </body>
-            </html>
+</html>
