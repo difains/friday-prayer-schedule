@@ -2635,16 +2635,19 @@
     }
 
     function renderCaptureSurface(dateStr, byRole, parsedSetlist) {
-      const gridRows = ROLES.map(role => {
-        const cfg = ROLE_CONFIG[role];
-        const names = (byRole[role] || []).map(x => x.name);
-        return `
-          <div style="color:var(--openui-text-neutral-secondary);font-weight:600;">${cfg.emoji} ${role}</div>
-          <div style="font-weight:700;color:${names.length ? 'var(--openui-text-neutral-primary)' : 'var(--openui-text-alert-primary)'};">
-            ${names.length ? names.join(", ") : "미등록"}
-          </div>
-        `;
-      }).join("");
+      const assignedRoles = ROLES.filter(role => (byRole[role] || []).length > 0);
+      const gridRows = assignedRoles.length
+        ? assignedRoles.map(role => {
+            const cfg = ROLE_CONFIG[role];
+            const names = (byRole[role] || []).map(x => x.name);
+            return `
+              <div style="color:var(--openui-text-neutral-secondary);font-weight:600;">${cfg.emoji} ${role}</div>
+              <div style="font-weight:700;color:var(--openui-text-neutral-primary);">
+                ${names.join(", ")}
+              </div>
+            `;
+          }).join("")
+        : `<div style="grid-column:1 / -1;font-size:13px;color:var(--openui-text-neutral-secondary);padding:6px 0;">등록된 섬김이가 없습니다</div>`;
 
       const contiSummary = parsedSetlist.songs.length
         ? parsedSetlist.songs.map((c, i) => `
@@ -2905,12 +2908,16 @@
       const rawSetlist = state.db.setlists[dateStr] || "";
       const ytUrl = state.db.youtubeLinks[dateStr] || "";
 
+      const assignedRoleLines = ROLES
+        .filter(r => (byRole[r] || []).length > 0)
+        .map(r => `- ${r}: ${byRole[r].map(x => x.name).join(', ')}`);
+
       const lines = [
         `[서울중앙교회 금요기도회 찬양팀 주간 안내]`,
         `■ 일시: ${formatKoreanDate(dateStr, false)}`,
         ``,
         `[파트별 섬김이 명단]`,
-        ...ROLES.map(r => `- ${r}: ${byRole[r].length ? byRole[r].map(x => x.name).join(', ') : '미등록'}`),
+        ...(assignedRoleLines.length ? assignedRoleLines : [`- 등록된 섬김이가 없습니다`]),
         ``,
         `[이번 주 찬양 콘티]`,
         rawSetlist ? rawSetlist : `- 콘티 준비 중`,
