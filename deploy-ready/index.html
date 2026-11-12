@@ -1,0 +1,2580 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>서울중앙교회 - 금요기도회 찬양팀 일정관리</title>
+  <link rel="icon" id="faviconLink" href="./assets/church-logo.png" type="image/png">
+  <!-- Microsoft Clarity 추적 코드 (원본 저장소 계승) -->
+  <script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "tilho7v35y");
+  </script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+  <style>
+    /* ============================================================================
+       1. OpenUI Standard Design Tokens (from @openuidev/react-ui openui-defaults.scss)
+       ============================================================================ */
+    :root {
+      --openui-background: #f5f5f3;
+      --openui-background: oklch(0.97 0 89.876 / 1);
+      --openui-foreground: #fdfdfc;
+      --openui-foreground: oklch(0.994 0 89.876 / 1);
+      --openui-popover-background: #fdfdfc;
+      --openui-sunk-light: rgba(15, 15, 15, 0.02);
+      --openui-sunk: rgba(15, 15, 15, 0.04);
+      --openui-sunk-deep: rgba(15, 15, 15, 0.075);
+      --openui-elevated-light: rgba(15, 15, 15, 0.04);
+      --openui-elevated: rgba(15, 15, 15, 0.08);
+      --openui-overlay: rgba(10, 10, 12, 0.42);
+      --openui-inverted-background: #141413;
+      --openui-inverted-text: #fdfdfc;
+
+      --openui-info-background: rgba(37, 99, 235, 0.11);
+      --openui-success-background: rgba(22, 163, 74, 0.12);
+      --openui-alert-background: rgba(217, 119, 6, 0.14);
+      --openui-danger-background: rgba(220, 38, 38, 0.11);
+
+      --openui-text-neutral-primary: #141413;
+      --openui-text-neutral-secondary: rgba(20, 20, 19, 0.62);
+      --openui-text-neutral-tertiary: rgba(20, 20, 19, 0.38);
+      --openui-text-brand: #2563eb;
+      --openui-text-accent-primary: #ffffff;
+      --openui-text-success-primary: #0f6e56;
+      --openui-text-alert-primary: #92400e;
+      --openui-text-danger-primary: #b91c1c;
+      --openui-text-info-primary: #1d4ed8;
+
+      --openui-interactive-accent-default: #2563eb;
+      --openui-interactive-accent-hover: #1d4ed8;
+      --openui-interactive-accent-tint: rgba(37, 99, 235, 0.1);
+
+      --openui-border-default: rgba(20, 20, 19, 0.07);
+      --openui-border-interactive: rgba(20, 20, 19, 0.13);
+      --openui-border-interactive-emphasis: rgba(20, 20, 19, 0.28);
+      --openui-border-accent-emphasis: rgba(37, 99, 235, 0.35);
+      --openui-border-alert-emphasis: rgba(217, 119, 6, 0.4);
+      --openui-border-success-emphasis: rgba(22, 163, 74, 0.38);
+
+      --openui-space-2xs: 4px;
+      --openui-space-xs: 6px;
+      --openui-space-s: 8px;
+      --openui-space-s-m: 10px;
+      --openui-space-m: 12px;
+      --openui-space-m-l: 16px;
+      --openui-space-l: 18px;
+      --openui-space-xl: 24px;
+
+      --openui-radius-xs: 4px;
+      --openui-radius-s: 6px;
+      --openui-radius-m: 8px;
+      --openui-radius-l: 10px;
+      --openui-radius-xl: 12px;
+      --openui-radius-2xl: 14px;
+      --openui-radius-3xl: 16px;
+      --openui-radius-4xl: 20px;
+      --openui-radius-full: 9999px;
+
+      --openui-font-body: "Pretendard Variable", Pretendard, "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+      --openui-font-heading: "Pretendard Variable", Pretendard, "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+      --openui-font-numbers: "Inter", "Pretendard Variable", sans-serif;
+      --openui-font-code: "SFMono-Regular", Consolas, Menlo, monospace;
+
+      --openui-shadow-card: 0 1px 2px rgba(0, 0, 0, 0.03), 0 4px 12px rgba(0, 0, 0, 0.02);
+      --openui-shadow-elevated: 0 12px 32px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+
+    body[data-accent="orange"] {
+      --openui-text-brand: #e14d00;
+      --openui-interactive-accent-default: #e14d00;
+      --openui-interactive-accent-hover: #b93901;
+      --openui-interactive-accent-tint: rgba(225, 77, 0, 0.1);
+      --openui-border-accent-emphasis: rgba(225, 77, 0, 0.35);
+    }
+
+    body[data-accent="dark"] {
+      --openui-background: #0d0d0e;
+      --openui-foreground: #161618;
+      --openui-popover-background: #1c1c1f;
+      --openui-sunk-light: rgba(255, 255, 255, 0.03);
+      --openui-sunk: rgba(255, 255, 255, 0.06);
+      --openui-sunk-deep: rgba(255, 255, 255, 0.1);
+      --openui-inverted-background: #f5f5f3;
+      --openui-inverted-text: #141413;
+      --openui-text-neutral-primary: #f3f3f2;
+      --openui-text-neutral-secondary: rgba(243, 243, 242, 0.64);
+      --openui-text-neutral-tertiary: rgba(243, 243, 242, 0.38);
+      --openui-text-brand: #60a5fa;
+      --openui-interactive-accent-default: #3b82f6;
+      --openui-interactive-accent-hover: #2563eb;
+      --openui-interactive-accent-tint: rgba(59, 130, 246, 0.16);
+      --openui-border-default: rgba(255, 255, 255, 0.08);
+      --openui-border-interactive: rgba(255, 255, 255, 0.15);
+      --openui-border-interactive-emphasis: rgba(255, 255, 255, 0.32);
+      --openui-text-success-primary: #34d399;
+      --openui-text-alert-primary: #fbbf24;
+      --openui-text-info-primary: #60a5fa;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      margin: 0;
+      background: var(--openui-background);
+      color: var(--openui-text-neutral-primary);
+      font-family: var(--openui-font-body);
+      letter-spacing: -0.015em;
+      word-break: keep-all;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ============================================================================
+       2. Top Global Workspace Navigation Bar
+       ============================================================================ */
+    .workspace-topbar {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      background: var(--openui-foreground);
+      border-bottom: 1px solid var(--openui-border-default);
+      padding: 10px 20px;
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    body.is-admin .workspace-topbar {
+      display: flex;
+    }
+    .ws-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .logo-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      transition: transform 0.15s ease;
+    }
+    .logo-link:hover {
+      transform: scale(1.05);
+    }
+    .church-logo {
+      width: 44px;
+      height: 44px;
+      object-fit: contain;
+      border-radius: var(--openui-radius-m);
+      background: var(--openui-sunk);
+      border: 1px solid var(--openui-border-default);
+      padding: 4px;
+      display: block;
+    }
+    .church-logo--sm {
+      width: 34px;
+      height: 34px;
+      padding: 3px;
+    }
+    .ws-brand-text {
+      display: flex;
+      flex-direction: column;
+    }
+    .ws-brand-title {
+      font-size: 14px;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+    .ws-brand-sub {
+      font-size: 11px;
+      color: var(--openui-text-neutral-secondary);
+      font-family: var(--openui-font-code);
+    }
+
+    .ws-mode-tabs {
+      display: inline-flex;
+      background: var(--openui-sunk);
+      padding: 3px;
+      border-radius: var(--openui-radius-l);
+      border: 1px solid var(--openui-border-default);
+      gap: 2px;
+    }
+    .ws-mode-btn {
+      border: 0;
+      background: transparent;
+      color: var(--openui-text-neutral-secondary);
+      padding: 6px 12px;
+      border-radius: var(--openui-radius-m);
+      font-size: 12px;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      transition: all 0.14s ease;
+    }
+    .ws-mode-btn.is-active {
+      background: var(--openui-foreground);
+      color: var(--openui-text-neutral-primary);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+      font-weight: 700;
+    }
+
+    .ws-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .theme-pill {
+      border: 1px solid var(--openui-border-interactive);
+      background: var(--openui-foreground);
+      color: var(--openui-text-neutral-primary);
+      padding: 5px 10px;
+      border-radius: var(--openui-radius-full);
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .theme-pill.is-active {
+      border-color: var(--openui-interactive-accent-default);
+      background: var(--openui-interactive-accent-tint);
+      color: var(--openui-text-brand);
+      font-weight: 700;
+    }
+    .theme-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    .workspace-container {
+      width: 100%;
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 20px 16px 64px;
+      flex: 1;
+    }
+
+    .layout-clean-user {
+      display: block;
+      max-width: 920px;
+      margin: 0 auto;
+    }
+    .layout-clean-user .openui-inspector-pane {
+      display: none;
+    }
+
+    .layout-split {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 380px;
+      gap: 20px;
+      align-items: start;
+    }
+    @media (max-width: 980px) {
+      .layout-split {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .layout-mobile-only {
+      display: flex;
+      justify-content: center;
+    }
+    .layout-mobile-only .openui-main-surface {
+      width: 100%;
+      max-width: 412px;
+      background: var(--openui-background);
+      border-radius: 32px;
+      border: 7px solid var(--openui-foreground);
+      box-shadow: var(--openui-shadow-elevated), 0 0 0 1px var(--openui-border-interactive);
+      padding: 16px 14px 28px;
+    }
+    .layout-mobile-only .openui-inspector-pane {
+      display: none;
+    }
+
+    /* ============================================================================
+       3. OpenUI Component Primitives (@layer openui)
+       ============================================================================ */
+    .openui-stack {
+      display: flex;
+      flex-direction: column;
+      gap: var(--openui-space-m-l);
+    }
+    .openui-stack-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+      gap: var(--openui-space-m-l);
+      align-items: start;
+    }
+    .layout-mobile-only .openui-stack-row {
+      grid-template-columns: 1fr;
+    }
+
+    .openui-inline-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .openui-inline-header h1 {
+      margin: 0;
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .openui-inline-header p {
+      margin: 3px 0 0;
+      font-size: 13px;
+      color: var(--openui-text-neutral-secondary);
+    }
+
+    .month-nav-group {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: var(--openui-sunk);
+      padding: 3px;
+      border-radius: var(--openui-radius-m);
+      border: 1px solid var(--openui-border-default);
+    }
+    .month-nav-btn {
+      border: 0;
+      background: var(--openui-foreground);
+      color: var(--openui-text-neutral-primary);
+      width: 28px;
+      height: 28px;
+      border-radius: var(--openui-radius-s);
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .month-nav-label {
+      padding: 0 10px;
+      font-size: 13px;
+      font-weight: 700;
+      font-family: var(--openui-font-numbers);
+    }
+
+    .openui-tabs {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      padding: 4px;
+      background: var(--openui-sunk);
+      border-radius: var(--openui-radius-xl);
+      border: 1px solid var(--openui-border-default);
+    }
+    .openui-tab-item {
+      flex: 1;
+      min-width: 82px;
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--openui-text-neutral-secondary);
+      border-radius: var(--openui-radius-m);
+      padding: 8px 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.14s ease;
+    }
+    .openui-tab-item:hover {
+      color: var(--openui-text-neutral-primary);
+      background: var(--openui-sunk-light);
+    }
+    .openui-tab-item.is-active {
+      background: var(--openui-foreground);
+      color: var(--openui-text-neutral-primary);
+      border-color: var(--openui-border-default);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+    }
+    .tab-sub {
+      font-size: 10px;
+      font-weight: 600;
+      opacity: 0.8;
+    }
+    .tab-main {
+      font-size: 13px;
+      font-weight: 700;
+      font-family: var(--openui-font-numbers);
+    }
+
+    .openui-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 8px;
+      border-radius: var(--openui-radius-s);
+      font-size: 11px;
+      font-weight: 600;
+      line-height: 1.4;
+      white-space: nowrap;
+    }
+    .openui-tag.is-brand {
+      background: var(--openui-interactive-accent-tint);
+      color: var(--openui-text-brand);
+    }
+    .openui-tag.is-success {
+      background: var(--openui-success-background);
+      color: var(--openui-text-success-primary);
+    }
+    .openui-tag.is-warning {
+      background: var(--openui-alert-background);
+      color: var(--openui-text-alert-primary);
+    }
+    .openui-tag.is-info {
+      background: var(--openui-info-background);
+      color: var(--openui-text-info-primary);
+    }
+    .openui-tag.is-neutral {
+      background: var(--openui-sunk-deep);
+      color: var(--openui-text-neutral-secondary);
+    }
+
+    .openui-snippet-block {
+      display: flex;
+      flex-direction: column;
+      gap: var(--openui-space-s-m);
+    }
+    .openui-snippet-block.is-2col {
+      display: flex;
+      flex-direction: column;
+    }
+    .layout-mobile-only .openui-snippet-block {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .openui-snippet-item {
+      background: var(--openui-foreground);
+      border: 1px solid var(--openui-border-default);
+      border-radius: var(--openui-radius-2xl);
+      padding: 12px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      box-shadow: var(--openui-shadow-card);
+    }
+    .layout-mobile-only .openui-snippet-item {
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 10px;
+    }
+    .snippet-lhs {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .snippet-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: var(--openui-radius-m);
+      background: var(--openui-sunk);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      flex: none;
+    }
+    .snippet-titles {
+      display: flex;
+      flex-direction: column;
+    }
+    .snippet-title {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--openui-text-neutral-secondary);
+    }
+    .snippet-sub {
+      font-size: 11px;
+      color: var(--openui-text-neutral-tertiary);
+    }
+    .snippet-rhs {
+      text-align: right;
+    }
+    .layout-mobile-only .snippet-rhs {
+      text-align: left;
+    }
+    .snippet-metric {
+      font-size: 16px;
+      font-weight: 700;
+      font-family: var(--openui-font-numbers);
+      font-variant-numeric: tabular-nums;
+      display: block;
+    }
+    .snippet-delta {
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    /* ============================================================================
+       3-B. Cue-Worship Inspired SVG Motion System (for SnippetCardBlock)
+       ============================================================================ */
+    .openui-snippet-item.is-motion-card {
+      flex-direction: column;
+      align-items: stretch;
+      justify-content: space-between;
+      padding: 14px 16px 12px;
+      gap: 10px;
+      transition: border-color 0.18s ease, box-shadow 0.18s ease;
+    }
+    .openui-snippet-item.is-motion-card:hover {
+      border-color: var(--openui-border-interactive-emphasis);
+    }
+    .snippet-top-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      width: 100%;
+    }
+    .cue-motion-stage {
+      background: #efe8db;
+      background-image: linear-gradient(120deg, #faf6ec, transparent 65%);
+      border: 1px solid #bcaf99;
+      border-radius: var(--openui-radius-xl);
+      padding: 12px 16px 8px;
+      color: #1d1d1b;
+      position: relative;
+      overflow: hidden;
+    }
+    .cue-motion-stage svg {
+      display: block;
+      width: 100%;
+      max-width: 340px;
+      height: auto;
+      margin: 0 auto;
+    }
+    .cue-motion-stage [data-motion] {
+      animation-duration: 6s;
+      animation-timing-function: ease-in-out;
+      animation-iteration-count: infinite;
+      animation-fill-mode: both;
+    }
+    .cue-motion-stage [data-motion="cue-one"] { animation-name: cue-one; }
+    .cue-motion-stage [data-motion="cue-two"] { animation-name: cue-two; }
+    .cue-motion-stage [data-motion="cue-three"] { animation-name: cue-three; }
+    .cue-motion-stage [data-motion="cue-position"] { animation-name: cue-position; }
+    .cue-motion-stage [data-motion="fader-down"] { animation-name: cue-fader-down; animation-delay: -1.8s; }
+    .cue-motion-stage [data-motion="fader-up"] { animation-name: cue-fader-up; animation-delay: -1.8s; }
+    .cue-motion-stage [data-motion="switcher"] { animation-name: cue-switcher; animation-delay: -1.8s; }
+    .cue-motion-stage [data-motion="ptz"] { animation-name: cue-ptz; animation-delay: -1.8s; }
+
+    @keyframes cue-one {
+      0%, 26%, 100% { fill: #ded2bf; }
+      32%, 94% { fill: #faf6ec; }
+    }
+    @keyframes cue-two {
+      0%, 26%, 64%, 100% { fill: #faf6ec; }
+      32%, 58% { fill: #ded2bf; }
+    }
+    @keyframes cue-three {
+      0%, 58%, 100% { fill: #faf6ec; }
+      64%, 94% { fill: #ded2bf; }
+    }
+    @keyframes cue-position {
+      0%, 26%, 100% { transform: translateX(-106px); }
+      32%, 58% { transform: translateX(0); }
+      64%, 94% { transform: translateX(106px); }
+    }
+    @keyframes cue-fader-down {
+      0%, 38%, 100% { transform: translateY(0); }
+      48%, 90% { transform: translateY(6px); }
+    }
+    @keyframes cue-fader-up {
+      0%, 38%, 100% { transform: translateY(0); }
+      48%, 90% { transform: translateY(-6px); }
+    }
+    @keyframes cue-switcher {
+      0%, 38%, 100% { transform: translateX(0); }
+      48%, 90% { transform: translateX(15px); }
+    }
+    @keyframes cue-ptz {
+      0%, 38%, 100% { transform: translateX(-4px); }
+      48%, 90% { transform: translateX(4px); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .cue-motion-stage [data-motion] { animation: none; }
+    }
+    .cue-nudge-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding-top: 6px;
+      margin-top: 4px;
+      border-top: 1px dashed #bcaf99;
+      font-size: 11.5px;
+      font-weight: 600;
+      color: #5e594f;
+    }
+    .cue-nudge-bar b {
+      color: #1d1d1b;
+    }
+    .cue-nudge-cta {
+      border: 1.5px solid #1d1d1b;
+      background: #ded2bf;
+      color: #1d1d1b;
+      border-radius: 6px;
+      padding: 3px 9px;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+      white-space: nowrap;
+      transition: background 0.14s ease, transform 0.14s ease;
+    }
+    .cue-nudge-cta:hover {
+      background: #1d1d1b;
+      color: #faf6ec;
+    }
+
+    .openui-callout {
+      border-radius: var(--openui-radius-2xl);
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      border: 1px solid var(--openui-border-default);
+    }
+    .openui-callout.is-warning {
+      background: var(--openui-alert-background);
+      border-color: var(--openui-border-alert-emphasis);
+    }
+    .openui-callout.is-success {
+      background: var(--openui-success-background);
+      border-color: var(--openui-border-success-emphasis);
+    }
+    .openui-callout.is-info {
+      background: var(--openui-info-background);
+      border-color: var(--openui-border-accent-emphasis);
+    }
+    .callout-body {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .callout-title {
+      font-size: 13px;
+      font-weight: 700;
+    }
+    .callout-desc {
+      font-size: 12px;
+      color: var(--openui-text-neutral-secondary);
+    }
+
+    .openui-card {
+      background: var(--openui-foreground);
+      border: 1px solid var(--openui-border-default);
+      border-radius: var(--openui-radius-3xl);
+      padding: var(--openui-space-l);
+      box-shadow: var(--openui-shadow-card);
+      display: flex;
+      flex-direction: column;
+      gap: var(--openui-space-m);
+    }
+    .openui-card-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--openui-border-default);
+    }
+    .openui-card-title {
+      margin: 0;
+      font-size: 15px;
+      font-weight: 700;
+    }
+    .openui-card-sub {
+      margin: 2px 0 0;
+      font-size: 12px;
+      color: var(--openui-text-neutral-secondary);
+    }
+
+    .openui-entity-list {
+      display: flex;
+      flex-direction: column;
+    }
+    .openui-entity-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 9px 4px;
+      border-bottom: 1px solid var(--openui-border-default);
+      gap: 8px;
+      transition: background 0.12s ease;
+    }
+    .openui-entity-row:last-child {
+      border-bottom: 0;
+      padding-bottom: 2px;
+    }
+    .openui-entity-row:hover {
+      background: var(--openui-sunk-light);
+      border-radius: var(--openui-radius-s);
+    }
+    .entity-lhs {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .entity-role-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--openui-interactive-accent-default);
+    }
+    .entity-role-dot.is-empty {
+      background: #f59e0b;
+      box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.2);
+    }
+    .entity-role-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--openui-text-neutral-secondary);
+      min-width: 96px;
+    }
+    .entity-rhs {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+    .member-record-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: var(--openui-sunk);
+      border: 1px solid var(--openui-border-default);
+      padding: 2px 8px;
+      border-radius: var(--openui-radius-s);
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--openui-text-neutral-primary);
+    }
+
+    .openui-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+    .openui-table th {
+      text-align: left;
+      padding: 8px 10px;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--openui-text-neutral-secondary);
+      background: var(--openui-sunk);
+      border-bottom: 1px solid var(--openui-border-default);
+    }
+    .openui-table td {
+      padding: 8px 10px;
+      border-bottom: 1px solid var(--openui-border-default);
+      vertical-align: middle;
+    }
+    .openui-inline-input {
+      width: 100%;
+      border: 1px solid var(--openui-border-interactive);
+      background: var(--openui-foreground);
+      color: var(--openui-text-neutral-primary);
+      border-radius: var(--openui-radius-s);
+      padding: 6px 9px;
+      font-size: 13px;
+      font-family: inherit;
+      font-weight: 600;
+    }
+
+    .openui-list-block {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .openui-list-item {
+      background: var(--openui-sunk-light);
+      border: 1px solid var(--openui-border-default);
+      border-radius: var(--openui-radius-xl);
+      padding: 11px 13px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .list-item-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .list-item-title-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .list-item-index {
+      width: 22px;
+      height: 22px;
+      border-radius: 6px;
+      background: var(--openui-inverted-background);
+      color: var(--openui-inverted-text);
+      font-size: 11px;
+      font-weight: 700;
+      font-family: var(--openui-font-numbers);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex: none;
+    }
+    .list-item-title {
+      font-size: 14px;
+      font-weight: 700;
+      margin: 0;
+    }
+    .list-item-memo {
+      margin: 0;
+      font-size: 12px;
+      color: var(--openui-text-neutral-secondary);
+      line-height: 1.45;
+      padding-left: 30px;
+    }
+
+    .openui-btn {
+      border: 1px solid var(--openui-border-interactive);
+      background: var(--openui-foreground);
+      color: var(--openui-text-neutral-primary);
+      border-radius: var(--openui-radius-m);
+      padding: 7px 12px;
+      font-size: 12px;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all 0.12s ease;
+    }
+    .openui-btn:hover {
+      background: var(--openui-sunk);
+    }
+    .openui-btn.is-primary {
+      background: var(--openui-interactive-accent-default);
+      border-color: var(--openui-interactive-accent-default);
+      color: #ffffff;
+    }
+    .openui-btn.is-primary:hover {
+      background: var(--openui-interactive-accent-hover);
+    }
+    .openui-btn.is-xs {
+      padding: 4px 8px;
+      font-size: 11px;
+      border-radius: var(--openui-radius-s);
+    }
+
+    .openui-followup-block {
+      background: var(--openui-foreground);
+      border: 1px solid var(--openui-border-default);
+      border-radius: var(--openui-radius-2xl);
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .followup-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--openui-text-neutral-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+    .followup-items {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .openui-followup-item {
+      border: 1px solid var(--openui-border-interactive);
+      background: var(--openui-sunk-light);
+      color: var(--openui-text-neutral-primary);
+      border-radius: var(--openui-radius-full);
+      padding: 6px 12px;
+      font-size: 12px;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.14s ease;
+    }
+    .openui-followup-item:hover {
+      border-color: var(--openui-interactive-accent-default);
+      background: var(--openui-interactive-accent-tint);
+      color: var(--openui-text-brand);
+    }
+
+    .openui-capture-card {
+      background: var(--openui-foreground);
+      border: 2px solid var(--openui-interactive-accent-default);
+      border-radius: var(--openui-radius-4xl);
+      padding: 22px 20px;
+      box-shadow: var(--openui-shadow-elevated);
+      max-width: 440px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .capture-grid-2col {
+      display: grid;
+      grid-template-columns: 96px 1fr;
+      row-gap: 7px;
+      column-gap: 10px;
+      padding: 12px 0;
+      border-top: 1px solid var(--openui-border-default);
+      border-bottom: 1px solid var(--openui-border-default);
+      font-size: 13px;
+    }
+
+    .openui-inspector-pane {
+      position: sticky;
+      top: 68px;
+      background: var(--openui-foreground);
+      border: 1px solid var(--openui-border-default);
+      border-radius: var(--openui-radius-3xl);
+      overflow: hidden;
+      box-shadow: var(--openui-shadow-card);
+      display: flex;
+      flex-direction: column;
+    }
+    .inspector-head {
+      padding: 12px 16px;
+      background: var(--openui-sunk);
+      border-bottom: 1px solid var(--openui-border-default);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .inspector-title {
+      font-size: 12px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .live-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #10b981;
+      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+    }
+    .code-viewer {
+      margin: 0;
+      padding: 14px 16px;
+      background: #111318;
+      color: #e2e8f0;
+      font-family: var(--openui-font-code);
+      font-size: 11.5px;
+      line-height: 1.55;
+      overflow-x: auto;
+      max-height: 340px;
+      overflow-y: auto;
+    }
+    .code-kw { color: #93c5fd; font-weight: 600; }
+    .code-comp { color: #fca5a5; font-weight: 600; }
+    .code-str { color: #86efac; }
+    .code-act { color: #fde047; }
+
+    .copilot-box {
+      padding: 14px 16px;
+      border-top: 1px solid var(--openui-border-default);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .copilot-input-row {
+      display: flex;
+      gap: 6px;
+    }
+
+    .openui-modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: var(--openui-overlay);
+      backdrop-filter: blur(3px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      z-index: 100;
+    }
+    .openui-modal-backdrop.is-open {
+      display: flex;
+    }
+    .openui-modal {
+      width: 100%;
+      max-width: 430px;
+      background: var(--openui-popover-background);
+      border: 1px solid var(--openui-border-interactive);
+      border-radius: var(--openui-radius-3xl);
+      padding: 20px;
+      box-shadow: var(--openui-shadow-elevated);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .openui-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .openui-chip-item {
+      border: 1px solid var(--openui-border-interactive);
+      background: var(--openui-sunk-light);
+      color: var(--openui-text-neutral-primary);
+      border-radius: var(--openui-radius-full);
+      padding: 6px 13px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .openui-chip-item.is-selected {
+      background: var(--openui-interactive-accent-tint);
+      border-color: var(--openui-interactive-accent-default);
+      color: var(--openui-text-brand);
+      font-weight: 700;
+    }
+
+    .openui-toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--openui-inverted-background);
+      color: var(--openui-inverted-text);
+      padding: 10px 18px;
+      border-radius: var(--openui-radius-full);
+      font-size: 12.5px;
+      font-weight: 600;
+      box-shadow: var(--openui-shadow-elevated);
+      z-index: 200;
+      display: none;
+    }
+    .openui-toast.is-shown {
+      display: block;
+    }
+  </style>
+  <script>
+    window.CHURCH_LOGO_DATA_URI = "data:image/png;base64,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";
+    document.addEventListener("DOMContentLoaded", function() {
+      document.querySelectorAll("[data-church-logo]").forEach(function(img) { img.src = window.CHURCH_LOGO_DATA_URI; });
+      var fav = document.getElementById("faviconLink");
+      if (fav) fav.href = window.CHURCH_LOGO_DATA_URI;
+    });
+  </script>
+</head>
+<body data-accent="blue">
+
+  <!-- ==================== 상단 글로벌 워크스페이스 바 ==================== -->
+  <header class="workspace-topbar">
+    <div class="ws-brand">
+      <a href="#" class="logo-link" title="메인으로 돌아가기" onclick="setLayoutMode('split'); setSubSurface('briefing'); return false;">
+        <img src="./assets/church-logo.png" alt="서울중앙교회 로고" class="church-logo" data-church-logo>
+      </a>
+      <div class="ws-brand-text">
+        <span class="ws-brand-title">서울중앙교회</span>
+        <span class="ws-brand-sub">금요기도회 찬양팀 일정관리 · OpenUI v1.0</span>
+      </div>
+    </div>
+
+    <div class="ws-mode-tabs" role="tablist" aria-label="화면 레이아웃 전환">
+      <button type="button" class="ws-mode-btn is-active" id="btnLayoutSplit" onclick="setLayoutMode('split')">🖥️ 본 화면 + OpenUI Lang</button>
+      <button type="button" class="ws-mode-btn" id="btnLayoutMobile" onclick="setLayoutMode('mobile')">📱 모바일 본 화면 (390px)</button>
+      <button type="button" class="ws-mode-btn" id="btnLayoutGuide" onclick="setLayoutMode('guide')">🔍 원본 DB 호환성 &amp; 디자인 가이드</button>
+    </div>
+
+    <div class="ws-right">
+      <button type="button" class="theme-pill is-active" id="thBlue" onclick="setAccent('blue', this)">
+        <span class="theme-dot" style="background:#2563eb;"></span>OpenUI Blue
+      </button>
+      <button type="button" class="theme-pill" id="thOrange" onclick="setAccent('orange', this)">
+        <span class="theme-dot" style="background:#e14d00;"></span>Warm Orange
+      </button>
+      <button type="button" class="theme-pill" id="thDark" onclick="setAccent('dark', this)">
+        <span class="theme-dot" style="background:#141413;"></span>Dark
+      </button>
+    </div>
+  </header>
+
+  <div class="workspace-container">
+    <div id="appWorkspace" class="layout-clean-user">
+      <!-- 왼쪽: OpenUI root = Stack([...]) 본 화면 -->
+      <main id="openuiRoot" class="openui-main-surface openui-stack" aria-label="OpenUI 본 화면"></main>
+
+      <!-- 오른쪽: OpenUI Lang 실시간 선언 트리 & Firebase JSON 어댑터 뷰 -->
+      <aside class="openui-inspector-pane" aria-label="OpenUI Lang 실시간 선언 트리">
+        <div class="inspector-head">
+          <span class="inspector-title"><span class="live-dot"></span>OpenUI Lang &amp; Firebase Schema</span>
+          <span class="openui-tag is-brand">1:N PushKey 호환</span>
+        </div>
+        <pre id="openuiCodeBox" class="code-viewer"></pre>
+        <div class="copilot-box">
+          <div class="followup-label">OpenUI Copilot · 빠른 액션 실행</div>
+          <div class="copilot-input-row">
+            <input id="copilotInput" class="openui-inline-input" placeholder="예: 엔지니어에 박민욱 배정 / 카톡 캡처 카드 / 10월 보기" onkeydown="if(event.key==='Enter') runCopilotPrompt()">
+            <button type="button" class="openui-btn is-primary" onclick="runCopilotPrompt()">실행</button>
+          </div>
+          <div class="followup-items">
+            <button type="button" class="openui-followup-item" onclick="switchMonth('2026-10')">📅 실제 콘티가 있는 2026년 10월 보기</button>
+            <button type="button" class="openui-followup-item" onclick="switchMonth('2026-11')">📅 2026년 11월 보기</button>
+            <button type="button" class="openui-followup-item" onclick="setSubSurface('capture')">📸 월·화 카톡 캡처 카드</button>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <!-- 2. 원본 DB 호환성 검토 & OpenUI 디자인 가이드 뷰 -->
+    <section id="guideWorkspace" class="openui-stack" hidden></section>
+  </div>
+
+  <!-- ==================== OpenUI Modal (파트 배정 / 콘티 편집) ==================== -->
+  <div id="openuiModalBackdrop" class="openui-modal-backdrop" onclick="if(event.target===this) closeModal()">
+    <div id="openuiModalContent" class="openui-modal" role="dialog" aria-modal="true"></div>
+  </div>
+
+  <div id="openuiToast" class="openui-toast" role="status" aria-live="polite"></div>
+
+  <!-- Firebase Realtime Database SDK (원본 index.html 8.10.1 안정 버전 계승) -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
+  <script>
+    /* ============================================================================
+       원본 저장소(difains/friday-prayer-schedule)의 roleConfig 및 실제 DB 스키마 100% 준수
+       ============================================================================ */
+    const FIREBASE_CONFIG = {
+      apiKey: "AIzaSyDZ07GNmuDrtbca1t-D4elMZM8_JRWrE7E",
+      authDomain: "test-250529.firebaseapp.com",
+      databaseURL: "https://test-250529-default-rtdb.firebaseio.com",
+      projectId: "test-250529",
+      storageBucket: "test-250529.firebasestorage.app",
+      messagingSenderId: "428973129250",
+      appId: "1:428973129250:web:bdb74560e9e8f752fed47b"
+    };
+    const ROLE_CONFIG = {
+      "찬양인도": { emoji: "🎤", order: 1, multi: false },
+      "싱어": { emoji: "🎵", order: 2, multi: true },
+      "메인건반": { emoji: "🎹", order: 3, multi: false },
+      "세컨건반": { emoji: "⌨️", order: 4, multi: false },
+      "어쿠스틱 기타": { emoji: "🎸", order: 5, multi: false },
+      "일렉 기타": { emoji: "🎸", order: 6, multi: false },
+      "드럼": { emoji: "🥁", order: 7, multi: false },
+      "베이스": { emoji: "🎸", order: 8, multi: false },
+      "엔지니어": { emoji: "🎚️", order: 9, multi: true }
+    };
+    const ROLES = Object.keys(ROLE_CONFIG);
+
+    // 실제 Firebase DB(563건)에서 추출한 파트별 다빈도 섬김이 풀
+    const REAL_TEAM_POOL = {
+      "찬양인도": ["안빈 강도사", "김남언 목사", "강승구 목사", "강신규", "그루터기"],
+      "싱어": ["강신규", "이선희", "김은경", "한지윤", "이하윤", "김상민", "최수민"],
+      "메인건반": ["하지빈", "김예진", "김란희", "이지혜"],
+      "세컨건반": ["한지윤", "하지빈", "김예진", "이지혜"],
+      "어쿠스틱 기타": ["배세윤", "이계윤"],
+      "일렉 기타": ["엄태근"],
+      "드럼": ["최요한", "이정윤", "배세윤", "안예찬", "태건"],
+      "베이스": ["박예원"],
+      "엔지니어": ["박민욱", "배하진"]
+    };
+
+    // 원본 Firebase RTDB (test-250529) 실제 스냅샷 데이터 (2026년 10월 ~ 11월)
+    // 구조: prayerList = { [firebaseKey]: { date, role, name } }
+    const INITIAL_FIREBASE_DB = {
+      prayerList: {
+        // 2026-10-02
+        "-P22zsbdDc5h0Mic2xx3": { date: "2026-10-02", role: "드럼", name: "배세윤" },
+        "-P256V9FZdA57l07ASii": { date: "2026-10-02", role: "싱어", name: "강신규" },
+        "-P2J00AZyuv0HVkcZ8d4": { date: "2026-10-02", role: "어쿠스틱 기타", name: "이계윤" },
+        "-P2ats9UIb4S0uxdn7nI": { date: "2026-10-02", role: "메인건반", name: "김예진" },
+        "-P2bp-8yCItpPiZ6se_1": { date: "2026-10-02", role: "싱어", name: "한지윤" },
+        // 2026-10-09
+        "-P2V5rjHBKY_d0F91YU6": { date: "2026-10-09", role: "찬양인도", name: "강신규" },
+        "-P2bYzzRrLv4tcbsUXAG": { date: "2026-10-09", role: "싱어", name: "한지윤" },
+        "-P2kWXXC0orj-DFzaFug": { date: "2026-10-09", role: "싱어", name: "이하윤" },
+        "-P2al_3uj_JLWB8LrG01": { date: "2026-10-09", role: "메인건반", name: "하지빈" },
+        "-P2J0Ry7tcTBmbg_hsIm": { date: "2026-10-09", role: "어쿠스틱 기타", name: "이계윤" },
+        "-P2O5Va6GyXlV-5AMDG4": { date: "2026-10-09", role: "드럼", name: "태건" },
+        // 2026-10-16
+        "-P2borryYbHDGiDgiNZK": { date: "2026-10-16", role: "싱어", name: "한지윤" },
+        "-P2ecKcVTMhbnHGcfQrb": { date: "2026-10-16", role: "싱어", name: "이선희" },
+        "-P38ybiwoIaf5TwnFD-8": { date: "2026-10-16", role: "싱어", name: "김은경" },
+        "-P2aldJeRvj07ehjdzqc": { date: "2026-10-16", role: "메인건반", name: "김란희" },
+        "-P2J0In4kj3ON1FxtGLR": { date: "2026-10-16", role: "어쿠스틱 기타", name: "이계윤" },
+        "-P2Pwuul1407xNQvdXZ4": { date: "2026-10-16", role: "드럼", name: "최요한" },
+        "-P1xJR2eVJnr8cz7PXKt": { date: "2026-10-16", role: "베이스", name: "박예원" },
+        // 2026-10-23
+        "-P256b5q9gddcCZzzyQ_": { date: "2026-10-23", role: "싱어", name: "강신규" },
+        "-P2bZFNMHKXkHarsVku7": { date: "2026-10-23", role: "싱어", name: "한지윤" },
+        "-P38yk1EUqSKD1W6f128": { date: "2026-10-23", role: "싱어", name: "김은경" },
+        "-P2alfONSdpMWRZeGF4u": { date: "2026-10-23", role: "메인건반", name: "김란희" },
+        "-P28S0PJpZJ2TtrusELB": { date: "2026-10-23", role: "일렉 기타", name: "엄태근" },
+        "-P2Pww1T3Q7bTxYMZicE": { date: "2026-10-23", role: "드럼", name: "최요한" },
+        "-P1xJUKxh8z-4iet4Rxn": { date: "2026-10-23", role: "베이스", name: "박예원" },
+        // 2026-10-30
+        "-P256dn6j3Jmv496XIDO": { date: "2026-10-30", role: "싱어", name: "강신규" },
+        "-P2ecWANx9WxmbeCNS4I": { date: "2026-10-30", role: "싱어", name: "이선희" },
+        "-P2gIXSvHOjdG2GgUC11": { date: "2026-10-30", role: "싱어", name: "김예진" },
+        "-P2alhS3fExZ__BmZe4n": { date: "2026-10-30", role: "메인건반", name: "하지빈" },
+        "-P2gE7w92v0gPvXlkgR4": { date: "2026-10-30", role: "세컨건반", name: "한지윤" },
+        "-P22z6CczD_o7SMvH-Lr": { date: "2026-10-30", role: "어쿠스틱 기타", name: "배세윤" },
+        "-P4pwH7xraz_OfWdNx8q": { date: "2026-10-30", role: "드럼", name: "최요한" },
+        // 2026-11-06
+        "-Oh42xi9V9dSsDofp6ry": { date: "2026-11-06", role: "찬양인도", name: "그루터기" },
+        // 2026-11-13
+        "-P4rb4kGTEYM5AmD795b": { date: "2026-11-13", role: "찬양인도", name: "추수감사특별새벽기도회" },
+        // 2026-11-20
+        "-P4rfXnf24uZlOu00yha": { date: "2026-11-20", role: "싱어", name: "이선희" },
+        "-P4vvIx_iqe9Zi9-gGwR": { date: "2026-11-20", role: "싱어", name: "김은경" },
+        "-P5ELOB_rGdCtGEDaRSx": { date: "2026-11-20", role: "싱어", name: "강신규" },
+        "-P5T1X1l7wJN6jtRtboS": { date: "2026-11-20", role: "메인건반", name: "김예진" },
+        "-P4rgqy7ckCjBT9V2a8B": { date: "2026-11-20", role: "세컨건반", name: "한지윤" },
+        "-P5OqRFdO9sd5b5jfI10": { date: "2026-11-20", role: "드럼", name: "배세윤" },
+        "-P4rz5M0tyYIsguiLzUz": { date: "2026-11-20", role: "베이스", name: "박예원" },
+        // 2026-11-27
+        "-P4rfcrqkx96Qydxr6RQ": { date: "2026-11-27", role: "싱어", name: "이선희" },
+        "-P4vuucL8hgD1Ito-l9d": { date: "2026-11-27", role: "싱어", name: "김은경" },
+        "-P4zlJDF2ZZrwxdmiQOF": { date: "2026-11-27", role: "싱어", name: "이하윤" },
+        "-P5ELQ7jCBb6sNLQ05nx": { date: "2026-11-27", role: "싱어", name: "강신규" },
+        "-P5T1_R4_0qVrziX4VNE": { date: "2026-11-27", role: "메인건반", name: "하지빈" },
+        "-P4sAcxqFK1c1kPyQUPD": { date: "2026-11-27", role: "일렉 기타", name: "엄태근" },
+        "-P5sziYrEj2X3iPOJjMF": { date: "2026-11-27", role: "드럼", name: "안예찬" },
+        "-P4rz86mVdhR-nZnBda2": { date: "2026-11-27", role: "베이스", name: "박예원" }
+      },
+      setlists: {
+        "2026-10-09": "1. 우리 주 하나님 B\n2. 시편 139편 E\n3. 물 위를 걷는 자 Bb + 나의 하나님(후렴, C로 전조)\n4. 예수 이름을 믿는 믿음으로 D",
+        "2026-10-16": "🎶 찬양 리스트\n1️⃣ 사랑하는 나의 아버지 A\n2️⃣ 하나님이시여 A\n3️⃣ 충만 A + 구주예수 의지함이(후렴) A\n4️⃣ 사랑한다 말하시네(후렴) A",
+        "2026-10-23": "1. 내게 있는 모든 것을\n2. 갈릴리 마을 그 숲속에서(가서 제자 삼으라)\n3. 그 날에 우리 주님께서(내 안에 부어 주소서)\n4. 주님 나를 택하사\n5. 우리 오늘 눈물로(보리라)\n6. 누구도 본적이 없는",
+        "2026-10-30": "<찬양리스트>\n1. 하나님의 음성을 C + 그 크신 하나님의 사랑(후렴) D\n2. 정결한 맘 주시옵소서 F\n3. 문들아 머리 들어라 F\n4. 오직 주의 사랑에 매여 D",
+        "2026-11-20": "1. 나의 안에 거하라 F\n2. 부르신 곳에서 F\n3. 주님 말씀하시면 D\n4. 믿음으로 서리라 G"
+      },
+      youtubeLinks: {
+        "2026-10-09": "https://youtube.com/playlist?list=PLL0_0p6A5GedpIK3I8lmRGS4nlGgQEllf",
+        "2026-10-16": "https://youtube.com/playlist?list=PLL0_0p6A5GedpIK3I8lmRGS4nlGgQEllf",
+        "2026-10-30": "https://youtube.com/playlist?list=PLL0_0p6A5GedpIK3I8lmRGS4nlGgQEllf",
+        "2026-11-20": "https://youtube.com/playlist?list=PLL0_0p6A5GedpIK3I8lmRGS4nlGgQEllf"
+      }
+    };
+
+    // 특정 연·월(YYYY-MM)의 모든 금요일(YYYY-MM-DD) 배열을 동적으로 생성
+    function getFridaysOfMonth(ym) {
+      const [y, m] = ym.split("-").map(Number);
+      const result = [];
+      const d = new Date(y, m - 1, 1);
+      while (d.getMonth() === m - 1) {
+        if (d.getDay() === 5) {
+          const dd = String(d.getDate()).padStart(2, "0");
+          const mm = String(m).padStart(2, "0");
+          result.push(`${y}-${mm}-${dd}`);
+        }
+        d.setDate(d.getDate() + 1);
+      }
+      return result;
+    }
+
+    function getTodayIsoString() {
+      const now = new Date();
+      const y = now.getFullYear();
+      const m = String(now.getMonth() + 1).padStart(2, "0");
+      const d = String(now.getDate()).padStart(2, "0");
+      return `${y}-${m}-${d}`;
+    }
+
+    function getDefaultMonthAndFriday() {
+      const now = new Date();
+      const ym = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`;
+      const fridays = getFridaysOfMonth(ym);
+      const todayIso = getTodayIsoString();
+      const upcoming = fridays.find(f => f >= todayIso) || fridays[fridays.length - 1] || "2026-11-20";
+      return { ym, selectedDate: upcoming };
+    }
+
+    const _initDefault = getDefaultMonthAndFriday();
+
+    let state = {
+      isAdmin: false, // 기본값: 일반 사용자 모드 (admin0421 입력 시 true로 전환)
+      firebaseConnected: false, // Firebase 실시간 연동 상태
+      firstSyncDone: false,
+      layoutMode: "split", // split | mobile | guide (관리자 모드 전용)
+      currentMonth: _initDefault.ym, // 현재 연·월 동적 초기값
+      selectedDate: _initDefault.selectedDate, // 이번 주(또는 가장 가까운) 금요일 자동 선택
+      subSurface: "briefing", // briefing | editable | capture
+      pastDateUnlocked: false, // 5번 보안 방안: 과거 금요일 실수 삭제 방지 기본 잠금
+      backupHistory: [], // 최근 정상 스냅샷 스택 (최대 5개)
+      lastGoodTime: "초기 로드 완료",
+      db: JSON.parse(JSON.stringify(INITIAL_FIREBASE_DB))
+    };
+
+    let firebaseDbRef = null;
+
+    function initRealtimeFirebase() {
+      try {
+        if (typeof firebase === "undefined") {
+          console.warn("Firebase SDK 미로드 — 로컬 백업 모드로 동작합니다.");
+          return;
+        }
+        if (!firebase.apps.length) {
+          firebase.initializeApp(FIREBASE_CONFIG);
+        }
+        firebaseDbRef = firebase.database();
+        state.firebaseConnected = true;
+
+        firebaseDbRef.ref("prayerList").on("value", (snapshot) => {
+          const val = snapshot.val();
+          // 빈 데이터 덮어쓰기 보호: 원격이 비어있더라도 기존 스냅샷은 보존
+          if (val && Object.keys(val).length > 0) {
+            state.db.prayerList = val;
+            if (Object.keys(val).length >= 10) {
+              const snap = {
+                timestamp: new Date().toLocaleTimeString("ko-KR", { hour: "2-digit", minute: "2-digit", second: "2-digit" }),
+                label: "Firebase 실시간 정상 동기화",
+                recordCount: Object.keys(val).length,
+                db: JSON.parse(JSON.stringify(state.db))
+              };
+              state.lastGoodTime = snap.timestamp;
+              try { localStorage.setItem("fridayPrayerBackup_lastGood", JSON.stringify(snap)); } catch (e) {}
+            }
+          } else {
+            state.db.prayerList = val || {};
+          }
+          renderMainSurface();
+          if (!state.firstSyncDone) {
+            state.firstSyncDone = true;
+            showToast(`✅ 실시간 DB 연결 완료 (${Object.keys(state.db.prayerList).length}건 로드됨)`);
+          }
+        });
+
+        firebaseDbRef.ref("setlists").on("value", (snapshot) => {
+          state.db.setlists = snapshot.val() || {};
+          renderMainSurface();
+        });
+
+        firebaseDbRef.ref("youtubeLinks").on("value", (snapshot) => {
+          state.db.youtubeLinks = snapshot.val() || {};
+          renderMainSurface();
+        });
+      } catch (err) {
+        console.error("Firebase 연동 오류:", err);
+        state.firebaseConnected = false;
+      }
+    }
+
+    function openAdminModal() {
+      if (state.isAdmin) {
+        // 이미 관리자 모드이면 일반 사용자 모드로 종료
+        state.isAdmin = false;
+        state.pastDateUnlocked = false;
+        state.subSurface = "briefing";
+        document.body.classList.remove("is-admin");
+        const appWs = document.getElementById("appWorkspace");
+        const guideWs = document.getElementById("guideWorkspace");
+        guideWs.hidden = true;
+        appWs.style.display = "block";
+        appWs.className = "layout-clean-user";
+        renderMainSurface();
+        showToast("🔒 관리자 모드를 종료하고 일반 사용자 화면으로 전환했습니다");
+        return;
+      }
+
+      const modal = document.getElementById("openuiModalContent");
+      modal.innerHTML = `
+        <div class="openui-card-header" style="padding-bottom:8px;">
+          <div>
+            <h3 class="openui-card-title">🔒 관리자 모드 전환</h3>
+            <p class="openui-card-sub">스냅샷 복구, 카톡 캡처 카드, 일괄 표 편집 및 시스템 설정은 관리자 전용입니다.</p>
+          </div>
+          <button type="button" class="openui-btn is-xs" onclick="closeModal()">✕</button>
+        </div>
+        <div>
+          <div class="followup-label" style="margin-bottom:6px;">관리자 비밀번호</div>
+          <input id="adminPwInput" type="password" class="openui-inline-input" placeholder="비밀번호를 입력하세요" onkeydown="if(event.key==='Enter') verifyAdminPassword()">
+          <div id="adminPwError" style="display:none;margin-top:6px;font-size:12px;font-weight:600;color:var(--openui-text-danger-primary);">비밀번호가 올바르지 않습니다. 다시 확인해주세요.</div>
+        </div>
+        <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:4px;">
+          <button type="button" class="openui-btn" onclick="closeModal()">취소</button>
+          <button type="button" class="openui-btn is-primary" onclick="verifyAdminPassword()">관리자 로그인</button>
+        </div>
+      `;
+      document.getElementById("openuiModalBackdrop").classList.add("is-open");
+      setTimeout(() => {
+        const inp = document.getElementById("adminPwInput");
+        if (inp) inp.focus();
+      }, 50);
+    }
+
+    function verifyAdminPassword() {
+      const inp = document.getElementById("adminPwInput");
+      const val = (inp ? inp.value : "").trim();
+      if (val === "admin0421") {
+        state.isAdmin = true;
+        document.body.classList.add("is-admin");
+        closeModal();
+        setLayoutMode(state.layoutMode || "split");
+        showToast("🔓 관리자 모드로 전환되었습니다 (모든 관리·스냅샷·캡처 도구 활성화)");
+      } else {
+        const err = document.getElementById("adminPwError");
+        if (err) err.style.display = "block";
+        if (inp) {
+          inp.value = "";
+          inp.focus();
+        }
+      }
+    }
+
+    // [보안 방안 5] 빈 데이터 덮어쓰기 방지 & 정상 스냅샷 자동 백업
+    function pushSafeSnapshot(actionLabel) {
+      const recordCount = Object.keys(state.db.prayerList || {}).length;
+      const snapshot = {
+        timestamp: new Date().toLocaleTimeString("ko-KR", { hour: "2-digit", minute: "2-digit", second: "2-digit" }),
+        label: actionLabel || "변경 전 자동 백업",
+        recordCount,
+        db: JSON.parse(JSON.stringify(state.db))
+      };
+      state.backupHistory.unshift(snapshot);
+      if (state.backupHistory.length > 5) state.backupHistory.pop();
+
+      // 일정 개수가 10건 이상일 때만 localStorage 정상 백업(fridayPrayerBackup_lastGood) 갱신
+      // -> 누군가 DB를 비워도({}) 기존 정상 백업이 절대 덮어써지지 않음
+      if (recordCount >= 10) {
+        state.lastGoodTime = snapshot.timestamp;
+        try {
+          localStorage.setItem("fridayPrayerBackup_lastGood", JSON.stringify(snapshot));
+        } catch (e) {}
+      }
+    }
+
+    // [보안 방안 5] 직전 정상 스냅샷으로 1-Click 즉시 복구 (Firebase 원격 DB도 함께 복원)
+    function applySnapshotToRemote(dbObj) {
+      if (state.firebaseConnected && firebaseDbRef) {
+        firebaseDbRef.ref().update({
+          prayerList: dbObj.prayerList || {},
+          setlists: dbObj.setlists || {},
+          youtubeLinks: dbObj.youtubeLinks || {}
+        }).catch(err => console.error("Firebase 스냅샷 복구 오류:", err));
+      }
+    }
+
+    function restoreLastGoodSnapshot() {
+      if (state.backupHistory.length > 0) {
+        const snap = state.backupHistory.shift();
+        state.db = JSON.parse(JSON.stringify(snap.db));
+        applySnapshotToRemote(state.db);
+        renderMainSurface();
+        showToast(`⏪ [${snap.timestamp}] 정상 스냅샷(${snap.recordCount}건)으로 즉시 복원했습니다!`);
+        return;
+      }
+      try {
+        const saved = localStorage.getItem("fridayPrayerBackup_lastGood");
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          if (parsed && parsed.db && Object.keys(parsed.db.prayerList || {}).length >= 10) {
+            state.db = parsed.db;
+            applySnapshotToRemote(state.db);
+            renderMainSurface();
+            showToast(`⏪ 로컬 안전 백업(${parsed.timestamp})으로 복원했습니다!`);
+            return;
+          }
+        }
+      } catch (e) {}
+      state.db = JSON.parse(JSON.stringify(INITIAL_FIREBASE_DB));
+      applySnapshotToRemote(state.db);
+      renderMainSurface();
+      showToast("⏪ 초기 정상 DB 스냅샷으로 복원했습니다!");
+    }
+
+    // [보안 방안 5] 과거 금요일(오늘 날짜 이전) 실수 수정·삭제 잠금 판별
+    function isPastFriday(dateStr) {
+      return dateStr < getTodayIsoString();
+    }
+
+    function isDateLocked(dateStr) {
+      return isPastFriday(dateStr) && !state.pastDateUnlocked;
+    }
+
+    function togglePastDateLock() {
+      state.pastDateUnlocked = !state.pastDateUnlocked;
+      renderMainSurface();
+      showToast(state.pastDateUnlocked ? "🔓 과거 일정 수정 잠금을 해제했습니다" : "🔒 과거 일정을 실수 방지 잠금 상태로 보호합니다");
+    }
+
+    function showToast(msg) {
+      const el = document.getElementById("openuiToast");
+      el.textContent = msg;
+      el.classList.add("is-shown");
+      clearTimeout(window._toastTimer);
+      window._toastTimer = setTimeout(() => el.classList.remove("is-shown"), 2600);
+    }
+
+    function setAccent(accent, btn) {
+      document.body.setAttribute("data-accent", accent);
+      document.querySelectorAll(".theme-pill").forEach(b => b.classList.remove("is-active"));
+      btn.classList.add("is-active");
+      showToast(`OpenUI 테마(${accent.toUpperCase()})를 적용했습니다`);
+    }
+
+    function setLayoutMode(mode) {
+      state.layoutMode = mode;
+      document.getElementById("btnLayoutSplit").classList.toggle("is-active", mode === "split");
+      document.getElementById("btnLayoutMobile").classList.toggle("is-active", mode === "mobile");
+      document.getElementById("btnLayoutGuide").classList.toggle("is-active", mode === "guide");
+
+      const appWs = document.getElementById("appWorkspace");
+      const guideWs = document.getElementById("guideWorkspace");
+
+      if (mode === "guide") {
+        appWs.style.display = "none";
+        guideWs.hidden = false;
+        renderDesignGuide();
+      } else {
+        if (!state.isAdmin) {
+          appWs.style.display = "block";
+          appWs.className = "layout-clean-user";
+        } else {
+          appWs.style.display = mode === "mobile" ? "flex" : "grid";
+          appWs.className = mode === "mobile" ? "layout-mobile-only" : "layout-split";
+        }
+        guideWs.hidden = true;
+        renderMainSurface();
+      }
+    }
+
+    function switchMonth(ym) {
+      state.currentMonth = ym;
+      const fridays = getFridaysOfMonth(ym);
+      const todayIso = getTodayIsoString();
+      state.selectedDate = fridays.find(f => f >= todayIso) || fridays[0];
+      state.subSurface = "briefing";
+      renderMainSurface();
+      showToast(`${ym.replace("-", "년 ")}월 금요기도회 데이터를 불러왔습니다`);
+    }
+
+    function stepMonth(dir) {
+      const [y, m] = state.currentMonth.split("-").map(Number);
+      const d = new Date(y, m - 1 + dir, 1);
+      const nextYm = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
+      switchMonth(nextYm);
+    }
+
+    // XSS 방어를 위한 HTML 이스케이프 및 URL 프로토콜 검증 유틸리티
+    function escapeHtml(str) {
+      return String(str ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
+
+    function safeHttpUrl(rawUrl) {
+      if (!rawUrl) return "";
+      try {
+        const u = new URL(rawUrl, window.location.origin);
+        return (u.protocol === "https:" || u.protocol === "http:") ? u.href : "";
+      } catch (e) {
+        return "";
+      }
+    }
+
+    // 로컬 타임존 안전 날짜 표시 (전교인 기도회 분기 완전 제거)
+    function formatKoreanDate(dateStr, shortOnly) {
+      const [y, m, d] = dateStr.split("-").map(Number);
+      if (shortOnly) return `${m}/${d} (금)`;
+      return `${y}년 ${m}월 ${d}일 (금)`;
+    }
+
+    // 원본 prayerList(1:N 평면 구조)에서 특정 날짜의 파트별 레코드 배열 추출
+    function getRecordsByDateAndRole(dateStr) {
+      const grouped = {};
+      ROLES.forEach(r => { grouped[r] = []; });
+      Object.entries(state.db.prayerList).forEach(([firebaseKey, item]) => {
+        if (item.date === dateStr && grouped[item.role]) {
+          grouped[item.role].push({
+            firebaseKey: escapeHtml(firebaseKey),
+            name: escapeHtml(item.name),
+            role: escapeHtml(item.role),
+            date: escapeHtml(item.date)
+          });
+        }
+      });
+      return grouped;
+    }
+
+    // 원본 setlists 멀티라인 자유 텍스트를 손실 없이 ListBlock 아이템으로 파싱
+    function parseSetlistString(rawStr) {
+      if (!rawStr || !rawStr.trim()) return { headerNote: "", songs: [] };
+      const lines = rawStr.split(/\r?\n/).map(s => s.trim()).filter(Boolean);
+      let headerNote = "";
+      const songs = [];
+
+      lines.forEach(line => {
+        if (/^(🎶|<찬양|\[찬양|#)/.test(line)) {
+          headerNote = line;
+          return;
+        }
+        // 번호 제거 (1. / 1️⃣ 등)
+        const cleaned = line.replace(/^(\d+[\.\)]|[1-9]️⃣)\s*/, "");
+        // 끝부분 코드(Key) 추출: 예: "사랑하는 나의 아버지 A" 또는 "물 위를 걷는 자 Bb + 나의 하나님(후렴, C로 전조)"
+        const keyMatch = cleaned.match(/\s+([A-G](?:b|#)?m?)(?:\s*\(([^)]+)\))?$/);
+        if (keyMatch) {
+          const titlePart = cleaned.slice(0, keyMatch.index).trim();
+          const key = keyMatch[1];
+          const extra = keyMatch[2] ? keyMatch[2] : "";
+          songs.push({ title: escapeHtml(titlePart), key: escapeHtml(key), memo: escapeHtml(extra), rawLine: escapeHtml(line) });
+        } else {
+          // 중간에 코드가 있거나 코드가 없는 경우
+          const midKey = cleaned.match(/\s+([A-G](?:b|#)?)\s+\+/);
+          songs.push({
+            title: escapeHtml(cleaned),
+            key: midKey ? escapeHtml(midKey[1]) : "-",
+            memo: "",
+            rawLine: escapeHtml(line)
+          });
+        }
+      });
+      return { headerNote: escapeHtml(headerNote), songs };
+    }
+
+    function selectTab(key) {
+      state.selectedDate = key;
+      if (key === "matrix") state.subSurface = "briefing";
+      renderMainSurface();
+    }
+
+    function setSubSurface(surface) {
+      if (state.selectedDate === "matrix") {
+        state.selectedDate = getFridaysOfMonth(state.currentMonth)[0];
+      }
+      state.subSurface = surface;
+      renderMainSurface();
+    }
+
+    function renderMainSurface() {
+      const root = document.getElementById("openuiRoot");
+      const fridays = getFridaysOfMonth(state.currentMonth);
+      const [yearStr, monthStr] = state.currentMonth.split("-");
+
+      // 1. InlineHeader (일반 사용자 모드 vs 관리자 모드 분기)
+      const logoSrc = window.CHURCH_LOGO_DATA_URI || "./assets/church-logo.png";
+      const totalDbRecords = Object.keys(state.db.prayerList || {}).length;
+      const adminHeaderControls = state.isAdmin
+        ? `
+            <button type="button" class="openui-btn" onclick="restoreLastGoodSnapshot()" title="실수로 지웠을 때 직전 정상 상태로 되돌립니다">
+              ⏪ 스냅샷 복구 ${state.backupHistory.length ? `(${state.backupHistory.length})` : ""}
+            </button>
+            <button type="button" class="openui-btn ${state.subSurface === 'briefing' ? 'is-primary' : ''}" onclick="setSubSurface('briefing')">브리핑 뷰</button>
+            <button type="button" class="openui-btn ${state.subSurface === 'editable' ? 'is-primary' : ''}" onclick="setSubSurface('editable')">EditableTable 편집</button>
+            <button type="button" class="openui-btn ${state.subSurface === 'capture' ? 'is-primary' : ''}" onclick="setSubSurface('capture')">📸 카톡 캡처 카드</button>
+            <button type="button" class="openui-btn" style="border-color:var(--openui-border-alert-emphasis);color:var(--openui-text-alert-primary);" onclick="openAdminModal()">🔓 관리자 종료</button>
+          `
+        : `
+            <button type="button" class="openui-btn" onclick="openAdminModal()">🔒 관리자 모드</button>
+          `;
+
+      const headerHtml = `
+        <div class="openui-inline-header">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <img src="${logoSrc}" alt="서울중앙교회 로고" class="church-logo" data-church-logo>
+            <div>
+              <h1>
+                <span>서울중앙교회</span>
+                <span class="openui-tag is-brand">금요기도회 찬양팀 일정관리</span>
+                ${state.isAdmin ? `<span class="openui-tag is-success" title="빈 데이터 덮어쓰기 방지 작동 중">🛡️ 안전 스냅샷 보호 (${totalDbRecords}건)</span>` : ""}
+              </h1>
+              <p>${state.isAdmin ? `관리자 모드 활성화됨 · 직전 정상 스냅샷(${state.lastGoodTime})으로 1초 복구 가능` : "금요기도회 찬양팀 주차별 섬김이 명단 및 찬양 콘티 안내"}</p>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+            <div class="month-nav-group" aria-label="월 선택">
+              <button type="button" class="month-nav-btn" onclick="stepMonth(-1)" title="이전 달">‹</button>
+              <span class="month-nav-label">${yearStr}년 ${Number(monthStr)}월</span>
+              <button type="button" class="month-nav-btn" onclick="stepMonth(1)" title="다음 달">›</button>
+            </div>
+            ${adminHeaderControls}
+          </div>
+        </div>
+      `;
+
+      // 2. Tabs (해당 월의 모든 금요일 자동 생성 — 전교인 기도회 배지 삭제 완료)
+      const tabsHtml = `
+        <nav class="openui-tabs" role="tablist" aria-label="금요일 주차 선택">
+          ${fridays.map((dateStr, idx) => {
+            const byRole = getRecordsByDateAndRole(dateStr);
+            const filledRoleCount = ROLES.filter(r => byRole[r].length > 0).length;
+            const totalRecords = ROLES.reduce((acc, r) => acc + byRole[r].length, 0);
+            const active = state.selectedDate === dateStr ? "is-active" : "";
+            const tag = filledRoleCount >= 7
+              ? `<span class="openui-tag is-success">${filledRoleCount}/9 파트 (${totalRecords}명)</span>`
+              : `<span class="openui-tag is-warning">${filledRoleCount}/9 파트</span>`;
+            return `
+              <button type="button" class="openui-tab-item ${active}" onclick="selectTab('${dateStr}')">
+                <span class="tab-sub">${idx + 1}주차 금요기도회</span>
+                <span class="tab-main">${formatKoreanDate(dateStr, true).replace(" (금)", "")}</span>
+                ${tag}
+              </button>
+            `;
+          }).join("")}
+          <button type="button" class="openui-tab-item ${state.selectedDate === 'matrix' ? 'is-active' : ''}" onclick="selectTab('matrix')">
+            <span class="tab-sub">월간 비교</span>
+            <span class="tab-main">${Number(monthStr)}월 전체 표</span>
+            <span class="openui-tag is-info">${state.isAdmin ? "Table" : "한눈에 보기"}</span>
+          </button>
+        </nav>
+      `;
+
+      if (state.selectedDate === "matrix") {
+        root.innerHTML = `
+          ${headerHtml}
+          ${tabsHtml}
+          ${renderMonthlyTableCard(fridays)}
+        `;
+        updateOpenUILangCode();
+        return;
+      }
+
+      const dateStr = state.selectedDate;
+      const byRole = getRecordsByDateAndRole(dateStr);
+      const emptyRoles = ROLES.filter(r => byRole[r].length === 0);
+      const filledRoleCount = ROLES.length - emptyRoles.length;
+      const totalPeople = ROLES.reduce((acc, r) => acc + byRole[r].length, 0);
+      const rawSetlist = state.db.setlists[dateStr] || "";
+      const parsedSetlist = parseSetlistString(rawSetlist);
+      const leaderNames = byRole["찬양인도"].map(x => x.name).join(", ") || "미배정";
+
+      // 3. SnippetCardBlock (cue-worship 모션 다이어그램 결합: 미배정 섬김이 & 콘티/음원 등록 권면)
+      const shortRoleLabel = (r) => {
+        const map = { "찬양인도": "인도", "싱어": "싱어", "메인건반": "메인건반", "세컨건반": "세컨건반", "어쿠스틱 기타": "어쿠스틱", "일렉 기타": "일렉기타", "드럼": "드럼", "베이스": "베이스", "엔지니어": "엔지니어" };
+        return map[r] || r;
+      };
+      const slotRoles = emptyRoles.length >= 3
+        ? emptyRoles.slice(0, 3)
+        : [...emptyRoles, ...ROLES.filter(r => !emptyRoles.includes(r))].slice(0, 3);
+      const firstEmptyRole = emptyRoles[0] || "찬양인도";
+      const hasYt = Boolean(state.db.youtubeLinks[dateStr]);
+
+      const kpiHtml = `
+        <section class="openui-snippet-block ${state.isAdmin ? '' : 'is-2col'}" aria-label="주간 핵심 지표 및 등록 권면 모션">
+          <!-- 좌측 카드: 파트 배정 현황 + 01 Sequence 모션 (미배정 파트 순차 하이라이트) -->
+          <div class="openui-snippet-item is-motion-card">
+            <div class="snippet-top-row">
+              <div class="snippet-lhs">
+                <div class="snippet-icon">👥</div>
+                <div class="snippet-titles">
+                  <span class="snippet-title">파트 배정 현황</span>
+                  <span class="snippet-sub">총 ${totalPeople}명 배정됨</span>
+                </div>
+              </div>
+              <div class="snippet-rhs">
+                <span class="snippet-metric">${filledRoleCount} / 9 파트</span>
+                <span class="snippet-delta" style="color:${emptyRoles.length ? 'var(--openui-text-alert-primary)' : 'var(--openui-text-success-primary)'};">
+                  ${emptyRoles.length ? `미배정 ${emptyRoles.length}곳` : "전체 파트 완료"}
+                </span>
+              </div>
+            </div>
+
+            <div class="cue-motion-stage" title="미배정 파트를 클릭하면 바로 섬김이를 등록할 수 있습니다">
+              <svg role="img" aria-label="파트별 섬김이 순차 배정 모션 다이어그램" viewBox="0 0 320 124" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <!-- Slot 1 -->
+                <g transform="translate(10 14)" style="cursor:pointer;" onclick="openRoleModal('${slotRoles[0]}')">
+                  <rect data-motion="cue-one" width="84" height="58" rx="4" fill="#faf6ec"></rect>
+                  <text x="42" y="21" text-anchor="middle" fill="#5e594f" stroke="none" font-size="11" font-weight="600">${byRole[slotRoles[0]].length ? "배정완료" : "미배정 1"}</text>
+                  <text x="42" y="43" text-anchor="middle" fill="currentColor" stroke="none" font-size="15" font-weight="700">${shortRoleLabel(slotRoles[0])}</text>
+                </g>
+                <!-- Slot 2 -->
+                <g transform="translate(118 14)" style="cursor:pointer;" onclick="openRoleModal('${slotRoles[1]}')">
+                  <rect data-motion="cue-two" width="84" height="58" rx="4" fill="#ded2bf"></rect>
+                  <text x="42" y="21" text-anchor="middle" fill="#5e594f" stroke="none" font-size="11" font-weight="600">${byRole[slotRoles[1]].length ? "배정완료" : "미배정 2"}</text>
+                  <text x="42" y="43" text-anchor="middle" fill="currentColor" stroke="none" font-size="15" font-weight="700">${shortRoleLabel(slotRoles[1])}</text>
+                </g>
+                <!-- Slot 3 -->
+                <g transform="translate(226 14)" style="cursor:pointer;" onclick="openRoleModal('${slotRoles[2]}')">
+                  <rect data-motion="cue-three" width="84" height="58" rx="4" fill="#faf6ec"></rect>
+                  <text x="42" y="21" text-anchor="middle" fill="#5e594f" stroke="none" font-size="11" font-weight="600">${byRole[slotRoles[2]].length ? "배정완료" : "미배정 3"}</text>
+                  <text x="42" y="43" text-anchor="middle" fill="currentColor" stroke="none" font-size="15" font-weight="700">${shortRoleLabel(slotRoles[2])}</text>
+                </g>
+                <!-- Connecting arrows -->
+                <path d="M98 43h16m-5-5 5 5-5 5" stroke="#5e594f"></path>
+                <path d="M206 43h16m-5-5 5 5-5 5" stroke="#5e594f"></path>
+                <!-- Moving Cue Indicator -->
+                <g data-motion="cue-position">
+                  <text x="160" y="98" text-anchor="middle" fill="currentColor" stroke="none" font-size="13" font-weight="700">
+                    ${emptyRoles.length ? "▲ 지금 배정 필요" : "▲ 전체 배정 완료"}
+                  </text>
+                </g>
+              </svg>
+              <div class="cue-nudge-bar">
+                <span>${emptyRoles.length ? `미등록 <b>${emptyRoles.join(" · ")}</b> 섬김이를 채워주세요` : `9개 모든 파트 섬김이 등록이 완료되었습니다`}</span>
+                <button type="button" class="cue-nudge-cta" onclick="openRoleModal('${firstEmptyRole}')">
+                  ${emptyRoles.length ? `+ ${shortRoleLabel(firstEmptyRole)} 등록` : "명단 수정"}
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 우측 카드: 찬양 콘티 & 참고 음원 + 03 Devices 연동 모션 (음향·콘티·세션 연동) -->
+          <div class="openui-snippet-item is-motion-card">
+            <div class="snippet-top-row">
+              <div class="snippet-lhs">
+                <div class="snippet-icon">🎵</div>
+                <div class="snippet-titles">
+                  <span class="snippet-title">찬양 콘티</span>
+                  <span class="snippet-sub">인도: ${leaderNames}</span>
+                </div>
+              </div>
+              <div class="snippet-rhs">
+                <span class="snippet-metric">${parsedSetlist.songs.length}곡</span>
+                <span class="snippet-delta" style="color:var(--openui-text-brand);">
+                  ${hasYt ? "참고 음원 연결됨" : "참고 음원 미등록"}
+                </span>
+              </div>
+            </div>
+
+            <div class="cue-motion-stage" style="cursor:pointer;" onclick="openContiModal()" title="클릭하면 찬양 콘티와 참고 음원(YouTube)을 등록·수정합니다">
+              <svg role="img" aria-label="찬양인도, 콘티 선곡, 음향·참고음원 연동 모션 다이어그램" viewBox="0 0 320 124" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <!-- Top Cue Node -->
+                <rect x="118" y="4" width="84" height="22" rx="4" fill="#ded2bf" stroke="currentColor" stroke-width="1.8"></rect>
+                <text x="160" y="19" text-anchor="middle" fill="currentColor" stroke="none" font-size="11.5" font-weight="700">예배 콘티 Cue</text>
+                <!-- Tree connector lines -->
+                <path d="M160 26v11M52 50V37h216v13M160 37v13" stroke="#5e594f"></path>
+
+                <!-- Left: 음향·엔지니어 faders -->
+                <rect x="20" y="54" width="64" height="38" rx="3" fill="#faf6ec"></rect>
+                <path d="M36 61v24M52 61v24M68 61v24"></path>
+                <path data-motion="fader-down" d="M31 68h10M63 65h10" stroke-width="3"></path>
+                <path data-motion="fader-up" d="M47 78h10" stroke-width="3"></path>
+
+                <!-- Center: 찬양 콘티 switcher -->
+                <rect x="128" y="54" width="64" height="38" rx="3" fill="#faf6ec"></rect>
+                <path d="M137 63h46" stroke="#a99d8b"></path>
+                <path d="M137 73h10v10h-10Zm15 0h10v10h-10Zm15 0h10v10h-10Z"></path>
+                <rect data-motion="switcher" x="137" y="73" width="10" height="10" rx="1" fill="currentColor"></rect>
+
+                <!-- Right: 참고 음원 / 인도 연동 -->
+                <path d="M250 80V67a18 18 0 0 1 36 0v13" fill="#faf6ec"></path>
+                <circle data-motion="ptz" cx="268" cy="67" r="7.5" fill="#ded2bf"></circle>
+                <rect x="244" y="80" width="48" height="12" rx="3" fill="#faf6ec"></rect>
+                <path d="M239 65v12m-3.5-3.5 3.5 3.5 3.5-3.5M297 77V65m-3.5 3.5 3.5-3.5 3.5 3.5" stroke="#5e594f" stroke-width="1.5"></path>
+
+                <!-- Bottom Labels -->
+                <text x="52" y="112" text-anchor="middle" fill="currentColor" stroke="none" font-size="12.5" font-weight="600">음향·세션</text>
+                <text x="160" y="112" text-anchor="middle" fill="currentColor" stroke="none" font-size="12.5" font-weight="600">콘티 (${parsedSetlist.songs.length}곡)</text>
+                <text x="268" y="112" text-anchor="middle" fill="currentColor" stroke="none" font-size="12.5" font-weight="600">${hasYt ? "음원 연결됨" : "참고 음원"}</text>
+              </svg>
+              <div class="cue-nudge-bar">
+                <span>${parsedSetlist.songs.length === 0 ? "이번 주 <b>찬양 콘티와 참고 음원</b>을 등록해주세요" : (!hasYt ? "찬양 콘티에 <b>YouTube 참고 음원</b>을 연결해주세요" : `인도자(<b>${leaderNames}</b>) · 콘티 ${parsedSetlist.songs.length}곡 · 음원 준비 완료`)}</span>
+                <button type="button" class="cue-nudge-cta" onclick="event.stopPropagation(); openContiModal()">
+                  ${parsedSetlist.songs.length && hasYt ? "콘티·음원 수정" : "+ 콘티·음원 등록"}
+                </button>
+              </div>
+            </div>
+          </div>
+
+          ${state.isAdmin ? `
+          <div class="openui-snippet-item is-motion-card" style="cursor:pointer;" onclick="setSubSurface('capture')">
+            <div class="snippet-top-row">
+              <div class="snippet-lhs">
+                <div class="snippet-icon">💬</div>
+                <div class="snippet-titles">
+                  <span class="snippet-title">월·화 카톡 공지 (관리자)</span>
+                  <span class="snippet-sub">버튼 숨김 캡처뷰</span>
+                </div>
+              </div>
+              <div class="snippet-rhs">
+                <span class="snippet-metric" style="color:var(--openui-text-brand);">캡처 카드 ›</span>
+                <span class="snippet-delta">원클릭 복사</span>
+              </div>
+            </div>
+            <div class="cue-motion-stage" style="display:flex;flex-direction:column;justify-content:center;min-height:142px;gap:8px;padding:12px;">
+              <div style="font-size:12.5px;font-weight:700;color:#1d1d1b;">📸 카카오톡 단톡방 공유용 카드</div>
+              <div style="font-size:11.5px;color:#5e594f;line-height:1.5;">수정·삭제 버튼을 모두 숨긴 깔끔한 주간 명단 &amp; 찬양 콘티 이미지 카드를 열고 공지 문구를 복사합니다.</div>
+              <div class="cue-nudge-bar" style="margin-top:auto;">
+                <span>관리자 전용 도구</span>
+                <span class="cue-nudge-cta">캡처 카드 열기 ›</span>
+              </div>
+            </div>
+          </div>
+          ` : ""}
+        </section>
+      `;
+
+      // 4. Callout (과거 일정 잠금 상태 안내 + 미배정 파트 안내)
+      const pastLockBanner = isPastFriday(dateStr)
+        ? `
+          <div class="openui-callout is-info" style="padding:10px 16px;">
+            <div class="callout-body">
+              <span class="callout-title">${isDateLocked(dateStr) ? "🔒 지나간 금요일 일정입니다 (실수 방지 보호 중)" : "🔓 과거 금요일 일정 수정 잠금이 해제되었습니다"} (${formatKoreanDate(dateStr, true)})</span>
+              <span class="callout-desc">${isDateLocked(dateStr) ? "과거 기록을 수정하려면 우측 [잠금 해제하고 수정] 버튼을 누르거나 아래 [+ 배정 / 편집] 버튼을 클릭하세요." : "과거 기록 수정이 가능합니다. 수정 내역은 직전 스냅샷으로 자동 백업됩니다."}</span>
+            </div>
+            <button type="button" class="openui-btn ${isDateLocked(dateStr) ? 'is-primary' : ''} is-xs" onclick="togglePastDateLock()">
+              ${isDateLocked(dateStr) ? "🔓 잠금 해제하고 수정" : "🔒 다시 잠그기"}
+            </button>
+          </div>
+        `
+        : "";
+
+      const calloutHtml = pastLockBanner + (emptyRoles.length > 0
+        ? `
+          <div class="openui-callout is-warning">
+            <div class="callout-body">
+              <span class="callout-title">📌 ${formatKoreanDate(dateStr, true)} 금요기도회 — 아직 비어 있는 파트(${emptyRoles.join(", ")})가 있습니다</span>
+              <span class="callout-desc">아래 명단에서 각 파트 우측의 [+ 배정] 버튼을 눌러 담당자를 등록해 주세요.</span>
+            </div>
+            <button type="button" class="openui-btn is-primary" onclick="openRoleModal('${emptyRoles[0]}')">+ ${emptyRoles[0]} 배정하기</button>
+          </div>
+        `
+        : `
+          <div class="openui-callout is-success">
+            <div class="callout-body">
+              <span class="callout-title">✅ ${formatKoreanDate(dateStr, true)} 금요기도회 9개 파트가 모두 배정되었습니다</span>
+              <span class="callout-desc">${state.isAdmin ? "월·화요일 카카오톡 단톡방 캡처 카드와 공지 문구를 복사해 팀원들에게 공유하세요." : "섬김이 명단 수정이나 찬양 콘티·참고 음원 등록은 아래 카드에서 바로 진행하실 수 있습니다."}</span>
+            </div>
+            ${state.isAdmin ? `<button type="button" class="openui-btn is-primary" onclick="setSubSurface('capture')">📸 카톡 캡처 카드 열기</button>` : `<button type="button" class="openui-btn is-primary" onclick="openContiModal()">🎼 찬양 콘티 · 참고 음원 등록/수정</button>`}
+          </div>
+        `);
+
+      // 5. Main Surface (일반 사용자도 브리핑 뷰와 9개 파트 일괄 편집 표 모두 사용 가능, 캡처 전용 뷰는 관리자 모드)
+      let mainBodyHtml = "";
+      if (state.isAdmin && state.subSurface === "capture") {
+        mainBodyHtml = renderCaptureSurface(dateStr, byRole, parsedSetlist);
+      } else if (state.subSurface === "editable") {
+        mainBodyHtml = renderEditableSurface(dateStr, byRole);
+      } else {
+        mainBodyHtml = renderBriefingSurface(dateStr, byRole, parsedSetlist);
+      }
+
+      // 6. FollowUpBlock (관리자 모드 전용 빠른 작업 도구)
+      const followUpHtml = state.isAdmin
+        ? `
+          <section class="openui-followup-block" aria-label="관리자 빠른 후속 작업">
+            <span class="followup-label">관리자 빠른 도구 · FollowUpBlock</span>
+            <div class="followup-items">
+              ${emptyRoles.length > 0
+                ? `<button type="button" class="openui-followup-item" onclick="quickAssignDefault('${emptyRoles[0]}')">⚡ 미배정 '${emptyRoles[0]}'에 다빈도 팀원(${REAL_TEAM_POOL[emptyRoles[0]][0]}) 바로 배정</button>`
+                : `<button type="button" class="openui-followup-item" onclick="copyKakaoNotice()">📋 단톡방 공지 문구 클립보드 복사</button>`}
+              <button type="button" class="openui-followup-item" onclick="setSubSurface(state.subSurface === 'capture' ? 'briefing' : 'capture')">
+                ${state.subSurface === "capture" ? "🔙 기본 브리핑 화면으로 복귀" : "📸 월·화 카카오톡 캡처 전용 카드 열기"}
+              </button>
+              <button type="button" class="openui-followup-item" onclick="restoreLastGoodSnapshot()">⏪ 직전 스냅샷으로 1초 복구</button>
+              <button type="button" class="openui-followup-item" onclick="openContiModal()">🎼 찬양 콘티 · 유튜브 링크 편집</button>
+            </div>
+          </section>
+        `
+        : "";
+
+      root.innerHTML = `
+        ${headerHtml}
+        ${tabsHtml}
+        ${kpiHtml}
+        ${calloutHtml}
+        ${mainBodyHtml}
+        ${followUpHtml}
+      `;
+
+      updateOpenUILangCode();
+    }
+
+    function renderBriefingSurface(dateStr, byRole, parsedSetlist) {
+      const entityRows = ROLES.map(role => {
+        const cfg = ROLE_CONFIG[role];
+        const records = byRole[role] || [];
+        const isEmpty = records.length === 0;
+        const memberPills = records.map(rec => `
+          <span class="member-record-pill" ${state.isAdmin ? `title="Firebase Key: ${rec.firebaseKey}"` : ""}>
+            ${rec.name}
+          </span>
+        `).join("");
+
+        return `
+          <div class="openui-entity-row">
+            <div class="entity-lhs">
+              <span class="entity-role-dot ${isEmpty ? 'is-empty' : ''}"></span>
+              <span class="entity-role-name">${cfg.emoji} ${role}</span>
+            </div>
+            <div class="entity-rhs">
+              ${isEmpty
+                ? `<span class="openui-tag is-warning">미배정</span>
+                   <button type="button" class="openui-btn is-primary is-xs" onclick="openRoleModal('${role}')">+ 배정</button>`
+                : `${memberPills}
+                   <button type="button" class="openui-btn is-xs" onclick="openRoleModal('${role}')">편집</button>`}
+            </div>
+          </div>
+        `;
+      }).join("");
+
+      const contiItems = parsedSetlist.songs.length > 0
+        ? parsedSetlist.songs.map((song, idx) => `
+            <div class="openui-list-item">
+              <div class="list-item-head">
+                <div class="list-item-title-group">
+                  <span class="list-item-index">${idx + 1}</span>
+                  <h4 class="list-item-title">${song.title}</h4>
+                </div>
+                ${song.key !== "-" ? `<span class="openui-tag is-brand">${song.key} Key</span>` : `<span class="openui-tag is-neutral">자유 표기</span>`}
+              </div>
+              ${song.memo ? `<p class="list-item-memo">💡 ${song.memo}</p>` : ""}
+            </div>
+          `).join("")
+        : `
+          <div class="openui-callout is-info">
+            <div class="callout-body">
+              <span class="callout-title">등록된 찬양 콘티가 없습니다</span>
+              <span class="callout-desc">이번 주 찬양 순서와 참고 유튜브 링크를 등록해 주세요.</span>
+            </div>
+            <button type="button" class="openui-btn is-primary is-xs" onclick="openContiModal()">+ 콘티·음원 등록</button>
+          </div>
+        `;
+
+      const ytUrl = safeHttpUrl(state.db.youtubeLinks[dateStr] || "");
+      const ytCallout = ytUrl
+        ? `
+          <div class="openui-callout is-info" style="padding:10px 14px;">
+            <div class="callout-body">
+              <span class="callout-title">▶ YouTube 참고 음원 플레이리스트</span>
+              <span class="callout-desc" style="font-family:var(--openui-font-code);font-size:11px;">${escapeHtml(ytUrl)}</span>
+            </div>
+            <div style="display:flex;gap:6px;flex-wrap:wrap;">
+              <a class="openui-btn is-primary is-xs" href="${escapeHtml(ytUrl)}" target="_blank" rel="noopener noreferrer" style="text-decoration:none;">음원 열기 ↗</a>
+              <button type="button" class="openui-btn is-xs" onclick="openContiModal()">음원 수정</button>
+            </div>
+          </div>
+        `
+        : `
+          <div class="openui-callout is-info" style="padding:10px 14px;">
+            <div class="callout-body">
+              <span class="callout-title">🎧 참고 음원 (YouTube 링크)</span>
+              <span class="callout-desc">등록된 참고 음원 링크가 없습니다. 유튜브 플레이리스트나 참고 영상을 연결해 주세요.</span>
+            </div>
+            <button type="button" class="openui-btn is-xs" onclick="openContiModal()">+ 참고 음원 등록</button>
+          </div>
+        `;
+
+      return `
+        <div class="openui-stack-row">
+          <!-- Card 1: 파트별 섬김이 명단 -->
+          <section class="openui-card">
+            <div class="openui-card-header">
+              <div>
+                <h2 class="openui-card-title">파트별 섬김이 명단 ${state.isAdmin ? "(EntityList)" : ""}</h2>
+                <p class="openui-card-sub">${formatKoreanDate(dateStr, false)} 금요기도회 찬양팀</p>
+              </div>
+              <button type="button" class="openui-btn is-xs" onclick="setSubSurface('editable')">전체 파트 일괄 편집</button>
+            </div>
+            <div class="openui-entity-list">
+              ${entityRows}
+            </div>
+          </section>
+
+          <!-- Card 2: 찬양 콘티 & 유튜브 참고 링크 -->
+          <section class="openui-card">
+            <div class="openui-card-header">
+              <div>
+                <h2 class="openui-card-title">찬양 콘티 &amp; 참고 음원 ${state.isAdmin ? "(ListBlock)" : ""}</h2>
+                <p class="openui-card-sub">${parsedSetlist.headerNote ? `${parsedSetlist.headerNote}` : "이번 주 찬양 순서 및 코드 안내"}</p>
+              </div>
+              <button type="button" class="openui-btn is-primary is-xs" onclick="openContiModal()">${parsedSetlist.songs.length || ytUrl ? "콘티·음원 수정" : "+ 콘티·음원 등록"}</button>
+            </div>
+            <div class="openui-list-block">
+              ${contiItems}
+            </div>
+            ${ytCallout}
+          </section>
+        </div>
+      `;
+    }
+
+    function renderEditableSurface(dateStr, byRole) {
+      const rows = ROLES.map(role => {
+        const cfg = ROLE_CONFIG[role];
+        const val = (byRole[role] || []).map(x => x.name).join(", ");
+        return `
+          <tr>
+            <td style="font-weight:700;width:125px;">${cfg.emoji} ${role}</td>
+            <td>
+              <input class="openui-inline-input" data-edit-role="${role}" value="${val}" placeholder="미배정 (복수 인원은 쉼표로 구분해 개별 PushKey 생성)">
+            </td>
+            <td style="width:90px;text-align:right;">
+              <button type="button" class="openui-btn is-xs" onclick="openRoleModal('${role}')">칩 선택</button>
+            </td>
+          </tr>
+        `;
+      }).join("");
+
+      return `
+        <section class="openui-card">
+          <div class="openui-card-header">
+            <div>
+              <h2 class="openui-card-title">EditableTable · 9개 파트 일괄 인라인 편집</h2>
+              <p class="openui-card-sub">${formatKoreanDate(dateStr, false)} — 저장 시 각 이름마다 개별 Firebase PushKey 레코드로 동기화됩니다.</p>
+            </div>
+            <div style="display:flex;gap:6px;">
+              <button type="button" class="openui-btn is-xs" onclick="setSubSurface('briefing')">취소</button>
+              <button type="button" class="openui-btn is-primary is-xs" onclick="saveEditableTable()">변경사항 일괄 저장</button>
+            </div>
+          </div>
+          <table class="openui-table">
+            <thead>
+              <tr>
+                <th>파트 (role)</th>
+                <th>담당 섬김이 (쉼표 구분 시 개별 prayerList 레코드로 분리 저장)</th>
+                <th style="text-align:right;">빠른 선택</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${rows}
+            </tbody>
+          </table>
+        </section>
+      `;
+    }
+
+    // 특정 날짜·파트의 이름 배열을 원본 Firebase prayerList의 1:N 레코드 구조로 동기화
+    function syncRoleRecordsToFirebaseSchema(dateStr, role, newNamesArray, skipSnapshot) {
+      if (!skipSnapshot) {
+        pushSafeSnapshot(`${dateStr} ${role} 변경`);
+      }
+      const updates = {};
+      // 1) 기존 해당 date + role 레코드 제거
+      Object.keys(state.db.prayerList).forEach(k => {
+        const rec = state.db.prayerList[k];
+        if (rec.date === dateStr && rec.role === role) {
+          delete state.db.prayerList[k];
+          updates[`prayerList/${k}`] = null;
+        }
+      });
+      // 2) 새 이름마다 개별 Firebase Push Key 생성해 추가 (원본 스키마 100% 동일)
+      newNamesArray.forEach((name, idx) => {
+        const newKey = (state.firebaseConnected && firebaseDbRef)
+          ? firebaseDbRef.ref("prayerList").push().key
+          : `-OpenUI_${Date.now()}_${Math.random().toString(36).slice(2, 6)}_${idx}`;
+        const recObj = { date: dateStr, role: role, name: name };
+        state.db.prayerList[newKey] = recObj;
+        updates[`prayerList/${newKey}`] = recObj;
+      });
+      if (state.firebaseConnected && firebaseDbRef && Object.keys(updates).length > 0) {
+        firebaseDbRef.ref().update(updates).catch(err => console.error("Firebase prayerList 저장 오류:", err));
+      }
+    }
+
+    function saveEditableTable() {
+      const dateStr = state.selectedDate;
+      if (isDateLocked(dateStr)) {
+        state.pastDateUnlocked = true;
+      }
+      pushSafeSnapshot(`${dateStr} 전체 파트 일괄 편집`);
+      document.querySelectorAll("[data-edit-role]").forEach(inp => {
+        const role = inp.getAttribute("data-edit-role");
+        const names = inp.value.split(",").map(s => s.trim()).filter(Boolean);
+        syncRoleRecordsToFirebaseSchema(dateStr, role, names, true);
+      });
+      state.subSurface = "briefing";
+      renderMainSurface();
+      showToast("✅ 9개 파트를 원본 Firebase 1:N 규격으로 저장했습니다 (직전 상태 자동 백업 완료)");
+    }
+
+    function renderCaptureSurface(dateStr, byRole, parsedSetlist) {
+      const gridRows = ROLES.map(role => {
+        const cfg = ROLE_CONFIG[role];
+        const names = (byRole[role] || []).map(x => x.name);
+        return `
+          <div style="color:var(--openui-text-neutral-secondary);font-weight:600;">${cfg.emoji} ${role}</div>
+          <div style="font-weight:700;color:${names.length ? 'var(--openui-text-neutral-primary)' : 'var(--openui-text-alert-primary)'};">
+            ${names.length ? names.join(", ") : "미배정"}
+          </div>
+        `;
+      }).join("");
+
+      const contiSummary = parsedSetlist.songs.length
+        ? parsedSetlist.songs.map((c, i) => `
+            <div style="font-size:12.5px;font-weight:600;line-height:1.55;">
+              ${i + 1}. ${c.title}
+              ${c.key !== "-" ? `<span class="openui-tag is-brand">${c.key}</span>` : ""}
+              ${c.memo ? `<span style="color:var(--openui-text-neutral-secondary);font-weight:500;">(${c.memo})</span>` : ""}
+            </div>
+          `).join("")
+        : `<div style="font-size:12px;color:var(--openui-text-neutral-secondary);">찬양 콘티 준비 중입니다</div>`;
+
+      return `
+        <section class="openui-card" style="background:var(--openui-sunk-light);">
+          <div class="openui-card-header">
+            <div>
+              <h2 class="openui-card-title">📸 월·화요일 카카오톡 단톡방 캡처 전용 카드 (VisualCardBlock)</h2>
+              <p class="openui-card-sub">수정·삭제 버튼을 모두 숨겨 이 카드를 그대로 캡처해 카카오톡 단톡방에 공유할 수 있습니다.</p>
+            </div>
+            <div style="display:flex;gap:6px;">
+              <button type="button" class="openui-btn is-primary is-xs" onclick="copyKakaoNotice()">📋 단톡방 공지 문구 복사</button>
+              <button type="button" class="openui-btn is-xs" onclick="setSubSurface('briefing')">닫기</button>
+            </div>
+          </div>
+
+          <div class="openui-capture-card">
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+              <div style="display:flex;align-items:center;gap:8px;">
+                <img src="${window.CHURCH_LOGO_DATA_URI || './assets/church-logo.png'}" alt="서울중앙교회 로고" class="church-logo church-logo--sm" data-church-logo>
+                <span style="font-size:13px;font-weight:800;color:var(--openui-text-neutral-primary);">서울중앙교회 찬양팀</span>
+              </div>
+              <span class="openui-tag is-brand">금요기도회 주간 섬김이</span>
+            </div>
+            <div>
+              <h3 style="margin:0;font-size:19px;font-weight:800;">${formatKoreanDate(dateStr, false)}</h3>
+              <p style="margin:4px 0 0;font-size:12px;color:var(--openui-text-neutral-secondary);">금요기도회 찬양팀 파트별 배정 및 찬양 리스트</p>
+            </div>
+            <div class="capture-grid-2col">
+              ${gridRows}
+            </div>
+            <div style="background:var(--openui-sunk);border-radius:var(--openui-radius-xl);padding:12px 14px;display:flex;flex-direction:column;gap:4px;">
+              <div style="font-size:11px;font-weight:700;color:var(--openui-text-neutral-secondary);margin-bottom:2px;">🎵 이번 주 찬양 콘티 (${parsedSetlist.songs.length}곡)</div>
+              ${contiSummary}
+            </div>
+          </div>
+        </section>
+      `;
+    }
+
+    function renderMonthlyTableCard(fridays) {
+      const rows = ROLES.map(role => {
+        const cfg = ROLE_CONFIG[role];
+        const cells = fridays.map(dStr => {
+          const recs = getRecordsByDateAndRole(dStr)[role] || [];
+          return recs.length
+            ? `<td><span style="font-weight:600;">${recs.map(x => x.name).join(", ")}</span></td>`
+            : `<td><button type="button" class="openui-tag is-warning" style="border:0;cursor:pointer;" onclick="selectTab('${dStr}'); openRoleModal('${role}')">+ 미배정</button></td>`;
+        }).join("");
+        return `<tr><td style="font-weight:700;color:var(--openui-text-neutral-secondary);">${cfg.emoji} ${role}</td>${cells}</tr>`;
+      }).join("");
+
+      return `
+        <section class="openui-card">
+          <div class="openui-card-header">
+            <div>
+              <h2 class="openui-card-title">${state.currentMonth.replace("-", "년 ")}월 전체 주차별 배정 매트릭스 (OpenUI Table)</h2>
+              <p class="openui-card-sub">모든 금요일×9개 파트의 배정 현황을 한눈에 비교하고 [+ 미배정]을 눌러 즉시 추가합니다.</p>
+            </div>
+          </div>
+          <div style="overflow-x:auto;">
+            <table class="openui-table">
+              <thead>
+                <tr>
+                  <th>파트</th>
+                  ${fridays.map((d, i) => `<th>${i + 1}주차 (${formatKoreanDate(d, true)})</th>`).join("")}
+                </tr>
+              </thead>
+              <tbody>
+                ${rows}
+              </tbody>
+            </table>
+          </div>
+        </section>
+      `;
+    }
+
+    function openRoleModal(role) {
+      const dateStr = state.selectedDate;
+      if (isDateLocked(dateStr)) {
+        state.pastDateUnlocked = true;
+      }
+      const cfg = ROLE_CONFIG[role];
+      const currentRecords = getRecordsByDateAndRole(dateStr)[role] || [];
+      const currentNames = currentRecords.map(x => x.name);
+      const candidates = REAL_TEAM_POOL[role] || [];
+      const modal = document.getElementById("openuiModalContent");
+
+      modal.innerHTML = `
+        <div class="openui-card-header" style="padding-bottom:8px;">
+          <div>
+            <h3 class="openui-card-title">${formatKoreanDate(dateStr, true)} · ${cfg.emoji} ${role} 배정</h3>
+            <p class="openui-card-sub">실제 DB 다빈도 섬김이 칩(${cfg.multi ? "복수 선택 가능" : "단일 선택"}) 또는 직접 입력</p>
+          </div>
+          <button type="button" class="openui-btn is-xs" onclick="closeModal()">✕</button>
+        </div>
+        <div>
+          <div class="followup-label" style="margin-bottom:6px;">1. 실제 DB 다빈도 섬김이 선택 (Chips)</div>
+          <div class="openui-chips">
+            ${candidates.map(name => `
+              <button type="button" class="openui-chip-item ${currentNames.includes(name) ? 'is-selected' : ''}" onclick="applyChipMember('${role}', '${name}')">
+                ${name}
+              </button>
+            `).join("")}
+          </div>
+        </div>
+        <div>
+          <div class="followup-label" style="margin-bottom:6px;">2. 직접 입력 (특수 주간명·외부팀 입력 가능, 쉼표 구분 시 개별 레코드 생성)</div>
+          <input id="modalRoleInput" class="openui-inline-input" value="${currentNames.join(', ')}" placeholder="담당자 이름 또는 특별기도회 안내 입력">
+        </div>
+        <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:4px;">
+          <button type="button" class="openui-btn" onclick="saveRoleModal('${role}', true)">배정 비우기</button>
+          <button type="button" class="openui-btn is-primary" onclick="saveRoleModal('${role}', false)">저장하기 (prayerList 반영)</button>
+        </div>
+      `;
+      document.getElementById("openuiModalBackdrop").classList.add("is-open");
+    }
+
+    function applyChipMember(role, name) {
+      const cfg = ROLE_CONFIG[role];
+      const inp = document.getElementById("modalRoleInput");
+      let list = inp.value.split(",").map(s => s.trim()).filter(Boolean);
+      if (cfg.multi) {
+        if (list.includes(name)) list = list.filter(x => x !== name);
+        else list.push(name);
+        inp.value = list.join(", ");
+        // 복수 선택 파트는 모달 안에서 여러 명을 계속 토글할 수 있도록 즉시 반영 표시
+        document.querySelectorAll("#openuiModalContent .openui-chip-item").forEach(btn => {
+          btn.classList.toggle("is-selected", list.includes(btn.textContent.trim()));
+        });
+      } else {
+        inp.value = name;
+        saveRoleModal(role, false);
+      }
+    }
+
+    function saveRoleModal(role, clearAll) {
+      const dateStr = state.selectedDate;
+      const names = clearAll
+        ? []
+        : document.getElementById("modalRoleInput").value.split(",").map(s => s.trim()).filter(Boolean);
+      syncRoleRecordsToFirebaseSchema(dateStr, role, names);
+      closeModal();
+      renderMainSurface();
+      showToast(`✅ ${formatKoreanDate(dateStr, true)} ${role} 파트가 업데이트되었습니다`);
+    }
+
+    function quickAssignDefault(role) {
+      const dateStr = state.selectedDate;
+      const defaultMember = (REAL_TEAM_POOL[role] && REAL_TEAM_POOL[role][0]) || "박민욱";
+      syncRoleRecordsToFirebaseSchema(dateStr, role, [defaultMember]);
+      renderMainSurface();
+      showToast(`⚡ ${formatKoreanDate(dateStr, true)} ${role} 파트에 '${defaultMember}'님을 배정했습니다`);
+    }
+
+    function openContiModal() {
+      const dateStr = state.selectedDate;
+      const rawText = state.db.setlists[dateStr] || "";
+      const ytUrl = state.db.youtubeLinks[dateStr] || "";
+      const modal = document.getElementById("openuiModalContent");
+
+      modal.innerHTML = `
+        <div class="openui-card-header" style="padding-bottom:8px;">
+          <div>
+            <h3 class="openui-card-title">${formatKoreanDate(dateStr, true)} 찬양 콘티(setlists) 편집</h3>
+            <p class="openui-card-sub">원본 Firebase의 멀티라인 문자열 그대로 저장되어 기존 데이터와 100% 호환됩니다.</p>
+          </div>
+          <button type="button" class="openui-btn is-xs" onclick="closeModal()">✕</button>
+        </div>
+        <div>
+          <div class="followup-label" style="margin-bottom:6px;">찬양 순서 (setlists/${dateStr})</div>
+          <textarea id="modalContiText" class="openui-inline-input" rows="6" style="font-family:inherit;line-height:1.5;" placeholder="1. 하나님의 음성을 C&#10;2. 정결한 맘 주시옵소서 F">${rawText}</textarea>
+        </div>
+        <div>
+          <div class="followup-label" style="margin-bottom:6px;">유튜브 URL (youtubeLinks/${dateStr})</div>
+          <input id="modalYtInput" class="openui-inline-input" value="${ytUrl}" placeholder="https://youtube.com/playlist?list=...">
+        </div>
+        <div style="display:flex;justify-content:flex-end;gap:8px;">
+          <button type="button" class="openui-btn" onclick="closeModal()">취소</button>
+          <button type="button" class="openui-btn is-primary" onclick="saveContiModal()">저장하기</button>
+        </div>
+      `;
+      document.getElementById("openuiModalBackdrop").classList.add("is-open");
+    }
+
+    function saveContiModal() {
+      const dateStr = state.selectedDate;
+      if (isDateLocked(dateStr)) {
+        state.pastDateUnlocked = true;
+      }
+      pushSafeSnapshot(`${dateStr} 콘티 수정`);
+      const raw = document.getElementById("modalContiText").value.trim();
+      const yt = document.getElementById("modalYtInput").value.trim();
+      if (raw) state.db.setlists[dateStr] = raw;
+      else delete state.db.setlists[dateStr];
+
+      if (yt) state.db.youtubeLinks[dateStr] = yt;
+      else delete state.db.youtubeLinks[dateStr];
+
+      if (state.firebaseConnected && firebaseDbRef) {
+        const updates = {};
+        updates[`setlists/${dateStr}`] = raw || null;
+        updates[`youtubeLinks/${dateStr}`] = yt || null;
+        firebaseDbRef.ref().update(updates).catch(err => console.error("Firebase 콘티/음원 저장 오류:", err));
+      }
+
+      closeModal();
+      renderMainSurface();
+      showToast("✅ setlists 및 youtubeLinks를 원본 Firebase 포맷으로 저장했습니다");
+    }
+
+    function closeModal() {
+      document.getElementById("openuiModalBackdrop").classList.remove("is-open");
+    }
+
+    function copyKakaoNotice() {
+      const dateStr = state.selectedDate === "matrix" ? getFridaysOfMonth(state.currentMonth)[0] : state.selectedDate;
+      const byRole = getRecordsByDateAndRole(dateStr);
+      const rawSetlist = state.db.setlists[dateStr] || "";
+      const ytUrl = state.db.youtubeLinks[dateStr] || "";
+
+      const lines = [
+        `[서울중앙교회 금요기도회 찬양팀 주간 안내]`,
+        `■ 일시: ${formatKoreanDate(dateStr, false)}`,
+        ``,
+        `[파트별 섬김이 명단]`,
+        ...ROLES.map(r => `- ${r}: ${byRole[r].length ? byRole[r].map(x => x.name).join(', ') : '미배정'}`),
+        ``,
+        `[이번 주 찬양 콘티]`,
+        rawSetlist ? rawSetlist : `- 콘티 준비 중`,
+        ytUrl ? `\n■ 참고 음원: ${ytUrl}` : ``
+      ].filter(Boolean).join("\n");
+
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(lines).catch(() => {});
+      }
+      showToast("📋 카카오톡 단톡방 공지 문구를 복사했습니다!");
+    }
+
+    function runCopilotPrompt() {
+      const inp = document.getElementById("copilotInput");
+      const q = inp.value.trim();
+      if (!q) return;
+      inp.value = "";
+      if (q.includes("10월")) {
+        switchMonth("2026-10");
+      } else if (q.includes("11월")) {
+        switchMonth("2026-11");
+      } else if (q.includes("캡처") || q.includes("카톡") || q.includes("단톡")) {
+        setSubSurface("capture");
+        showToast("🤖 OpenUI Copilot: 월·화 카카오톡 캡처 카드로 전환했습니다");
+      } else if (q.includes("표") || q.includes("전체") || q.includes("매트릭스")) {
+        selectTab("matrix");
+        showToast("🤖 OpenUI Copilot: 월간 전체 배정 매트릭스(Table)를 열었습니다");
+      } else {
+        const empty = ROLES.filter(r => getRecordsByDateAndRole(state.selectedDate)[r].length === 0);
+        quickAssignDefault(empty.length ? empty[0] : "엔지니어");
+      }
+    }
+
+    function updateOpenUILangCode() {
+      const box = document.getElementById("openuiCodeBox");
+      if (!box) return;
+      if (state.selectedDate === "matrix") {
+        box.innerHTML = `<span class="code-kw">root</span> = <span class="code-comp">Stack</span>([header, fridayTabs, monthlyMatrixCard])
+<span class="code-kw">monthlyMatrixCard</span> = <span class="code-comp">Card</span>([
+  <span class="code-comp">CardHeader</span>(<span class="code-str">"${state.currentMonth} 전체 배정 매트릭스"</span>),
+  <span class="code-comp">Table</span>([<span class="code-comp">Col</span>(<span class="code-str">"파트"</span>, roles), ...fridayCols])
+])`;
+        return;
+      }
+
+      const dateStr = state.selectedDate;
+      const byRole = getRecordsByDateAndRole(dateStr);
+      const sampleRecs = Object.entries(state.db.prayerList)
+        .filter(([, v]) => v.date === dateStr)
+        .slice(0, 3)
+        .map(([k, v]) => `  "${k}": { date: "${v.date}", role: "${v.role}", name: "${v.name}" }`)
+        .join(",\n");
+
+      const filled = ROLES.filter(r => byRole[r].length > 0).length;
+      const parsed = parseSetlistString(state.db.setlists[dateStr] || "");
+
+      box.innerHTML = `<span class="code-kw">root</span> = <span class="code-comp">Stack</span>([header, fridayTabs, kpiRow, statusCallout, mainSurface, followUpBar])
+<span class="code-kw">$selectedDate</span> = <span class="code-str">"${dateStr}"</span>
+<span class="code-kw">kpiRow</span> = <span class="code-comp">SnippetCardBlock</span>([
+  <span class="code-comp">SnippetCardItem</span>(<span class="code-str">"roster"</span>, <span class="code-comp">IconText</span>(<span class="code-str">"파트 배정"</span>), <span class="code-comp">BoldText</span>(<span class="code-str">"${filled} / 9 파트"</span>)),
+  <span class="code-comp">SnippetCardItem</span>(<span class="code-str">"conti"</span>, <span class="code-comp">IconText</span>(<span class="code-str">"찬양 콘티"</span>), <span class="code-comp">BoldText</span>(<span class="code-str">"${parsed.songs.length}곡"</span>)),
+  <span class="code-comp">SnippetCardItem</span>(<span class="code-str">"share"</span>, <span class="code-comp">IconText</span>(<span class="code-str">"카톡 공지"</span>), <span class="code-comp">BoldText</span>(<span class="code-str">"캡처 카드"</span>))
+])
+
+<span class="code-act">// 원본 Firebase RTDB (prayerList 1:N 실시간 매핑)</span>
+prayerList[${dateStr}] = {
+${sampleRecs || '  // 등록된 일정 없음'}
+}`;
+    }
+
+    function renderDesignGuide() {
+      const box = document.getElementById("guideWorkspace");
+      box.innerHTML = `
+        <section class="openui-card">
+          <div class="openui-card-header">
+            <div>
+              <h2 class="openui-card-title">1. 원본 저장소(difains/friday-prayer-schedule) 데이터·기능 호환성 검토 결과</h2>
+              <p class="openui-card-sub">실제 운영 중인 Firebase RTDB(prayerList 563건, setlists 59건, youtubeLinks 28건) 전수 검사 및 UI 반영 내역</p>
+            </div>
+            <button type="button" class="openui-btn is-primary" onclick="setLayoutMode('split')">🖥️ 본 화면으로 돌아가기</button>
+          </div>
+          <table class="openui-table">
+            <thead>
+              <tr>
+                <th>검토 항목</th>
+                <th>원본 script.js 및 실제 DB 구조</th>
+                <th>UI 변경 시 주의점</th>
+                <th>새 본 화면 해결 방식</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><b>1. prayerList 1:N 구조</b></td>
+                <td>배정 1건마다 개별 PushKey(<code>{date, role, name}</code>). 한 날에 싱어 최대 5명, 엔지니어 최대 2명</td>
+                <td>쉼표로 합쳐 1개 문자열로 저장하면 기존 개별 Key 수정·삭제 불가</td>
+                <td>이름마다 개별 PushKey 레코드로 분리 저장·삭제하도록 100% 호환 구현</td>
+              </tr>
+              <tr>
+                <td><b>2. setlists 자유 텍스트</b></td>
+                <td><code>setlists/{date}</code>에 <code>1️⃣</code>, <code>&lt;찬양리스트&gt;</code>, 메들리(<code>+</code>) 등이 포함된 멀티라인 문자열</td>
+                <td>특정 입력 포맷을 강제하면 기존 59개 콘티 텍스트 손실</td>
+                <td>원본 멀티라인 문자열 그대로 저장하고 화면에서만 곡·코드를 자동 감지해 시각화</td>
+              </tr>
+              <tr>
+                <td><b>3. 전교인 기도회 삭제</b></td>
+                <td><code>isFirstFridayOfMonth()</code>가 첫째 주마다 <code>✨ 전교인 기도회</code> 배지 자동 출력</td>
+                <td>불필요한 예배 배지 자동 노출</td>
+                <td>첫째 주 분기 및 <code>전교인 기도회</code> 배지·문구 전면 삭제 완료</td>
+              </tr>
+              <tr>
+                <td><b>4. 특수 주간명 입력</b></td>
+                <td><code>11/6 그루터기</code>, <code>11/13 추수감사특별새벽기도회</code>처럼 <code>name</code>에 주간 안내 입력</td>
+                <td>고정 팀원 칩만 제공하면 특수 주간 입력 불가</td>
+                <td>실제 DB 다빈도 팀원 칩(Chips) + 자유 텍스트 직접 입력(Input) 동시 제공</td>
+              </tr>
+              <tr>
+                <td><b>5. 빈 금요일 콘티 등록</b></td>
+                <td><code>prayerList</code>에 일정이 0건인 날짜는 아예 콘티 입력란이 숨겨짐</td>
+                <td>명단 배정 전 콘티 선등록 불가</td>
+                <td>해당 월의 모든 금요일 탭을 기본 노출해 빈 날짜에도 콘티 선등록 가능</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+      `;
+    }
+
+    renderMainSurface();
+    initRealtimeFirebase();
+  </script>
+</body>
+  </html>
