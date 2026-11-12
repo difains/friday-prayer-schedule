@@ -1316,7 +1316,7 @@
         <div class="copilot-box">
           <div class="followup-label">OpenUI Copilot · 빠른 액션 실행</div>
           <div class="copilot-input-row">
-            <input id="copilotInput" class="openui-inline-input" placeholder="예: 엔지니어에 박민욱 배정 / 카톡 캡처 카드 / 10월 보기" onkeydown="if(event.key==='Enter') runCopilotPrompt()">
+            <input id="copilotInput" class="openui-inline-input" placeholder="예: 엔지니어에 박민욱 등록 / 카톡 캡처 카드 / 10월 보기" onkeydown="if(event.key==='Enter') runCopilotPrompt()">
             <button type="button" class="openui-btn is-primary" onclick="runCopilotPrompt()">실행</button>
           </div>
           <div class="followup-items">
@@ -2124,9 +2124,9 @@
       const totalPeople = ROLES.reduce((acc, r) => acc + byRole[r].length, 0);
       const rawSetlist = state.db.setlists[dateStr] || "";
       const parsedSetlist = parseSetlistString(rawSetlist);
-      const leaderNames = byRole["찬양인도"].map(x => x.name).join(", ") || "미배정";
+      const leaderNames = byRole["찬양인도"].map(x => x.name).join(", ") || "미등록";
 
-      // 3. SnippetCardBlock (cue-worship 모션 다이어그램 결합: 미배정 섬김이 & 콘티/음원 등록 권면)
+      // 3. SnippetCardBlock (cue-worship 모션 다이어그램 결합: 미등록 섬김이 & 콘티/음원 등록 권면)
       const shortRoleLabel = (r) => {
         const map = { "찬양인도": "인도", "싱어": "싱어", "메인건반": "메인건반", "세컨건반": "세컨건반", "어쿠스틱 기타": "어쿠스틱", "일렉 기타": "일렉기타", "드럼": "드럼", "베이스": "베이스", "엔지니어": "엔지니어" };
         return map[r] || r;
@@ -2141,11 +2141,11 @@
       const fallbackYtUrl = latestYtDate ? safeHttpUrl(state.db.youtubeLinks[latestYtDate] || "") : "";
       const hasYt = Boolean(state.db.youtubeLinks[dateStr]);
 
-      // 3. SnippetCardBlock (관리자 모드 전용: 파트 배정 현황 & 찬양 콘티 현황 & 카톡 공지)
+      // 3. SnippetCardBlock (관리자 모드 전용: 파트 등록 현황 & 찬양 콘티 현황 & 카톡 공지)
       const kpiHtml = state.isAdmin
         ? `
         <section class="openui-snippet-block" aria-label="주간 핵심 지표 및 등록 권면 모션">
-          <!-- 좌측 카드: 파트 배정 현황 + 01 Sequence 모션 (미배정 파트 순차 하이라이트) -->
+          <!-- 좌측 카드: 파트 등록 현황 + 01 Sequence 모션 (미등록 파트 순차 하이라이트) -->
           <div class="openui-snippet-item is-motion-card">
             <div class="snippet-top-row">
               <div class="snippet-lhs">
@@ -2153,36 +2153,36 @@
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
                 </div>
                 <div class="snippet-titles">
-                  <span class="snippet-title">파트 배정 현황</span>
-                  <span class="snippet-sub">총 ${totalPeople}명 배정됨</span>
+                  <span class="snippet-title">파트 등록 현황</span>
+                  <span class="snippet-sub">총 ${totalPeople}명 등록됨</span>
                 </div>
               </div>
               <div class="snippet-rhs">
                 <span class="snippet-metric">${filledRoleCount} / 9 파트</span>
                 <span class="snippet-delta" style="color:${emptyRoles.length ? 'var(--openui-text-alert-primary)' : 'var(--openui-text-success-primary)'};">
-                  ${emptyRoles.length ? `미배정 ${emptyRoles.length}곳` : "전체 파트 완료"}
+                  ${emptyRoles.length ? `미등록 ${emptyRoles.length}곳` : "전체 파트 완료"}
                 </span>
               </div>
             </div>
 
-            <div class="cue-motion-stage" title="미배정 파트를 클릭하면 바로 섬김이를 등록할 수 있습니다">
-              <svg role="img" aria-label="파트별 섬김이 순차 배정 모션 다이어그램" viewBox="0 0 320 124" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <div class="cue-motion-stage" title="미등록 파트를 클릭하면 바로 섬김이를 등록할 수 있습니다">
+              <svg role="img" aria-label="파트별 섬김이 순차 등록 모션 다이어그램" viewBox="0 0 320 124" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                 <!-- Slot 1 -->
                 <g transform="translate(10 14)" style="cursor:pointer;" onclick="openRoleModal('${slotRoles[0]}')">
                   <rect data-motion="cue-one" width="84" height="58" rx="4" fill="#faf6ec"></rect>
-                  <text x="42" y="21" text-anchor="middle" fill="#5e594f" stroke="none" font-size="11" font-weight="600">${byRole[slotRoles[0]].length ? "배정완료" : "미배정 1"}</text>
+                  <text x="42" y="21" text-anchor="middle" fill="#5e594f" stroke="none" font-size="11" font-weight="600">${byRole[slotRoles[0]].length ? "등록완료" : "미등록 1"}</text>
                   <text x="42" y="43" text-anchor="middle" fill="currentColor" stroke="none" font-size="15" font-weight="700">${shortRoleLabel(slotRoles[0])}</text>
                 </g>
                 <!-- Slot 2 -->
                 <g transform="translate(118 14)" style="cursor:pointer;" onclick="openRoleModal('${slotRoles[1]}')">
                   <rect data-motion="cue-two" width="84" height="58" rx="4" fill="#ded2bf"></rect>
-                  <text x="42" y="21" text-anchor="middle" fill="#5e594f" stroke="none" font-size="11" font-weight="600">${byRole[slotRoles[1]].length ? "배정완료" : "미배정 2"}</text>
+                  <text x="42" y="21" text-anchor="middle" fill="#5e594f" stroke="none" font-size="11" font-weight="600">${byRole[slotRoles[1]].length ? "등록완료" : "미등록 2"}</text>
                   <text x="42" y="43" text-anchor="middle" fill="currentColor" stroke="none" font-size="15" font-weight="700">${shortRoleLabel(slotRoles[1])}</text>
                 </g>
                 <!-- Slot 3 -->
                 <g transform="translate(226 14)" style="cursor:pointer;" onclick="openRoleModal('${slotRoles[2]}')">
                   <rect data-motion="cue-three" width="84" height="58" rx="4" fill="#faf6ec"></rect>
-                  <text x="42" y="21" text-anchor="middle" fill="#5e594f" stroke="none" font-size="11" font-weight="600">${byRole[slotRoles[2]].length ? "배정완료" : "미배정 3"}</text>
+                  <text x="42" y="21" text-anchor="middle" fill="#5e594f" stroke="none" font-size="11" font-weight="600">${byRole[slotRoles[2]].length ? "등록완료" : "미등록 3"}</text>
                   <text x="42" y="43" text-anchor="middle" fill="currentColor" stroke="none" font-size="15" font-weight="700">${shortRoleLabel(slotRoles[2])}</text>
                 </g>
                 <!-- Connecting arrows -->
@@ -2191,7 +2191,7 @@
                 <!-- Moving Cue Indicator -->
                 <g data-motion="cue-position">
                   <text x="160" y="98" text-anchor="middle" fill="currentColor" stroke="none" font-size="13" font-weight="700">
-                    ${emptyRoles.length ? "▲ 지금 배정 필요" : "▲ 전체 배정 완료"}
+                    ${emptyRoles.length ? "▲ 지금 등록 필요" : "▲ 전체 등록 완료"}
                   </text>
                 </g>
               </svg>
@@ -2293,13 +2293,13 @@
       `
         : "";
 
-      // 4. Callout (과거 일정 잠금 상태 안내는 관리자 모드 전용 + 미배정 파트 안내)
+      // 4. Callout (과거 일정 잠금 상태 안내는 관리자 모드 전용 + 미등록 파트 안내)
       const pastLockBanner = (state.isAdmin && isPastFriday(dateStr))
         ? `
           <div class="openui-callout is-info" style="padding:10px 16px;">
             <div class="callout-body">
               <span class="callout-title">${isDateLocked(dateStr) ? "지나간 금요일 일정입니다 (실수 방지 보호 중)" : "과거 금요일 일정 수정 잠금이 해제되었습니다"} (${formatKoreanDate(dateStr, true)})</span>
-              <span class="callout-desc">${isDateLocked(dateStr) ? "과거 기록을 수정하려면 우측 [잠금 해제하고 수정] 버튼을 누르거나 아래 [+ 배정 / 편집] 버튼을 클릭하세요." : "과거 기록 수정이 가능합니다. 수정 내역은 직전 스냅샷으로 자동 백업됩니다."}</span>
+              <span class="callout-desc">${isDateLocked(dateStr) ? "과거 기록을 수정하려면 우측 [잠금 해제하고 수정] 버튼을 누르거나 아래 [등록 / 수정] 버튼을 클릭하세요." : "과거 기록 수정이 가능합니다. 수정 내역은 직전 스냅샷으로 자동 백업됩니다."}</span>
             </div>
             <button type="button" class="openui-btn ${isDateLocked(dateStr) ? 'is-primary' : ''} is-xs" onclick="togglePastDateLock()">
               ${isDateLocked(dateStr) ? "잠금 해제하고 수정" : "다시 잠그기"}
@@ -2312,15 +2312,15 @@
         ? `
           <div class="openui-callout is-warning">
             <div class="callout-body">
-              <span class="callout-title">${formatKoreanDate(dateStr, true)} 금요기도회 — 아직 비어 있는 파트(${emptyRoles.join(", ")})가 있습니다</span>
-              <span class="callout-desc">아래 명단에서 각 파트 우측의 [+ 배정] 버튼을 눌러 담당자를 등록해 주세요.</span>
+              <span class="callout-title">섬김이 미등록된 파트(${emptyRoles.join(", ")})</span>
+              <span class="callout-desc">파트별 섬김이 명단에서 등록을 눌러 섬김이 등록을 해주세요.</span>
             </div>
           </div>
         `
         : `
           <div class="openui-callout is-success">
             <div class="callout-body">
-              <span class="callout-title">${formatKoreanDate(dateStr, true)} 금요기도회 9개 파트가 모두 배정되었습니다</span>
+              <span class="callout-title">${formatKoreanDate(dateStr, true)} 금요기도회 9개 파트가 모두 등록되었습니다</span>
               <span class="callout-desc">${state.isAdmin ? "월·화요일 카카오톡 단톡방 캡처 카드와 공지 문구를 복사해 팀원들에게 공유하세요." : "섬김이 명단 수정이나 찬양 콘티·참고 음원 등록은 아래 카드에서 바로 진행하실 수 있습니다."}</span>
             </div>
             ${state.isAdmin ? `<button type="button" class="openui-btn is-primary" onclick="setSubSurface('capture')">카톡 캡처 카드 열기</button>` : `<button type="button" class="openui-btn is-primary" onclick="openContiModal()">찬양 콘티 · 참고 음원 등록/수정</button>`}
@@ -2344,7 +2344,7 @@
             <span class="followup-label">관리자 빠른 도구</span>
             <div class="followup-items">
               ${emptyRoles.length > 0
-                ? `<button type="button" class="openui-followup-item" onclick="quickAssignDefault('${emptyRoles[0]}')">미배정 '${emptyRoles[0]}'에 다빈도 팀원(${REAL_TEAM_POOL[emptyRoles[0]][0]}) 바로 배정</button>`
+                ? `<button type="button" class="openui-followup-item" onclick="quickAssignDefault('${emptyRoles[0]}')">미등록 '${emptyRoles[0]}'에 다빈도 팀원(${REAL_TEAM_POOL[emptyRoles[0]][0]}) 바로 등록</button>`
                 : `<button type="button" class="openui-followup-item" onclick="copyKakaoNotice()">단톡방 공지 문구 클립보드 복사</button>`}
               <button type="button" class="openui-followup-item" onclick="setSubSurface(state.subSurface === 'capture' ? 'briefing' : 'capture')">
                 ${state.subSurface === "capture" ? "기본 브리핑 화면으로 복귀" : "월·화 카카오톡 캡처 전용 카드 열기"}
@@ -2388,10 +2388,10 @@
             </div>
             <div class="entity-rhs">
               ${isEmpty
-                ? `<span class="openui-tag is-warning">미배정</span>
-                   <button type="button" class="openui-btn is-primary is-xs" onclick="openRoleModal('${role}')">+ 배정</button>`
+                ? `<span class="openui-tag is-warning">미등록</span>
+                   <button type="button" class="openui-btn is-primary is-xs" onclick="openRoleModal('${role}')">등록</button>`
                 : `${memberPills}
-                   <button type="button" class="openui-btn is-xs" onclick="openRoleModal('${role}')">편집</button>`}
+                   <button type="button" class="openui-btn is-xs" onclick="openRoleModal('${role}')">수정</button>`}
             </div>
           </div>
         `;
@@ -2519,7 +2519,7 @@
                 <h2 class="openui-card-title">파트별 섬김이 명단</h2>
                 <p class="openui-card-sub">${formatKoreanDate(dateStr, false)} 금요기도회 찬양팀</p>
               </div>
-              <button type="button" class="openui-btn is-xs" onclick="setSubSurface('editable')">전체 파트 일괄 편집</button>
+              <button type="button" class="openui-btn is-xs" onclick="setSubSurface('editable')">전체 파트 한번에 편집</button>
             </div>
             <div class="openui-entity-list">
               ${entityRows}
@@ -2553,7 +2553,7 @@
           <tr>
             <td style="font-weight:700;width:125px;">${cfg.emoji} ${role}</td>
             <td>
-              <input class="openui-inline-input" data-edit-role="${role}" value="${val}" placeholder="미배정 (복수 인원은 쉼표로 구분해 개별 DB Key 생성)">
+              <input class="openui-inline-input" data-edit-role="${role}" value="${val}" placeholder="미등록 (복수 인원은 쉼표로 구분해 개별 DB Key 생성)">
             </td>
             <td style="width:90px;text-align:right;">
               <button type="button" class="openui-btn is-xs" onclick="openRoleModal('${role}')">목록 선택</button>
@@ -2566,7 +2566,7 @@
         <section class="openui-card">
           <div class="openui-card-header">
             <div>
-              <h2 class="openui-card-title">9개 파트 일괄 인라인 편집</h2>
+              <h2 class="openui-card-title">전체 파트 한번에 편집</h2>
               <p class="openui-card-sub">${formatKoreanDate(dateStr, false)} — 저장 시 각 이름마다 개별 DB 레코드로 동기화됩니다.</p>
             </div>
             <div style="display:flex;gap:6px;">
@@ -2623,7 +2623,7 @@
       if (isDateLocked(dateStr)) {
         state.pastDateUnlocked = true;
       }
-      pushSafeSnapshot(`${dateStr} 전체 파트 일괄 편집`);
+      pushSafeSnapshot(`${dateStr} 전체 파트 한번에 편집`);
       document.querySelectorAll("[data-edit-role]").forEach(inp => {
         const role = inp.getAttribute("data-edit-role");
         const names = inp.value.split(",").map(s => s.trim()).filter(Boolean);
@@ -2641,7 +2641,7 @@
         return `
           <div style="color:var(--openui-text-neutral-secondary);font-weight:600;">${cfg.emoji} ${role}</div>
           <div style="font-weight:700;color:${names.length ? 'var(--openui-text-neutral-primary)' : 'var(--openui-text-alert-primary)'};">
-            ${names.length ? names.join(", ") : "미배정"}
+            ${names.length ? names.join(", ") : "미등록"}
           </div>
         `;
       }).join("");
@@ -2679,7 +2679,7 @@
             </div>
             <div>
               <h3 style="margin:0;font-size:19px;font-weight:800;">${formatKoreanDate(dateStr, false)}</h3>
-              <p style="margin:4px 0 0;font-size:12px;color:var(--openui-text-neutral-secondary);">금요기도회 찬양팀 파트별 배정 및 찬양 리스트</p>
+              <p style="margin:4px 0 0;font-size:12px;color:var(--openui-text-neutral-secondary);">금요기도회 찬양팀 파트별 등록 및 찬양 리스트</p>
             </div>
             <div class="capture-grid-2col">
               ${gridRows}
@@ -2700,7 +2700,7 @@
           const recs = getRecordsByDateAndRole(dStr)[role] || [];
           return recs.length
             ? `<td><span style="font-weight:600;">${recs.map(x => x.name).join(", ")}</span></td>`
-            : `<td><button type="button" class="openui-tag is-warning" style="border:0;cursor:pointer;" onclick="selectTab('${dStr}'); openRoleModal('${role}')">+ 미배정</button></td>`;
+            : `<td><button type="button" class="openui-tag is-warning" style="border:0;cursor:pointer;" onclick="selectTab('${dStr}'); openRoleModal('${role}')">미등록</button></td>`;
         }).join("");
         return `<tr><td style="font-weight:700;color:var(--openui-text-neutral-secondary);">${cfg.emoji} ${role}</td>${cells}</tr>`;
       }).join("");
@@ -2726,8 +2726,8 @@
         <section class="openui-card">
           <div class="openui-card-header">
             <div>
-              <h2 class="openui-card-title">${state.currentMonth.replace("-", "년 ")}월 전체 주차별 배정 매트릭스</h2>
-              <p class="openui-card-sub">모든 금요일×9개 파트의 배정 현황과 찬양 콘티·참고 음원을 한눈에 비교하고 [+ 미배정]을 눌러 즉시 추가합니다.</p>
+              <h2 class="openui-card-title">${state.currentMonth.replace("-", "년 ")}월 전체 주차별 등록 현황</h2>
+              <p class="openui-card-sub">모든 금요일×9개 파트의 등록 현황과 찬양 콘티·참고 음원을 한눈에 비교하고 [미등록]을 눌러 즉시 추가합니다.</p>
             </div>
           </div>
           <div style="overflow-x:auto;">
@@ -2765,7 +2765,7 @@
       modal.innerHTML = `
         <div class="openui-card-header" style="padding-bottom:8px;">
           <div>
-            <h3 class="openui-card-title">${formatKoreanDate(dateStr, true)} · ${cfg.emoji} ${role} 배정</h3>
+            <h3 class="openui-card-title">${formatKoreanDate(dateStr, true)} · ${cfg.emoji} ${role} 등록</h3>
             <p class="openui-card-sub">다빈도 섬김이(${cfg.multi ? "복수 선택 · 다시 누르면 해제" : "단일 선택 · 다시 누르면 해제"}) 또는 직접 입력</p>
           </div>
           <button type="button" class="openui-btn is-xs" onclick="closeModal()" aria-label="닫기">&times;</button>
@@ -2781,8 +2781,8 @@
           </div>
         </div>
         <div>
-          <div class="followup-label" style="margin-bottom:6px;">2. 직접 입력 (비우고 저장하면 미배정 · 쉼표 구분 시 개별 레코드 생성)</div>
-          <input id="modalRoleInput" class="openui-inline-input" value="${currentNames.join(', ')}" placeholder="담당자 이름 입력 (비우고 저장하면 미배정)" oninput="syncRoleModalChipHighlights()">
+          <div class="followup-label" style="margin-bottom:6px;">2. 직접 입력 (비우고 저장하면 미등록 · 쉼표 구분 시 개별 레코드 생성)</div>
+          <input id="modalRoleInput" class="openui-inline-input" value="${currentNames.join(', ')}" placeholder="담당자 이름 입력 (비우고 저장하면 미등록)" oninput="syncRoleModalChipHighlights()">
         </div>
         <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:4px;">
           <button type="button" class="openui-btn" onclick="closeModal()">취소</button>
@@ -2828,7 +2828,7 @@
       renderMainSurface();
       showToast(names.length
         ? `${formatKoreanDate(dateStr, true)} ${role} 파트가 업데이트되었습니다`
-        : `${formatKoreanDate(dateStr, true)} ${role} 파트를 미배정으로 변경했습니다`);
+        : `${formatKoreanDate(dateStr, true)} ${role} 파트를 미등록으로 변경했습니다`);
     }
 
     function quickAssignDefault(role) {
@@ -2836,7 +2836,7 @@
       const defaultMember = (REAL_TEAM_POOL[role] && REAL_TEAM_POOL[role][0]) || "박민욱";
       syncRoleRecordsToFirebaseSchema(dateStr, role, [defaultMember]);
       renderMainSurface();
-      showToast(`${formatKoreanDate(dateStr, true)} ${role} 파트에 '${defaultMember}'님을 배정했습니다`);
+      showToast(`${formatKoreanDate(dateStr, true)} ${role} 파트에 '${defaultMember}'님을 등록했습니다`);
     }
 
     function openContiModal() {
@@ -2910,7 +2910,7 @@
         `■ 일시: ${formatKoreanDate(dateStr, false)}`,
         ``,
         `[파트별 섬김이 명단]`,
-        ...ROLES.map(r => `- ${r}: ${byRole[r].length ? byRole[r].map(x => x.name).join(', ') : '미배정'}`),
+        ...ROLES.map(r => `- ${r}: ${byRole[r].length ? byRole[r].map(x => x.name).join(', ') : '미등록'}`),
         ``,
         `[이번 주 찬양 콘티]`,
         rawSetlist ? rawSetlist : `- 콘티 준비 중`,
@@ -2937,7 +2937,7 @@
         showToast("OpenUI Copilot: 월·화 카카오톡 캡처 카드로 전환했습니다");
       } else if (q.includes("표") || q.includes("전체") || q.includes("매트릭스")) {
         selectTab("matrix");
-        showToast("OpenUI Copilot: 월간 전체 배정 매트릭스를 열었습니다");
+        showToast("OpenUI Copilot: 월간 전체 등록 매트릭스를 열었습니다");
       } else {
         const empty = ROLES.filter(r => getRecordsByDateAndRole(state.selectedDate)[r].length === 0);
         quickAssignDefault(empty.length ? empty[0] : "엔지니어");
@@ -2950,7 +2950,7 @@
       if (state.selectedDate === "matrix") {
         box.innerHTML = `<span class="code-kw">root</span> = <span class="code-comp">Stack</span>([header, fridayTabs, monthlyMatrixCard])
 <span class="code-kw">monthlyMatrixCard</span> = <span class="code-comp">Card</span>([
-  <span class="code-comp">CardHeader</span>(<span class="code-str">"${state.currentMonth} 전체 배정 매트릭스"</span>),
+  <span class="code-comp">CardHeader</span>(<span class="code-str">"${state.currentMonth} 전체 등록 매트릭스"</span>),
   <span class="code-comp">Table</span>([<span class="code-comp">Col</span>(<span class="code-str">"파트"</span>, roles), ...fridayCols])
 ])`;
         return;
@@ -2970,7 +2970,7 @@
       box.innerHTML = `<span class="code-kw">root</span> = <span class="code-comp">Stack</span>([header, fridayTabs, kpiRow, statusCallout, mainSurface, followUpBar])
 <span class="code-kw">$selectedDate</span> = <span class="code-str">"${dateStr}"</span>
 <span class="code-kw">kpiRow</span> = <span class="code-comp">SnippetCardBlock</span>([
-  <span class="code-comp">SnippetCardItem</span>(<span class="code-str">"roster"</span>, <span class="code-comp">IconText</span>(<span class="code-str">"파트 배정"</span>), <span class="code-comp">BoldText</span>(<span class="code-str">"${filled} / 9 파트"</span>)),
+  <span class="code-comp">SnippetCardItem</span>(<span class="code-str">"roster"</span>, <span class="code-comp">IconText</span>(<span class="code-str">"파트 등록"</span>), <span class="code-comp">BoldText</span>(<span class="code-str">"${filled} / 9 파트"</span>)),
   <span class="code-comp">SnippetCardItem</span>(<span class="code-str">"conti"</span>, <span class="code-comp">IconText</span>(<span class="code-str">"찬양 콘티"</span>), <span class="code-comp">BoldText</span>(<span class="code-str">"${parsed.songs.length}곡"</span>)),
   <span class="code-comp">SnippetCardItem</span>(<span class="code-str">"share"</span>, <span class="code-comp">IconText</span>(<span class="code-str">"카톡 공지"</span>), <span class="code-comp">BoldText</span>(<span class="code-str">"캡처 카드"</span>))
 ])
@@ -3042,4 +3042,4 @@ ${sampleRecs || '  // 등록된 일정 없음'}
     initRealtimeFirebase();
   </script>
 </body>
-</html>
+  </html>
