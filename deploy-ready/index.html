@@ -2591,7 +2591,7 @@
         <div class="openui-card-header" style="padding-bottom:8px;">
           <div>
             <h3 class="openui-card-title">${formatKoreanDate(dateStr, true)} · ${cfg.emoji} ${role} 배정</h3>
-            <p class="openui-card-sub">실제 DB 다빈도 섬김이(${cfg.multi ? "복수 선택 가능" : "단일 선택"}) 또는 직접 입력</p>
+            <p class="openui-card-sub">다빈도 섬김이(${cfg.multi ? "복수 선택 · 다시 누르면 해제" : "단일 선택 · 다시 누르면 해제"}) 또는 직접 입력</p>
           </div>
           <button type="button" class="openui-btn is-xs" onclick="closeModal()">✕</button>
         </div>
@@ -2599,15 +2599,15 @@
           <div class="followup-label" style="margin-bottom:6px;">1. 실제 DB 다빈도 섬김이 선택</div>
           <div class="openui-chips">
             ${candidates.map(name => `
-              <button type="button" class="openui-chip-item ${currentNames.includes(name) ? 'is-selected' : ''}" onclick="applyChipMember('${role}', '${name}')">
+              <button type="button" class="openui-chip-item ${currentNames.includes(name) ? 'is-selected' : ''}" data-chip-name="${escapeHtml(name)}" onclick="applyChipMember('${role}', '${name}')">
                 ${name}
               </button>
             `).join("")}
           </div>
         </div>
         <div>
-          <div class="followup-label" style="margin-bottom:6px;">2. 직접 입력 (특수 주간명·외부팀 입력 가능, 쉼표 구분 시 개별 레코드 생성)</div>
-          <input id="modalRoleInput" class="openui-inline-input" value="${currentNames.join(', ')}" placeholder="담당자 이름 또는 특별기도회 안내 입력">
+          <div class="followup-label" style="margin-bottom:6px;">2. 직접 입력 (비우고 저장하면 미배정 · 쉼표 구분 시 개별 레코드 생성)</div>
+          <input id="modalRoleInput" class="openui-inline-input" value="${currentNames.join(', ')}" placeholder="담당자 이름 입력 (비우고 저장하면 미배정)" oninput="syncRoleModalChipHighlights()">
         </div>
         <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:4px;">
           <button type="button" class="openui-btn" onclick="closeModal()">취소</button>
@@ -2617,6 +2617,16 @@
       document.getElementById("openuiModalBackdrop").classList.add("is-open");
     }
 
+    function syncRoleModalChipHighlights() {
+      const inp = document.getElementById("modalRoleInput");
+      if (!inp) return;
+      const list = inp.value.split(",").map(s => s.trim()).filter(Boolean);
+      document.querySelectorAll("#openuiModalContent .openui-chip-item").forEach(btn => {
+        const chipName = btn.getAttribute("data-chip-name") || btn.textContent.trim();
+        btn.classList.toggle("is-selected", list.includes(chipName));
+      });
+    }
+
     function applyChipMember(role, name) {
       const cfg = ROLE_CONFIG[role];
       const inp = document.getElementById("modalRoleInput");
@@ -2624,15 +2634,13 @@
       if (cfg.multi) {
         if (list.includes(name)) list = list.filter(x => x !== name);
         else list.push(name);
-        inp.value = list.join(", ");
-        // 복수 선택 파트는 모달 안에서 여러 명을 계속 토글할 수 있도록 즉시 반영 표시
-        document.querySelectorAll("#openuiModalContent .openui-chip-item").forEach(btn => {
-          btn.classList.toggle("is-selected", list.includes(btn.textContent.trim()));
-        });
       } else {
-        inp.value = name;
-        saveRoleModal(role, false);
+        // 단일 선택 파트도 이미 선택된 이름을 다시 누르면 선택 해제되어 저장 시 미배정으로 변경 가능
+        if (list.includes(name)) list = [];
+        else list = [name];
       }
+      inp.value = list.join(", ");
+      syncRoleModalChipHighlights();
     }
 
     function saveRoleModal(role, clearAll) {
@@ -2643,7 +2651,9 @@
       syncRoleRecordsToFirebaseSchema(dateStr, role, names);
       closeModal();
       renderMainSurface();
-      showToast(`✅ ${formatKoreanDate(dateStr, true)} ${role} 파트가 업데이트되었습니다`);
+      showToast(names.length
+        ? `✅ ${formatKoreanDate(dateStr, true)} ${role} 파트가 업데이트되었습니다`
+        : `✅ ${formatKoreanDate(dateStr, true)} ${role} 파트를 미배정으로 변경했습니다`);
     }
 
     function quickAssignDefault(role) {
