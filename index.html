@@ -1,267 +1,227 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>서울중앙교회 - 금요기도회 찬양팀 일정관리</title>
-    
-    <!-- Microsoft Clarity 추적 코드 -->
-    <script type="text/javascript">
-    (function(c,l,a,r,i,t,y){
-        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-    })(window, document, "clarity", "script", "tilho7v35y");
-    </script>
-    
-    <link rel="stylesheet" href="style.css">
-    <link rel="icon" href="./assets/church-logo.png" type="image/png">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>서울중앙교회 - 금요기도회 찬양팀 일정관리 (보안 점검 및 시스템 업그레이드 안내)</title>
+  <link rel="icon" href="./assets/church-logo.png" type="image/png">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+  <style>
+    :root {
+      --bg: #efe8db;
+      --surface: #faf6ec;
+      --surface-accent: #ded2bf;
+      --ink: #1d1d1b;
+      --muted: #5e594f;
+      --border: #bcaf99;
+      --brand: #2563eb;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 16px;
+      background: var(--bg);
+      background-image: linear-gradient(120deg, var(--surface), transparent 65%);
+      color: var(--ink);
+      font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+      word-break: keep-all;
+    }
+    .card {
+      width: 100%;
+      max-width: 520px;
+      background: #fdfdfc;
+      border: 1.5px solid var(--border);
+      border-radius: 22px;
+      padding: 28px 24px 24px;
+      box-shadow: 0 14px 36px rgba(29, 29, 27, 0.08);
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid rgba(29, 29, 27, 0.1);
+    }
+    .logo {
+      width: 48px;
+      height: 48px;
+      object-fit: contain;
+      border-radius: 10px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 4px;
+    }
+    .title-wrap h1 {
+      margin: 0;
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+    .title-wrap p {
+      margin: 3px 0 0;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--muted);
+    }
+    .badge {
+      margin-left: auto;
+      background: rgba(217, 119, 6, 0.15);
+      color: #92400e;
+      font-size: 11.5px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+    .motion-box {
+      background: var(--bg);
+      background-image: linear-gradient(120deg, var(--surface), transparent 65%);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px 14px 10px;
+    }
+    .motion-box svg {
+      display: block;
+      width: 100%;
+      max-width: 340px;
+      height: auto;
+      margin: 0 auto;
+    }
+    [data-motion] {
+      animation-duration: 6s;
+      animation-timing-function: ease-in-out;
+      animation-iteration-count: infinite;
+      animation-fill-mode: both;
+    }
+    [data-motion="step-1"] { animation-name: step-1; }
+    [data-motion="step-2"] { animation-name: step-2; }
+    [data-motion="step-3"] { animation-name: step-3; }
+    [data-motion="pointer"] { animation-name: pointer; }
+    @keyframes step-1 {
+      0%, 26%, 100% { fill: var(--surface-accent); }
+      32%, 94% { fill: var(--surface); }
+    }
+    @keyframes step-2 {
+      0%, 26%, 64%, 100% { fill: var(--surface); }
+      32%, 58% { fill: var(--surface-accent); }
+    }
+    @keyframes step-3 {
+      0%, 58%, 100% { fill: var(--surface); }
+      64%, 94% { fill: var(--surface-accent); }
+    }
+    @keyframes pointer {
+      0%, 26%, 100% { transform: translateX(-106px); }
+      32%, 58% { transform: translateX(0); }
+      64%, 94% { transform: translateX(106px); }
+    }
+    .notice-title {
+      margin: 0;
+      font-size: 19px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.4;
+    }
+    .notice-body {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.65;
+      color: #3a3832;
+    }
+    .info-list {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 16px;
+      margin: 0;
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      font-size: 13px;
+      color: var(--ink);
+    }
+    .info-list li strong {
+      font-weight: 700;
+    }
+    .footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      flex-wrap: wrap;
+      padding-top: 10px;
+      border-top: 1px dashed var(--border);
+      font-size: 12px;
+      color: var(--muted);
+    }
+  </style>
 </head>
 <body>
-    <div class="app">
-        <!-- Header -->
-        <header class="header">
-            <div class="container">
-                <div class="header-content">
-                    <div class="header-left">
-                        <a href="#" class="logo-link" title="메인으로 돌아가기">
-                            <img src="./assets/church-logo.png" alt="서울중앙교회 로고" class="church-logo">
-                        </a>
-                        <div class="header-title">
-                            <h1>서울중앙교회</h1>
-                            <p>금요기도회 찬양팀 일정관리</p>
-                        </div>
-                    </div>
-                    
-                    <nav class="month-nav">
-                        <button id="prevMonth" class="btn btn--secondary btn--sm nav-btn" aria-label="이전 월" type="button">
-                            <span>‹</span>
-                        </button>
-                        <h2 id="currentMonth" class="month-display">2025년 8월</h2>
-                        <button id="nextMonth" class="btn btn--secondary btn--sm nav-btn" aria-label="다음 월" type="button">
-                            <span>›</span>
-                        </button>
-                    </nav>
-                </div>
-            </div>
-        </header>
+  <main class="card">
+    <header class="header">
+      <img src="./assets/church-logo.png" alt="서울중앙교회 로고" class="logo" id="churchLogoImg">
+      <div class="title-wrap">
+        <h1>서울중앙교회</h1>
+        <p>금요기도회 찬양팀 일정관리</p>
+      </div>
+      <span class="badge">🔒 보안 점검 중</span>
+    </header>
 
-        <!-- Main Content -->
-        <main class="main">
-            <div class="container">
-                <!-- Schedule Input Form -->
-                <section class="form-section">
-                    <div class="card">
-                        <div class="card__header">
-                            <h3>섬김 일정 추가</h3>
-                        </div>
-                        <div class="card__body">
-                            <form id="scheduleForm" class="schedule-form">
-                                <div class="form-row">
-                                    <div class="form-group">
-                                        <label for="scheduleDate" class="form-label">날짜 (금요일만 선택 가능)</label>
-                                        <input 
-                                            type="date" 
-                                            id="scheduleDate" 
-                                            name="scheduleDate" 
-                                            class="form-input" 
-                                            required 
-                                            aria-describedby="dateHelp"
-                                        >
-                                        <small id="dateHelp" class="form-help">매주 금요일에만 일정을 추가할 수 있습니다</small>
-                                    </div>
-                                    
-                                    <div class="form-group">
-                                        <label for="scheduleRole" class="form-label">역할</label>
-                                        <select id="scheduleRole" name="scheduleRole" class="form-select" required>
-                                            <option value="">역할을 선택하세요</option>
-                                            <option value="찬양인도">🎤 찬양인도</option>
-                                            <option value="싱어">🎵 싱어</option>
-                                            <option value="메인건반">🎹 메인건반</option>
-                                            <option value="세컨건반">⌨️ 세컨건반</option>
-                                            <option value="어쿠스틱 기타">🎸 어쿠스틱 기타</option>
-                                            <option value="일렉 기타">🎸 일렉 기타</option>
-                                            <option value="드럼">🥁 드럼</option>
-                                            <option value="베이스">🎸 베이스</option>
-                                            <option value="엔지니어">🎚️ 엔지니어</option>
-                                        </select>
-                                    </div>
-                                    
-                                    <div class="form-group">
-                                        <label for="scheduleName" class="form-label">이름</label>
-                                        <input 
-                                            type="text" 
-                                            id="scheduleName" 
-                                            name="scheduleName" 
-                                            class="form-input" 
-                                            placeholder="담당자 이름을 입력하세요" 
-                                            required
-                                        >
-                                    </div>
-                                    
-                                    <button type="submit" class="btn btn--primary">
-                                        <span>추가</span>
-                                    </button>
-                                </div>
-                                
-                                <!-- Form Messages -->
-                                <div id="formMessages" class="form-messages" aria-live="polite"></div>
-                            </form>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- Schedule List Section -->
-                <section class="schedule-section">
-                    <div class="card">
-                        <div class="card__header">
-                            <div class="schedule-header">
-                                <h3>일정 목록</h3>
-                                <button id="toggleAllSchedules" class="btn btn--secondary btn--sm" type="button">
-                                    <span id="toggleText">📁 모두 닫기</span>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="card__body">
-                            <div id="schedulesList" class="schedules-list">
-                                <div class="empty-state">
-                                    <div class="empty-state__icon">📅</div>
-                                    <h4 class="empty-state__title">등록된 일정이 없습니다</h4>
-                                    <p class="empty-state__text">위 폼에서 새로운 섬김 일정을 추가해보세요</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- Extra Information Section -->
-                <section id="extraInfoSection" class="extra-info-section" style="display: none;">
-                    <div class="card">
-                        <div class="card__header">
-                            <h3>추가 정보</h3>
-                            <p class="card__subtitle">각 날짜별 콘티와 유튜브 링크를 관리합니다</p>
-                        </div>
-                        <div class="card__body">
-                            <div id="extraInfoContainer" class="extra-info-container">
-                                <!-- 동적으로 생성될 콘티/유튜브 입력 폼들 -->
-                            </div>
-                        </div>
-                    </div>
-                </section>
-            </div>
-        </main>
-
-        <!-- Footer -->
-        <footer class="footer">
-            <div class="container">
-                <div class="footer-content">
-                    <p class="footer-text">섬김에 늘 감사합니다. | 💝 사랑으로 섬기는 교회</p>
-                </div>
-            </div>
-        </footer>
-
-        <!-- Edit Modal -->
-        <div id="editModal" class="modal-overlay hidden" role="dialog" aria-labelledby="editModalTitle" aria-hidden="true">
-            <div class="modal">
-                <div class="modal__header">
-                    <h3 id="editModalTitle" class="modal__title">일정 수정</h3>
-                    <button id="closeEditModal" class="modal__close" aria-label="모달 닫기" type="button">×</button>
-                </div>
-                <div class="modal__body">
-                    <form id="editForm" class="schedule-form">
-                        <input type="hidden" id="editScheduleId">
-                        
-                        <div class="form-group">
-                            <label for="editScheduleDate" class="form-label">날짜 (금요일만 선택 가능)</label>
-                            <input 
-                                type="date" 
-                                id="editScheduleDate" 
-                                name="editScheduleDate" 
-                                class="form-input" 
-                                required
-                            >
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="editScheduleRole" class="form-label">역할</label>
-                            <select id="editScheduleRole" name="editScheduleRole" class="form-select" required>
-                                <option value="">역할을 선택하세요</option>
-                                <option value="찬양인도">🎤 찬양인도</option>
-                                <option value="싱어">🎵 싱어</option>
-                                <option value="메인건반">🎹 메인건반</option>
-                                <option value="세컨건반">⌨️ 세컨건반</option>
-                                <option value="어쿠스틱 기타">🎸 어쿠스틱 기타</option>
-                                <option value="일렉 기타">🎸 일렉 기타</option>
-                                <option value="드럼">🥁 드럼</option>
-                                <option value="베이스">🎸 베이스</option>
-                                <option value="엔지니어">🎚️ 엔지니어</option>
-                            </select>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="editScheduleName" class="form-label">이름</label>
-                            <input 
-                                type="text" 
-                                id="editScheduleName" 
-                                name="editScheduleName" 
-                                class="form-input" 
-                                required
-                            >
-                        </div>
-                    </form>
-                </div>
-                <div class="modal__footer">
-                    <button id="cancelEdit" class="btn btn--secondary" type="button">취소</button>
-                    <button id="saveEdit" class="btn btn--primary" type="button">저장</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Success/Error Toast Messages -->
-        <div id="toast" class="toast hidden" role="alert" aria-live="assertive">
-            <div id="toastMessage" class="toast__message"></div>
-            <button id="toastClose" class="toast__close" aria-label="알림 닫기" type="button">×</button>
-        </div>
+    <div class="motion-box" aria-hidden="true">
+      <svg viewBox="0 0 320 118" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <g transform="translate(10 12)">
+          <rect data-motion="step-1" width="84" height="56" rx="4" fill="#ded2bf"></rect>
+          <text x="42" y="21" text-anchor="middle" fill="#5e594f" stroke="none" font-size="11" font-weight="600">STEP 1</text>
+          <text x="42" y="42" text-anchor="middle" fill="currentColor" stroke="none" font-size="14" font-weight="700">DB 백업</text>
+        </g>
+        <g transform="translate(118 12)">
+          <rect data-motion="step-2" width="84" height="56" rx="4" fill="#faf6ec"></rect>
+          <text x="42" y="21" text-anchor="middle" fill="#5e594f" stroke="none" font-size="11" font-weight="600">STEP 2</text>
+          <text x="42" y="42" text-anchor="middle" fill="currentColor" stroke="none" font-size="14" font-weight="700">보안 패치</text>
+        </g>
+        <g transform="translate(226 12)">
+          <rect data-motion="step-3" width="84" height="56" rx="4" fill="#faf6ec"></rect>
+          <text x="42" y="21" text-anchor="middle" fill="#5e594f" stroke="none" font-size="11" font-weight="600">STEP 3</text>
+          <text x="42" y="42" text-anchor="middle" fill="currentColor" stroke="none" font-size="14" font-weight="700">새 UI 오픈</text>
+        </g>
+        <path d="M98 40h16m-5-5 5 5-5 5" stroke="#5e594f"></path>
+        <path d="M206 40h16m-5-5 5 5-5 5" stroke="#5e594f"></path>
+        <g data-motion="pointer">
+          <text x="160" y="94" text-anchor="middle" fill="currentColor" stroke="none" font-size="13" font-weight="700">▲ 현재 점검 진행 중</text>
+        </g>
+      </svg>
     </div>
 
-    <!-- Firebase Realtime Database SDK - 안정 버전 사용 -->
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
-    
-    <!-- Main Application Script -->
-    <script src="script.js"></script>
-    
-    <!-- Firebase Configuration - 개선된 초기화 -->
-    <script>
-        // Firebase 설정
-        const firebaseConfig = {
-            apiKey: "AIzaSyDZ07GNmuDrtbca1t-D4elMZM8_JRWrE7E",
-            authDomain: "test-250529.firebaseapp.com",
-            databaseURL: "https://test-250529-default-rtdb.firebaseio.com",
-            projectId: "test-250529",
-            storageBucket: "test-250529.firebasestorage.app",
-            messagingSenderId: "428973129250",
-            appId: "1:428973129250:web:bdb74560e9e8f752fed47b"
-        };
+    <h2 class="notice-title">보안 강화 및 화면 업그레이드를 위해<br>잠시 시스템을 점검하고 있습니다.</h2>
 
-        // DOM 완전 로드 및 스크립트 준비 완료 후 초기화
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('DOM 로드 완료');
-            
-            // scheduleManager 생성 대기
-            const initializeFirebase = () => {
-                if (window.scheduleManager) {
-                    console.log('Firebase 초기화 시작');
-                    scheduleManager.initFirebase(firebaseConfig);
-                } else {
-                    console.log('scheduleManager 대기 중...');
-                    setTimeout(initializeFirebase, 50);
-                }
-            };
-            
-            // 약간의 지연을 두고 초기화
-            setTimeout(initializeFirebase, 200);
-        });
-    </script>
+    <p class="notice-body">
+      찬양팀 섬김이 명단과 찬양 콘티 데이터를 더욱 안전하게 보호하기 위해 데이터베이스 보안 패치 및 새로운 일정관리 화면 적용 작업을 진행 중입니다. 기존에 등록된 모든 일정과 찬양 콘티 데이터는 안전하게 백업·보존되어 있습니다.
+    </p>
+
+    <ul class="info-list">
+      <li>🛡️ <strong>점검 내용</strong>: 데이터 덮어쓰기 방지 스냅샷 보호, XSS 보안 패치 및 신규 UI 적용</li>
+      <li>💾 <strong>데이터 보존</strong>: 기존 섬김이 배정 명단(563건) 및 찬양 콘티·참고 음원 100% 안전 보관</li>
+      <li>💬 <strong>문의 안내</strong>: 점검 중 일정 확인 및 배정 변경은 찬양팀 단톡방을 이용해 주세요.</li>
+    </ul>
+
+    <footer class="footer">
+      <span>서울중앙교회 금요기도회 찬양팀</span>
+      <span>빠른 시간 내에 더욱 편리한 화면으로 다시 열겠습니다.</span>
+    </footer>
+  </main>
+  <script>
+    (function() {
+      var uri = "data:image/png;base64,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";
+      var img = document.getElementById("churchLogoImg");
+      if (img) img.src = uri;
+    })();
+  </script>
 </body>
 </html>
