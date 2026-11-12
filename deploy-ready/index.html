@@ -348,53 +348,61 @@
     .month-nav-group {
       display: inline-flex;
       align-items: center;
-      gap: 4px;
+      gap: 6px;
       background: var(--openui-sunk);
-      padding: 3px;
-      border-radius: var(--openui-radius-m);
+      padding: 4px;
+      border-radius: var(--openui-radius-l);
       border: 1px solid var(--openui-border-default);
     }
     .month-nav-btn {
       border: 0;
       background: var(--openui-foreground);
       color: var(--openui-text-neutral-primary);
-      width: 28px;
-      height: 28px;
-      border-radius: var(--openui-radius-s);
-      font-weight: 700;
+      width: 42px;
+      height: 42px;
+      border-radius: var(--openui-radius-m);
+      font-size: 20px;
+      font-weight: 800;
       cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      touch-action: manipulation;
     }
     .month-nav-label {
-      padding: 0 10px;
-      font-size: 13px;
-      font-weight: 700;
+      padding: 0 12px;
+      font-size: 15px;
+      font-weight: 800;
       font-family: var(--openui-font-numbers);
     }
 
     .openui-tabs {
       display: flex;
-      gap: 6px;
+      gap: 8px;
       overflow-x: auto;
-      padding: 4px;
+      padding: 6px;
       background: var(--openui-sunk);
       border-radius: var(--openui-radius-xl);
       border: 1px solid var(--openui-border-default);
     }
     .openui-tab-item {
       flex: 1;
-      min-width: 82px;
+      min-width: 102px;
+      min-height: 78px;
       border: 1px solid transparent;
       background: transparent;
       color: var(--openui-text-neutral-secondary);
-      border-radius: var(--openui-radius-m);
-      padding: 8px 10px;
+      border-radius: var(--openui-radius-l);
+      padding: 12px 14px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 3px;
+      justify-content: center;
+      gap: 5px;
       cursor: pointer;
       font-family: inherit;
       transition: all 0.14s ease;
+      touch-action: manipulation;
     }
     .openui-tab-item:hover {
       color: var(--openui-text-neutral-primary);
@@ -404,16 +412,16 @@
       background: var(--openui-foreground);
       color: var(--openui-text-neutral-primary);
       border-color: var(--openui-border-default);
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
     }
     .tab-sub {
-      font-size: 10px;
-      font-weight: 600;
-      opacity: 0.8;
+      font-size: 11.5px;
+      font-weight: 700;
+      opacity: 0.85;
     }
     .tab-main {
-      font-size: 13px;
-      font-weight: 700;
+      font-size: 15px;
+      font-weight: 800;
       font-family: var(--openui-font-numbers);
     }
 
@@ -421,10 +429,10 @@
       display: inline-flex;
       align-items: center;
       gap: 4px;
-      padding: 2px 8px;
+      padding: 4px 10px;
       border-radius: var(--openui-radius-s);
-      font-size: 11px;
-      font-weight: 600;
+      font-size: 12px;
+      font-weight: 700;
       line-height: 1.4;
       white-space: nowrap;
     }
@@ -619,13 +627,14 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 8px;
-      padding-top: 6px;
-      margin-top: 4px;
+      gap: 10px;
+      padding-top: 10px;
+      margin-top: 6px;
       border-top: 1px dashed #bcaf99;
-      font-size: 11.5px;
+      font-size: 13.5px;
       font-weight: 600;
       color: #5e594f;
+      flex-wrap: wrap;
     }
     .cue-nudge-bar b {
       color: #1d1d1b;
@@ -634,13 +643,18 @@
       border: 1.5px solid #1d1d1b;
       background: #ded2bf;
       color: #1d1d1b;
-      border-radius: 6px;
-      padding: 3px 9px;
-      font-size: 11px;
-      font-weight: 700;
+      border-radius: 10px;
+      min-height: 44px;
+      padding: 10px 18px;
+      font-size: 14px;
+      font-weight: 800;
       cursor: pointer;
       font-family: inherit;
       white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      touch-action: manipulation;
       transition: background 0.14s ease, transform 0.14s ease;
     }
     .cue-nudge-cta:hover {
@@ -650,7 +664,7 @@
 
     .openui-callout {
       border-radius: var(--openui-radius-2xl);
-      padding: 12px 16px;
+      padding: 14px 18px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -673,14 +687,14 @@
     .callout-body {
       display: flex;
       flex-direction: column;
-      gap: 2px;
+      gap: 3px;
     }
     .callout-title {
-      font-size: 13px;
+      font-size: 14px;
       font-weight: 700;
     }
     .callout-desc {
-      font-size: 12px;
+      font-size: 13px;
       color: var(--openui-text-neutral-secondary);
     }
 
@@ -699,17 +713,18 @@
       align-items: flex-start;
       justify-content: space-between;
       gap: 10px;
-      padding-bottom: 10px;
+      padding-bottom: 12px;
       border-bottom: 1px solid var(--openui-border-default);
+      flex-wrap: wrap;
     }
     .openui-card-title {
       margin: 0;
-      font-size: 15px;
-      font-weight: 700;
+      font-size: 16px;
+      font-weight: 800;
     }
     .openui-card-sub {
-      margin: 2px 0 0;
-      font-size: 12px;
+      margin: 3px 0 0;
+      font-size: 13px;
       color: var(--openui-text-neutral-secondary);
     }
 
@@ -721,14 +736,15 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 9px 4px;
+      padding: 12px 6px;
+      min-height: 58px;
       border-bottom: 1px solid var(--openui-border-default);
-      gap: 8px;
+      gap: 10px;
       transition: background 0.12s ease;
     }
     .openui-entity-row:last-child {
       border-bottom: 0;
-      padding-bottom: 2px;
+      padding-bottom: 4px;
     }
     .openui-entity-row:hover {
       background: var(--openui-sunk-light);
@@ -740,8 +756,8 @@
       gap: 10px;
     }
     .entity-role-dot {
-      width: 7px;
-      height: 7px;
+      width: 8px;
+      height: 8px;
       border-radius: 50%;
       background: var(--openui-interactive-accent-default);
     }
@@ -750,15 +766,15 @@
       box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.2);
     }
     .entity-role-name {
-      font-size: 13px;
-      font-weight: 600;
+      font-size: 15px;
+      font-weight: 700;
       color: var(--openui-text-neutral-secondary);
-      min-width: 96px;
+      min-width: 104px;
     }
     .entity-rhs {
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
       flex-wrap: wrap;
       justify-content: flex-end;
     }
@@ -768,9 +784,9 @@
       gap: 4px;
       background: var(--openui-sunk);
       border: 1px solid var(--openui-border-default);
-      padding: 2px 8px;
-      border-radius: var(--openui-radius-s);
-      font-size: 13px;
+      padding: 6px 12px;
+      border-radius: var(--openui-radius-m);
+      font-size: 14px;
       font-weight: 700;
       color: var(--openui-text-neutral-primary);
     }
@@ -778,30 +794,31 @@
     .openui-table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 13px;
+      font-size: 13.5px;
     }
     .openui-table th {
       text-align: left;
-      padding: 8px 10px;
-      font-size: 11px;
+      padding: 10px 12px;
+      font-size: 12px;
       font-weight: 700;
       color: var(--openui-text-neutral-secondary);
       background: var(--openui-sunk);
       border-bottom: 1px solid var(--openui-border-default);
     }
     .openui-table td {
-      padding: 8px 10px;
+      padding: 10px 12px;
       border-bottom: 1px solid var(--openui-border-default);
       vertical-align: middle;
     }
     .openui-inline-input {
       width: 100%;
+      min-height: 46px;
       border: 1px solid var(--openui-border-interactive);
       background: var(--openui-foreground);
       color: var(--openui-text-neutral-primary);
-      border-radius: var(--openui-radius-s);
-      padding: 6px 9px;
-      font-size: 13px;
+      border-radius: var(--openui-radius-m);
+      padding: 11px 14px;
+      font-size: 15px;
       font-family: inherit;
       font-weight: 600;
     }
@@ -815,7 +832,7 @@
       background: var(--openui-sunk-light);
       border: 1px solid var(--openui-border-default);
       border-radius: var(--openui-radius-xl);
-      padding: 11px 13px;
+      padding: 12px 14px;
       display: flex;
       flex-direction: column;
       gap: 4px;
@@ -832,12 +849,12 @@
       gap: 8px;
     }
     .list-item-index {
-      width: 22px;
-      height: 22px;
+      width: 24px;
+      height: 24px;
       border-radius: 6px;
       background: var(--openui-inverted-background);
       color: var(--openui-inverted-text);
-      font-size: 11px;
+      font-size: 12px;
       font-weight: 700;
       font-family: var(--openui-font-numbers);
       display: inline-flex;
@@ -846,32 +863,34 @@
       flex: none;
     }
     .list-item-title {
-      font-size: 14px;
+      font-size: 15px;
       font-weight: 700;
       margin: 0;
     }
     .list-item-memo {
       margin: 0;
-      font-size: 12px;
+      font-size: 12.5px;
       color: var(--openui-text-neutral-secondary);
       line-height: 1.45;
-      padding-left: 30px;
+      padding-left: 32px;
     }
 
     .openui-btn {
       border: 1px solid var(--openui-border-interactive);
       background: var(--openui-foreground);
       color: var(--openui-text-neutral-primary);
-      border-radius: var(--openui-radius-m);
-      padding: 7px 12px;
-      font-size: 12px;
-      font-weight: 600;
+      border-radius: 12px;
+      min-height: 44px;
+      padding: 10px 18px;
+      font-size: 14px;
+      font-weight: 700;
       font-family: inherit;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       justify-content: center;
       gap: 6px;
+      touch-action: manipulation;
       transition: all 0.12s ease;
     }
     .openui-btn:hover {
@@ -886,9 +905,11 @@
       background: var(--openui-interactive-accent-hover);
     }
     .openui-btn.is-xs {
-      padding: 4px 8px;
-      font-size: 11px;
-      border-radius: var(--openui-radius-s);
+      min-height: 42px;
+      padding: 9px 15px;
+      font-size: 13.5px;
+      font-weight: 700;
+      border-radius: 10px;
     }
 
     .openui-followup-block {
@@ -901,7 +922,7 @@
       gap: 8px;
     }
     .followup-label {
-      font-size: 11px;
+      font-size: 12px;
       font-weight: 700;
       color: var(--openui-text-neutral-secondary);
       text-transform: uppercase;
@@ -910,21 +931,23 @@
     .followup-items {
       display: flex;
       flex-wrap: wrap;
-      gap: 6px;
+      gap: 8px;
     }
     .openui-followup-item {
       border: 1px solid var(--openui-border-interactive);
       background: var(--openui-sunk-light);
       color: var(--openui-text-neutral-primary);
       border-radius: var(--openui-radius-full);
-      padding: 6px 12px;
-      font-size: 12px;
-      font-weight: 600;
+      min-height: 42px;
+      padding: 10px 16px;
+      font-size: 13.5px;
+      font-weight: 700;
       font-family: inherit;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       gap: 6px;
+      touch-action: manipulation;
       transition: all 0.14s ease;
     }
     .openui-followup-item:hover {
@@ -1034,36 +1057,41 @@
     }
     .openui-modal {
       width: 100%;
-      max-width: 430px;
+      max-width: 460px;
       background: var(--openui-popover-background);
       border: 1px solid var(--openui-border-interactive);
       border-radius: var(--openui-radius-3xl);
-      padding: 20px;
+      padding: 22px;
       box-shadow: var(--openui-shadow-elevated);
       display: flex;
       flex-direction: column;
-      gap: 14px;
+      gap: 16px;
     }
     .openui-chips {
       display: flex;
       flex-wrap: wrap;
-      gap: 6px;
+      gap: 8px;
     }
     .openui-chip-item {
-      border: 1px solid var(--openui-border-interactive);
+      border: 1.5px solid var(--openui-border-interactive);
       background: var(--openui-sunk-light);
       color: var(--openui-text-neutral-primary);
       border-radius: var(--openui-radius-full);
-      padding: 6px 13px;
-      font-size: 13px;
-      font-weight: 600;
+      min-height: 46px;
+      padding: 11px 18px;
+      font-size: 15px;
+      font-weight: 700;
       cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      touch-action: manipulation;
     }
     .openui-chip-item.is-selected {
       background: var(--openui-interactive-accent-tint);
       border-color: var(--openui-interactive-accent-default);
       color: var(--openui-text-brand);
-      font-weight: 700;
+      font-weight: 800;
     }
 
     .openui-toast {
@@ -1132,11 +1160,11 @@
       <!-- 왼쪽: OpenUI root = Stack([...]) 본 화면 -->
       <main id="openuiRoot" class="openui-main-surface openui-stack" aria-label="OpenUI 본 화면"></main>
 
-      <!-- 오른쪽: OpenUI Lang 실시간 선언 트리 & Firebase JSON 어댑터 뷰 -->
+      <!-- 오른쪽: OpenUI Lang 실시간 선언 트리 & DB JSON 어댑터 뷰 -->
       <aside class="openui-inspector-pane" aria-label="OpenUI Lang 실시간 선언 트리">
         <div class="inspector-head">
-          <span class="inspector-title"><span class="live-dot"></span>OpenUI Lang &amp; Firebase Schema</span>
-          <span class="openui-tag is-brand">1:N PushKey 호환</span>
+          <span class="inspector-title"><span class="live-dot"></span>OpenUI Lang &amp; DB Schema</span>
+          <span class="openui-tag is-brand">1:N Key 호환</span>
         </div>
         <pre id="openuiCodeBox" class="code-viewer"></pre>
         <div class="copilot-box">
@@ -1272,18 +1300,96 @@
         "-P4rz86mVdhR-nZnBda2": { date: "2026-11-27", role: "베이스", name: "박예원" }
       },
       setlists: {
-        "2026-10-09": "1. 우리 주 하나님 B\n2. 시편 139편 E\n3. 물 위를 걷는 자 Bb + 나의 하나님(후렴, C로 전조)\n4. 예수 이름을 믿는 믿음으로 D",
-        "2026-10-16": "🎶 찬양 리스트\n1️⃣ 사랑하는 나의 아버지 A\n2️⃣ 하나님이시여 A\n3️⃣ 충만 A + 구주예수 의지함이(후렴) A\n4️⃣ 사랑한다 말하시네(후렴) A",
-        "2026-10-23": "1. 내게 있는 모든 것을\n2. 갈릴리 마을 그 숲속에서(가서 제자 삼으라)\n3. 그 날에 우리 주님께서(내 안에 부어 주소서)\n4. 주님 나를 택하사\n5. 우리 오늘 눈물로(보리라)\n6. 누구도 본적이 없는",
-        "2026-10-30": "<찬양리스트>\n1. 하나님의 음성을 C + 그 크신 하나님의 사랑(후렴) D\n2. 정결한 맘 주시옵소서 F\n3. 문들아 머리 들어라 F\n4. 오직 주의 사랑에 매여 D",
-        "2026-11-20": "1. 나의 안에 거하라 F\n2. 부르신 곳에서 F\n3. 주님 말씀하시면 D\n4. 믿음으로 서리라 G"
-      },
+    "2025-05-30":  "1. 눈을 들어 하늘 보라 D\n2. 시선 E\n3. 나의 고백이 모여 우리의 기도가 되어 E\n4. 한나의 노래 F",
+    "2025-06-06":  "#주신 선교사님 말씀\n\n1. 하늘과 땅의(가라)\n2. 빛의 사자들이여\n3. 온 세상 위하여\n4. 온 땅과 만민들아",
+    "2025-06-13":  "1. G 온 세상 위하여\n2. G 십자가 군병들아\n3. D 예수 이름이 온 땅에\n4. D 행군 나팔 소리에\n5. G 내  눈 주의 영광을\n6. G 물이 바다 덮음같이",
+    "2025-06-20":  "🎶 찬양 리스트\n1️⃣ 더 원합니다 G\n2️⃣ 내가 주인 삼은 G\n3️⃣ 나의 영혼이 잠잠히 A\n4️⃣ 하나님이시여 A",
+    "2025-06-27":  "1. 이 세상 험하고 C\n2. 예수를 나의 구주삼고 C\n3. 태산을 넘어 험곡에 가도 F\n4. 시온의 영광이 빛나는 아침 Ab\n5. 너 예수께 조용히 나가 E",
+    "2025-07-11":  "1. 그 크신 하나님의 사랑\n2. 주의 사랑을 주의 선하심을\n3. 오직 예수 뿐이네\n4. 태산을 넘어 험곡에 가도\n5. 우리 주 하나님",
+    "2025-07-18":  "1. 주의 이름 높이며\n2. 승리하였네\n3. 흑암에 사는 백성들을 보라\n4. 주의 진리 위해 십자가 군기\n5. 예수 열방의 소망\n6. 우리 보좌앞에 모였네",
+    "2025-07-25":  "1️⃣ 예수 아름다운신 A\n2️⃣ 당신은 영광의 왕 D\n3️⃣ 주와 같이 길가는 것 D\n4️⃣ 슬픈 마음있는 사람 Ab\n5️⃣ 내 영혼이 은총 입어 E",
+    "2025-08-01":  "1️⃣ 주의 아름다움은 말로 다 A\n2️⃣ 주님의 선하심 A\n3️⃣ 예수 늘 함께 하시네 D\n4️⃣ 주 예수 나의 산 소망 C",
+    "2025-08-08":  "1. 오늘 이 자리에 모인 우리\n2. 곤한 내 영혼 편히 쉴 곳과\n3. 주의 음성을 내가 들으니\n4. 세상 모든 민족이\n5. 수 많은 무리들 줄지어",
+    "2025-08-15":  "1. 구주와 함께 나 죽었으니 E\n2. 주의 음성을 C\n3. 갈 길을 밝히 보이시니 G\n4. 내게 강같은 평화 G\n5. 지금까지 지내온 것 C",
+    "2025-08-22":  "1️⃣ 슬픈 마음 있는 사람 G\n2️⃣ 예수는 나의 힘이요 F-G\n3️⃣ 주의 아름다움은 말로 다 A\n4️⃣ 아름다우신 A",
+    "2025-08-29":  "1. 주 이름 큰 능력 있도다 C\n2. 하나님의 나팔 소리 G + 갈 길을 밝히 보이시니(후렴만, G)\n3. 주님 다시 오실 때까지 Bb\n4. 성도의 노래 E + 옳은 길 따르라 의의 길을(후렴만, E)",
+    "2025-09-12":  "1. 주님 손 잡고 일어서세요 C\n2. 주 품에 C\n3. 선하신 목자 날 사랑하는 분 D\n4. 선한 목자 되신 우리 주 D\n5. 하나님은 너를 지키시는자E\n6. 두 손들고 찬양 합니다E",
+    "2025-09-19":  "1. 주 안에 있는 나에게 G\n2. 내 영혼이 은총입어 F\n3. 먼저 그 나라와 의를 구하라 C\n4. 나 가나안 땅 귀한 성에 Ab",
+    "2025-09-26":  "\n1. 예수 하나님의 공의 D\n2. 주 안에 있는 나에게 F\n3. 사랑한다 말하시네 D\n4. 진리 D-\u003e E\n5. 내 주여 뜻대로 D",
+    "2025-10-03":  "1️⃣ 여호와의 유월절 (G)\n2️⃣ 아침안개 눈앞가리듯 (D)\n3️⃣ 주님 큰 영광 받으소서 (A)\n4️⃣ 살아계신 주 (A)",
+    "2025-10-10":  "1. 십자가 그 사랑\n2. 아주 먼 옛날\n3. 복음 들고 산을 넘는 자들\n4. 그 크신 하나님의 사랑\n5. 사랑은 언제나 오래참고",
+    "2025-10-17":  "1. 우리 함께기도해\n2. 내 주 같은 분 없네\n3. 내 영이 주를 찬양합니다.\n4. 존귀 오 존귀하신 주\n5. 예수 우리 왕이여\n6. 비전",
+    "2025-10-24":  "찬양 리스트🎶\n1. 나의 안에 거하라 F\n2. 약할 때 강함 되세네 F\n3. 성령이여 내 영혼을 Bb\n4. 지극히 높으신 주 F",
+    "2025-10-31":  "1️⃣ 비전 (우리 보좌 앞에 모였네) A\n2️⃣ 이런 교회 되게 하소서 F\n3️⃣ 교회 E\n4️⃣ 비 준비하시니 + 보라 하나님 능력을 (후렴) G",
+    "2025-11-21":  "1. 우리 함께 모여\n2. 기뻐하며 왕께 노래부르리\n3. 나의 모습 나의 소유\n4. 마음이 상한 자를\n5. 하나님의 음성을",
+    "2025-11-28":  "은혜 -c\n은혜가 풍성한 하나님은 E\n주의 친절한 G\n보아라 즐거운 우리집 G\n꽃들도 -g (후렴 키업)\n아름다우신 -A",
+    "2025-12-05":  "1. 십자가 그 사랑 E\n2. 주 안에 있는 나에게 G\n3. 주와 같이 길 가는 것 E\n4. 갈 길을 밝히 보이시니 G\n5.  온 맘 다해 E",
+    "2025-12-12":  "1️⃣ 거룩하신 하나님 + 주 임재 안에서(F)\n2️⃣ 천사들의 노래가 (G)\n3️⃣ 이 땅 위에 오신 (G)\n4️⃣ 예배합니다 (G)",
+    "2026-01-09":  "1. 주만 바라볼찌라 G\n2. 내 모든 시험 무거운 짐을 C\n3. 주 안에 있는 나에게 F\n4. 저 높은 곳을 향하여 F",
+    "2026-01-16":  "1️⃣ 임재(하늘의 문을 여소서) A\n2️⃣ 370 주 안에 있는 나에게 G\n3️⃣ 우물가의 여인처럼 A\n4️⃣ 주께 가까이 A",
+    "2026-01-23":  "1. 아름다우신 G\n2. 내 영혼은 안전합니다 E\n3. 목마른 사슴 C + 선한 목자되신 우리 주 D\n4. 먼저 그 나라와 의를 구하라 D",
+    "2026-01-30":  "1. 나의 마음을 \n2. 그 사랑 감사해\n3. 감사드리세\n4. 충만",
+    "2026-02-06":  "1. 흑암에 사는 백성들을 보라\n2. 온 세상 위하여\n3. 빛의 사자들이여\n4. 내 눈 주의 영광을 보네\n5. 수 많은 무리들 줄지어",
+    "2026-02-13":  "1️⃣ 하나님의 부르심 (A)\n2️⃣ 나는 주를 섬기는 것에 후회가 없습니다 (A)\n3️⃣ 예수 우리들의 밝은 빛 (A)\n4️⃣ 충만 (A)",
+    "2026-02-20":  "1. 살아계신 주 G\n2. 예수 우리들의 밝은 빛 A\n3. 십자가를 질 수 있나(후렴만) A",
+    "2026-02-27":  "1. 약할때 강함 되시네 F\n2. 태산을 넘어 험곡에 가도 E\n3. 살아계신 주 A\n4. 내 평생에 가는 길 C",
+    "2026-03-13":  "1️⃣ 하나님의 부르심 (A)\n2️⃣ 나는 믿네 (A)\n3️⃣ 주의 자녀로 산다는 것은 (A)\n4️⃣ 하늘의 나는 새도 (E)",
+    "2026-03-20":  "1. 내 평생 사는동안\n2. 곤한 내 영혼 편히 쉴 곳과\n3. 주의 친절한 팔에 안기세\n4. 내 주 같은 분 없네\n5. 주 여호와는 광대하시도다\n6. 비길 수 없네(후렴만)",
+    "2026-03-27":  "1. 웬 말인가 날 위하여\n2. 구주의 십자가 보혈로\n3. 내가 예수 믿고서\n4. 사랑하셔서 오시었네\n5. 만왕의 왕 내 주께서",
+    "2026-04-10":  "1. 주님의 영광 나타나셨네\n2. 승리하였네\n3. 주 하나님 독생자 예수\n4. 내 영혼의 그윽히 깊은데서\n5. 아름다우신\n6. 우리 보좌 앞에 모였네",
+    "2026-04-17":  "1. 그 크신 하나님의 사랑\n2. 주의 이름 높이며 + 슬픈 마음 있는 사람(91장)\n3. 이 세상에 근심된 일이 많고(486장)\n4. 내 맘의 주여 소망되소서(484장)",
+    "2026-04-24":  "1️⃣ 슬픈 마음 있는 사람 G\n2️⃣ 예수 열방의 소망 G\n3️⃣ 아름다우신 A\n4️⃣ 주 여호와는 광대하시도다A",
+    "2026-05-08":  "1. 거룩하신 하나님 주께 감사드리세 F\n2. 내 평생 사는 동안 C\n3. 마음이 상한 자를 F\n4. 주께 가까이 날 이끄소서 A",
+    "2026-05-15":  "1. 하늘에 가득찬 영광의 하나님\n2. 나의 기도하는 것보다\n3. 주님 큰 영광 받으소서\n4. 말씀 앞에서",
+    "2026-05-22":  "1. 오직 주의 은혜로 D\n2. 아 하나님의 은혜로 D\n3. 내가 매일 기쁘게 G\n4. 주의 친절한 G\n5. 하나님이시여A\n6. 주님 큰 영광 받으소서A",
+    "2026-06-05":  "1️⃣ 주의 아름다움은 (A)\n2️⃣ 아름다우신 (A)\n3️⃣ 말씀 앞에서 (C)\n4️⃣ 하늘의 나는 새도(A)",
+    "2026-06-12":  "1. 주 예수 대문 밖에 Eb\n2. 나의 만족과 유익을 위해 C\n3. 내 삶은 주의 것 E\n4. 강령 F",
+    "2026-06-19":  "1. 십자가 그사랑\n2. 온 땅의 주인되신\n3. 수 많은 무리들 줄지어\n4. 세상 모든 민족이",
+    "2026-06-26":  "1. 생명 주께 있네 + 왕의 왕 주의 주 G\n2. 내가 만민 중에 A\n3. 어려운 일 당할 때 G\n4. 너희는 가만히 있어 (후렴만) A",
+    "2026-07-10":  "1. 여호와 우리 주여 A\n2. 하나님의 음성을 C\n3. 하나님이시여 C\n4. 나의 영혼이 잠잠히 A",
+    "2026-07-17":  "1️⃣ 나는 주를 섬기는 것에 A\n2️⃣ 온 땅의 주인 G\n3️⃣ 기도의 능력 F\n4️⃣ 충만 F",
+    "2026-07-24":  "1. 믿음이 없이는\n2. 주는 완전합니다\n3. 괴로울 때 주님의 얼굴 보라\n4. 내일 일은 난 몰라요\n5. 주 예수 보다 더 귀한 것은 없네",
+    "2026-07-31":  "1. 주께서 높은 보좌에 E\n2. 우리를 죄에서 구했으니 A\n3. 말씀앞에서 C\n4. 믿음으로 서리라 G \n5. 나를 받으옵소서 C",
+    "2026-08-07":  "1. 나의 안에 거하라 F\n2. 본 어게인 C\n3. 부르신 곳에서 F\n4. 주님 말씀하시면 D",
+    "2026-08-14":  "1️⃣ 아침 안개 눈앞 가리듯 D\n2️⃣ 세상의 유혹 시험이 G\n3️⃣ 주의 아름다움은 말로다 A\n4️⃣ 주께 가까이 날 이끄소서 A",
+    "2026-08-21":  "1. 주 찬양합니다\n2. 찬양의 제사 드리며\n3. 주와 같이 길 가는 것\n4. 지극히 높으신 주\n5. 능력의 이름 예수",
+    "2026-08-28":  "1. 전능하신 나의 주 하나님은 A\n2. 주님 한분만으로 G\n3. 나 무엇과도 주님을 바꾸지 않으리 + 오직 주의 사랑에 매여 D\n4. 주님을 예배하는 것 D",
+    "2026-09-18":  "1️⃣ 아무도 예배하지 않는 A\n2️⃣ 이 땅의 황무함을 보소서 A\n3️⃣ 모든 열방 주 볼 때까지 G\n4️⃣ 그리스도의 계절 A",
+    "2026-10-09":  "1. 우리 주 하나님 B\n2. 시편 139편 E\n3. 물 위를 걷는 자 Bb + 나의 하나님(후렴, C로 전조)\n4. 예수 이름을 믿는 믿음으로 D",
+    "2026-10-16":  "🎶 찬양 리스트\n1️⃣ 사랑하는 나의 아버지 A\n2️⃣ 하나님이시여 A\n3️⃣ 충만 A + 구주예수 의지함이(후렴) A\n4️⃣ 사랑한다 말하시네(후렴) A",
+    "2026-10-23":  "1. 내게 있는 모든 것을\n2. 갈릴리 마을 그 숲속에서(가서 제자 삼으라)\n3. 그 날에 우리 주님께서(내 안에 부어 주소서)\n4. 주님 나를 택하사\n5. 우리 오늘 눈물로(보리라)\n6. 누구도 본적이 없는",
+    "2026-10-30":  "\u003c찬양리스트\u003e\n1. 하나님의 음성을 C + 그 크신 하나님의 사랑(후렴) D\n2. 정결한 맘 주시옵소서 F\n3. 문들아 머리 들어라 F\n4. 오직 주의 사랑에 매여 D"
+},
       youtubeLinks: {
-        "2026-10-09": "https://youtube.com/playlist?list=PLL0_0p6A5GedpIK3I8lmRGS4nlGgQEllf",
-        "2026-10-16": "https://youtube.com/playlist?list=PLL0_0p6A5GedpIK3I8lmRGS4nlGgQEllf",
-        "2026-10-30": "https://youtube.com/playlist?list=PLL0_0p6A5GedpIK3I8lmRGS4nlGgQEllf",
-        "2026-11-20": "https://youtube.com/playlist?list=PLL0_0p6A5GedpIK3I8lmRGS4nlGgQEllf"
-      }
+    "2025-05-30":  "https://youtube.com/playlist?list=PLL0_0p6A5GedpIK3I8lmRGS4nlGgQEllf\u0026si=RytXSu7VNhLCcKWL",
+    "2025-06-06":  "https://youtube.com/playlist?list=PLL0_0p6A5GedpIK3I8lmRGS4nlGgQEllf\u0026si=3g_Xvzuk6L3bUL5D",
+    "2025-06-13":  "https://youtube.com/playlist?list=PLL0_0p6A5GedpIK3I8lmRGS4nlGgQEllf\u0026si=nNzAkgSD60suZ8S8",
+    "2025-06-27":  "https://youtube.com/playlist?list=PLS4kBvo7ZgwxXPK5Qq4GI3Ff8EFws0iST\u0026si=akRmIqJXUAcRf2Xa",
+    "2025-07-11":  "https://youtube.com/playlist?list=PLL0_0p6A5GedpIK3I8lmRGS4nlGgQEllf\u0026si=6LqZKUF_pV_UUtrV",
+    "2025-07-18":  "https://youtube.com/playlist?list=PLL0_0p6A5GedpIK3I8lmRGS4nlGgQEllf\u0026si=OolVcp4Ufm8_dS44",
+    "2025-07-25":  "https://youtube.com/playlist?list=PLS4kBvo7ZgwwHrxJU2YYkAJpFVhXSfv4d\u0026si=W_Hay0T7PNWWPq0p",
+    "2025-08-01":  "https://youtube.com/playlist?list=PLL0_0p6A5GedpIK3I8lmRGS4nlGgQEllf\u0026si=x-Qyr4Ho0315C1qF",
+    "2025-08-08":  "https://youtube.com/playlist?list=PLL0_0p6A5GedpIK3I8lmRGS4nlGgQEllf\u0026si=DgyaTWS9DWveWiB1",
+    "2025-08-15":  "https://youtube.com/playlist?list=PLS4kBvo7ZgwzVNDjSaKwwvLqD8q72T3Ay\u0026si=Z_vtIdlSlu05TbWe",
+    "2025-08-22":  "https://youtube.com/playlist?list=PLL0_0p6A5GedpIK3I8lmRGS4nlGgQEllf\u0026si=MhSxkW76H0R-R_ce",
+    "2025-08-29":  "https://youtube.com/playlist?list=PLhhIB7CXj9ygHp6y4GOrTWqUfmNT0nvS5\u0026feature=shared",
+    "2025-09-12":  "https://youtube.com/playlist?list=PLL0_0p6A5GedpIK3I8lmRGS4nlGgQEllf\u0026si=2Vbsxcm65fPdiXCG",
+    "2025-09-19":  "https://youtube.com/playlist?list=PLS4kBvo7ZgwwP_w_deyxI3dTxAk2w7l0N\u0026si=4YjgzkJ5_l_bW0c2",
+    "2025-09-26":  "https://youtube.com/playlist?list=PLhhIB7CXj9yh5Gd7nVD7GYGCmtXALlKeo\u0026feature=shared",
+    "2025-10-03":  "https://youtube.com/playlist?list=PLL0_0p6A5GedpIK3I8lmRGS4nlGgQEllf\u0026si=oV_bnGHpbxWJX8uC",
+    "2025-10-10":  "https://youtube.com/playlist?list=PLL0_0p6A5GedpIK3I8lmRGS4nlGgQEllf\u0026si=mbQJdyeDycAdf7ZG",
+    "2025-10-17":  "https://youtube.com/playlist?list=PLL0_0p6A5GedpIK3I8lmRGS4nlGgQEllf\u0026si=FeviGPxEnZCbFbw5",
+    "2025-10-24":  "https://youtube.com/playlist?list=PLS4kBvo7ZgwzBfUvUV9cmlIVexXo-FIaI\u0026si=T8itUbATqVXHALWE",
+    "2025-11-28":  "https://youtube.com/playlist?list=PLL0_0p6A5GedpIK3I8lmRGS4nlGgQEllf\u0026si=9T4oOaR1WZQpqmrk",
+    "2025-12-05":  "https://www.youtube.com/playlist?list=PLS4kBvo7ZgwwT-unIaGQgqc_ZQHd_6ztr",
+    "2026-01-09":  "https://www.youtube.com/playlist?list=PLS4kBvo7ZgwzDDYY7ede37d_iHFBSd3C9\u0026si=4q60ON-nbQYlcJID",
+    "2026-01-16":  "https://youtube.com/playlist?list=PLL0_0p6A5GedpIK3I8lmRGS4nlGgQEllf\u0026si=T9jIzQNjdcgp5QNT",
+    "2026-01-23":  "https://youtube.com/playlist?list=PLS4kBvo7Zgwx3MmLoR8Yd4eXeYGzmdA_x\u0026si=Qx7nnoXyVWTqa7-e",
+    "2026-01-30":  "https://youtube.com/playlist?list=PLL0_0p6A5GedpIK3I8lmRGS4nlGgQEllf\u0026si=IBqDwXxE3KH-8oyR",
+    "2026-02-13":  "https://youtube.com/playlist?list=PLL0_0p6A5GedpIK3I8lmRGS4nlGgQEllf\u0026si=utALlT-FSX7g4k0c",
+    "2026-02-20":  "https://youtube.com/playlist?list=PLhhIB7CXj9yjoc7PkSICxIQ8BRo00M735\u0026si=HMSGFNWHar_xXm35",
+    "2026-07-31":  "https://www.youtube.com/playlist?list=PLF5Wryq_1b9s"
+}
     };
 
     // 특정 연·월(YYYY-MM)의 모든 금요일(YYYY-MM-DD) 배열을 동적으로 생성
@@ -1340,7 +1446,7 @@
     function initRealtimeFirebase() {
       try {
         if (typeof firebase === "undefined") {
-          console.warn("Firebase SDK 미로드 — 로컬 백업 모드로 동작합니다.");
+          console.warn("DB SDK 미로드 — 로컬 백업 모드로 동작합니다.");
           return;
         }
         if (!firebase.apps.length) {
@@ -1357,7 +1463,7 @@
             if (Object.keys(val).length >= 10) {
               const snap = {
                 timestamp: new Date().toLocaleTimeString("ko-KR", { hour: "2-digit", minute: "2-digit", second: "2-digit" }),
-                label: "Firebase 실시간 정상 동기화",
+                label: "DB 실시간 정상 동기화",
                 recordCount: Object.keys(val).length,
                 db: JSON.parse(JSON.stringify(state.db))
               };
@@ -1370,21 +1476,23 @@
           renderMainSurface();
           if (!state.firstSyncDone) {
             state.firstSyncDone = true;
-            showToast(`✅ 실시간 DB 연결 완료 (${Object.keys(state.db.prayerList).length}건 로드됨)`);
+            showToast(`✅ 실시간 DB 연결 완료 (명단 ${Object.keys(state.db.prayerList).length}건 · 콘티 ${Object.keys(state.db.setlists || {}).length}주 · 음원 ${Object.keys(state.db.youtubeLinks || {}).length}건)`);
           }
         });
 
         firebaseDbRef.ref("setlists").on("value", (snapshot) => {
-          state.db.setlists = snapshot.val() || {};
+          const val = snapshot.val();
+          state.db.setlists = Object.assign({}, INITIAL_FIREBASE_DB.setlists, val || {});
           renderMainSurface();
         });
 
         firebaseDbRef.ref("youtubeLinks").on("value", (snapshot) => {
-          state.db.youtubeLinks = snapshot.val() || {};
+          const val = snapshot.val();
+          state.db.youtubeLinks = Object.assign({}, INITIAL_FIREBASE_DB.youtubeLinks, val || {});
           renderMainSurface();
         });
       } catch (err) {
-        console.error("Firebase 연동 오류:", err);
+        console.error("DB 연동 오류:", err);
         state.firebaseConnected = false;
       }
     }
@@ -1473,14 +1581,14 @@
       }
     }
 
-    // [보안 방안 5] 직전 정상 스냅샷으로 1-Click 즉시 복구 (Firebase 원격 DB도 함께 복원)
+    // [보안 방안 5] 직전 정상 스냅샷으로 1-Click 즉시 복구 (원격 DB도 함께 복원)
     function applySnapshotToRemote(dbObj) {
       if (state.firebaseConnected && firebaseDbRef) {
         firebaseDbRef.ref().update({
           prayerList: dbObj.prayerList || {},
-          setlists: dbObj.setlists || {},
-          youtubeLinks: dbObj.youtubeLinks || {}
-        }).catch(err => console.error("Firebase 스냅샷 복구 오류:", err));
+          setlists: Object.assign({}, INITIAL_FIREBASE_DB.setlists, dbObj.setlists || {}),
+          youtubeLinks: Object.assign({}, INITIAL_FIREBASE_DB.youtubeLinks, dbObj.youtubeLinks || {})
+        }).catch(err => console.error("DB 스냅샷 복구 오류:", err));
       }
     }
 
@@ -1488,6 +1596,8 @@
       if (state.backupHistory.length > 0) {
         const snap = state.backupHistory.shift();
         state.db = JSON.parse(JSON.stringify(snap.db));
+        state.db.setlists = Object.assign({}, INITIAL_FIREBASE_DB.setlists, state.db.setlists || {});
+        state.db.youtubeLinks = Object.assign({}, INITIAL_FIREBASE_DB.youtubeLinks, state.db.youtubeLinks || {});
         applySnapshotToRemote(state.db);
         renderMainSurface();
         showToast(`⏪ [${snap.timestamp}] 정상 스냅샷(${snap.recordCount}건)으로 즉시 복원했습니다!`);
@@ -1499,6 +1609,8 @@
           const parsed = JSON.parse(saved);
           if (parsed && parsed.db && Object.keys(parsed.db.prayerList || {}).length >= 10) {
             state.db = parsed.db;
+            state.db.setlists = Object.assign({}, INITIAL_FIREBASE_DB.setlists, state.db.setlists || {});
+            state.db.youtubeLinks = Object.assign({}, INITIAL_FIREBASE_DB.youtubeLinks, state.db.youtubeLinks || {});
             applySnapshotToRemote(state.db);
             renderMainSurface();
             showToast(`⏪ 로컬 안전 백업(${parsed.timestamp})으로 복원했습니다!`);
@@ -1568,14 +1680,32 @@
       }
     }
 
-    function switchMonth(ym) {
+    function switchMonth(ym, preferredDate) {
       state.currentMonth = ym;
       const fridays = getFridaysOfMonth(ym);
       const todayIso = getTodayIsoString();
-      state.selectedDate = fridays.find(f => f >= todayIso) || fridays[0];
+      if (preferredDate && fridays.includes(preferredDate)) {
+        state.selectedDate = preferredDate;
+      } else {
+        const upcoming = fridays.find(f => f >= todayIso);
+        const withContiOrYt = fridays.find(f => (state.db.setlists && state.db.setlists[f]) || (state.db.youtubeLinks && state.db.youtubeLinks[f]));
+        const withRoster = fridays.find(f => Object.values(state.db.prayerList || {}).some(rec => rec.date === f));
+        state.selectedDate = upcoming || withContiOrYt || withRoster || fridays[0];
+      }
       state.subSurface = "briefing";
       renderMainSurface();
       showToast(`${ym.replace("-", "년 ")}월 금요기도회 데이터를 불러왔습니다`);
+    }
+
+    function jumpToDate(dateStr) {
+      if (!dateStr) return;
+      const ym = dateStr.slice(0, 7);
+      if (state.currentMonth !== ym) {
+        switchMonth(ym, dateStr);
+      } else {
+        selectTab(dateStr);
+        showToast(`${formatKoreanDate(dateStr, true)} 찬양 콘티 및 명단을 표시합니다`);
+      }
     }
 
     function stepMonth(dir) {
@@ -1731,22 +1861,31 @@
             const byRole = getRecordsByDateAndRole(dateStr);
             const filledRoleCount = ROLES.filter(r => byRole[r].length > 0).length;
             const totalRecords = ROLES.reduce((acc, r) => acc + byRole[r].length, 0);
+            const hasConti = Boolean(state.db.setlists && state.db.setlists[dateStr]);
+            const songCnt = hasConti ? parseSetlistString(state.db.setlists[dateStr]).songs.length : 0;
+            const hasAudio = Boolean(state.db.youtubeLinks && state.db.youtubeLinks[dateStr]);
             const active = state.selectedDate === dateStr ? "is-active" : "";
             const tag = filledRoleCount >= 7
               ? `<span class="openui-tag is-success">${filledRoleCount}/9 파트 (${totalRecords}명)</span>`
               : `<span class="openui-tag is-warning">${filledRoleCount}/9 파트</span>`;
+            const mediaBadge = (hasConti || hasAudio)
+              ? `<span class="openui-tag is-brand" style="margin-top:2px;">${hasConti ? `🎵 콘티 ${songCnt}곡` : ""}${hasConti && hasAudio ? " · " : ""}${hasAudio ? "🎧 음원" : ""}</span>`
+              : "";
             return `
               <button type="button" class="openui-tab-item ${active}" onclick="selectTab('${dateStr}')">
                 <span class="tab-sub">${idx + 1}주차 금요기도회</span>
                 <span class="tab-main">${formatKoreanDate(dateStr, true).replace(" (금)", "")}</span>
-                ${tag}
+                <div style="display:flex;gap:4px;flex-wrap:wrap;align-items:center;">
+                  ${tag}
+                  ${mediaBadge}
+                </div>
               </button>
             `;
           }).join("")}
           <button type="button" class="openui-tab-item ${state.selectedDate === 'matrix' ? 'is-active' : ''}" onclick="selectTab('matrix')">
             <span class="tab-sub">월간 비교</span>
             <span class="tab-main">${Number(monthStr)}월 전체 표</span>
-            <span class="openui-tag is-info">${state.isAdmin ? "Table" : "한눈에 보기"}</span>
+            <span class="openui-tag is-info">한눈에 보기</span>
           </button>
         </nav>
       `;
@@ -1779,6 +1918,10 @@
         ? emptyRoles.slice(0, 3)
         : [...emptyRoles, ...ROLES.filter(r => !emptyRoles.includes(r))].slice(0, 3);
       const firstEmptyRole = emptyRoles[0] || "찬양인도";
+      const allSetlistDates = Object.keys(state.db.setlists || {}).sort().reverse();
+      const allYoutubeDates = Object.keys(state.db.youtubeLinks || {}).sort().reverse();
+      const latestYtDate = allYoutubeDates.find(d => d <= dateStr) || allYoutubeDates[0] || "";
+      const fallbackYtUrl = latestYtDate ? safeHttpUrl(state.db.youtubeLinks[latestYtDate] || "") : "";
       const hasYt = Boolean(state.db.youtubeLinks[dateStr]);
 
       const kpiHtml = `
@@ -1851,9 +1994,9 @@
                 </div>
               </div>
               <div class="snippet-rhs">
-                <span class="snippet-metric">${parsedSetlist.songs.length}곡</span>
+                <span class="snippet-metric">${parsedSetlist.songs.length ? `${parsedSetlist.songs.length}곡` : `DB ${allSetlistDates.length}주 보관`}</span>
                 <span class="snippet-delta" style="color:var(--openui-text-brand);">
-                  ${hasYt ? "참고 음원 연결됨" : "참고 음원 미등록"}
+                  ${hasYt ? "참고 음원 연결됨" : (fallbackYtUrl ? `대표 음원 · DB ${allYoutubeDates.length}건` : "참고 음원 미등록")}
                 </span>
               </div>
             </div>
@@ -2008,7 +2151,7 @@
         const records = byRole[role] || [];
         const isEmpty = records.length === 0;
         const memberPills = records.map(rec => `
-          <span class="member-record-pill" ${state.isAdmin ? `title="Firebase Key: ${rec.firebaseKey}"` : ""}>
+          <span class="member-record-pill" ${state.isAdmin ? `title="DB Key: ${rec.firebaseKey}"` : ""}>
             ${rec.name}
           </span>
         `).join("");
@@ -2030,6 +2173,55 @@
         `;
       }).join("");
 
+      const allSetlistDates = Object.keys(state.db.setlists || {}).sort().reverse();
+      const allYoutubeDates = Object.keys(state.db.youtubeLinks || {}).sort().reverse();
+      const monthFridays = getFridaysOfMonth(state.currentMonth);
+      const monthContiDates = monthFridays.filter(f => f !== dateStr && state.db.setlists && state.db.setlists[f]);
+      const recentContiDates = (monthContiDates.length ? monthContiDates : allSetlistDates.filter(d => d !== dateStr)).slice(0, 4);
+
+      const recentContiPreviewHtml = recentContiDates.length > 0
+        ? `
+          <div style="margin-top:8px;padding:12px 14px;border-radius:var(--openui-radius-xl);background:var(--openui-sunk-light);border:1px solid var(--openui-border-default);display:flex;flex-direction:column;gap:10px;">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;">
+              <span style="font-size:13px;font-weight:800;color:var(--openui-text-neutral-primary);">
+                📚 ${monthContiDates.length ? `${state.currentMonth.replace("-", "년 ")}월의 다른 주차 찬양 콘티` : `DB에 등록된 최근 찬양 콘티 (${allSetlistDates.length}주분 보관 중)`}
+              </span>
+              <select class="openui-inline-input" style="width:auto;min-height:40px;padding:6px 12px;font-size:13px;font-weight:700;" onchange="if(this.value) jumpToDate(this.value)">
+                <option value="">📅 전체 콘티 날짜 바로가기 (${allSetlistDates.length}건)...</option>
+                ${allSetlistDates.map(d => {
+                  const cnt = parseSetlistString(state.db.setlists[d]).songs.length;
+                  const ytMark = (state.db.youtubeLinks && state.db.youtubeLinks[d]) ? " · 🎧음원" : "";
+                  return `<option value="${d}" ${d === dateStr ? "selected" : ""}>${formatKoreanDate(d, false)} — ${cnt}곡${ytMark}</option>`;
+                }).join("")}
+              </select>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              ${recentContiDates.map(d => {
+                const p = parseSetlistString(state.db.setlists[d]);
+                const previewTitles = p.songs.map((s, i) => `${i + 1}. ${s.title}${s.key !== "-" ? ` (${s.key})` : ""}`).join(" · ");
+                const dYt = safeHttpUrl((state.db.youtubeLinks && state.db.youtubeLinks[d]) || "");
+                return `
+                  <div style="padding:10px 12px;border-radius:var(--openui-radius-lg);background:var(--openui-elevated);border:1px solid var(--openui-border-default);display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;">
+                    <div style="display:flex;flex-direction:column;gap:3px;min-width:0;flex:1;">
+                      <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+                        <span style="font-size:13.5px;font-weight:800;color:var(--openui-text-brand);">${formatKoreanDate(d, false)}</span>
+                        <span class="openui-tag is-brand">${p.songs.length}곡</span>
+                        ${dYt ? `<span class="openui-tag is-success">🎧 음원</span>` : ""}
+                      </div>
+                      <div style="font-size:12.5px;color:var(--openui-text-neutral-secondary);line-height:1.45;word-break:keep-all;">${previewTitles}</div>
+                    </div>
+                    <div style="display:flex;gap:6px;flex-wrap:wrap;">
+                      ${dYt ? `<a class="openui-btn is-xs" href="${escapeHtml(dYt)}" target="_blank" rel="noopener noreferrer" style="text-decoration:none;">▶ 음원 ↗</a>` : ""}
+                      <button type="button" class="openui-btn is-primary is-xs" onclick="jumpToDate('${d}')">콘티 열기</button>
+                    </div>
+                  </div>
+                `;
+              }).join("")}
+            </div>
+          </div>
+        `
+        : "";
+
       const contiItems = parsedSetlist.songs.length > 0
         ? parsedSetlist.songs.map((song, idx) => `
             <div class="openui-list-item">
@@ -2046,36 +2238,53 @@
         : `
           <div class="openui-callout is-info">
             <div class="callout-body">
-              <span class="callout-title">등록된 찬양 콘티가 없습니다</span>
-              <span class="callout-desc">이번 주 찬양 순서와 참고 유튜브 링크를 등록해 주세요.</span>
+              <span class="callout-title">${formatKoreanDate(dateStr, true)} 주간은 아직 찬양 콘티 입력 전입니다 (DB 전체 ${allSetlistDates.length}주분 보관 중)</span>
+              <span class="callout-desc">이 주간의 새 찬양 콘티를 등록하거나, 아래에서 다른 주차에 등록된 찬양 콘티와 참고 음원을 바로 확인하실 수 있습니다.</span>
             </div>
-            <button type="button" class="openui-btn is-primary is-xs" onclick="openContiModal()">+ 콘티·음원 등록</button>
+            <button type="button" class="openui-btn is-primary is-xs" onclick="openContiModal()">+ 이 주간 콘티 등록</button>
           </div>
         `;
 
       const ytUrl = safeHttpUrl(state.db.youtubeLinks[dateStr] || "");
+      const latestYtDate = allYoutubeDates.find(d => d <= dateStr) || allYoutubeDates[0] || "";
+      const fallbackYtUrl = latestYtDate ? safeHttpUrl(state.db.youtubeLinks[latestYtDate] || "") : "";
+
       const ytCallout = ytUrl
         ? `
-          <div class="openui-callout is-info" style="padding:10px 14px;">
+          <div class="openui-callout is-info" style="padding:12px 14px;">
             <div class="callout-body">
-              <span class="callout-title">▶ YouTube 참고 음원 플레이리스트</span>
-              <span class="callout-desc" style="font-family:var(--openui-font-code);font-size:11px;">${escapeHtml(ytUrl)}</span>
+              <span class="callout-title">▶ ${formatKoreanDate(dateStr, true)} YouTube 참고 음원 플레이리스트</span>
+              <span class="callout-desc" style="font-family:var(--openui-font-code);font-size:11.5px;word-break:break-all;">${escapeHtml(ytUrl)}</span>
             </div>
             <div style="display:flex;gap:6px;flex-wrap:wrap;">
-              <a class="openui-btn is-primary is-xs" href="${escapeHtml(ytUrl)}" target="_blank" rel="noopener noreferrer" style="text-decoration:none;">음원 열기 ↗</a>
+              <a class="openui-btn is-primary is-xs" href="${escapeHtml(ytUrl)}" target="_blank" rel="noopener noreferrer" style="text-decoration:none;">▶ 음원 열기 ↗</a>
               <button type="button" class="openui-btn is-xs" onclick="openContiModal()">음원 수정</button>
             </div>
           </div>
         `
-        : `
-          <div class="openui-callout is-info" style="padding:10px 14px;">
-            <div class="callout-body">
-              <span class="callout-title">🎧 참고 음원 (YouTube 링크)</span>
-              <span class="callout-desc">등록된 참고 음원 링크가 없습니다. 유튜브 플레이리스트나 참고 영상을 연결해 주세요.</span>
+        : (fallbackYtUrl
+          ? `
+            <div class="openui-callout is-info" style="padding:12px 14px;">
+              <div class="callout-body">
+                <span class="callout-title">🎧 찬양팀 YouTube 참고 음원 플레이리스트 (DB 총 ${allYoutubeDates.length}건 연결됨)</span>
+                <span class="callout-desc">${formatKoreanDate(dateStr, true)} 개별 링크는 미지정 상태이며, 찬양팀 공용/최근 참고 음원 플레이리스트(${formatKoreanDate(latestYtDate, true)} 기준)를 바로 열거나 이 주간 링크를 등록할 수 있습니다.</span>
+                <span class="callout-desc" style="font-family:var(--openui-font-code);font-size:11.5px;word-break:break-all;margin-top:2px;">${escapeHtml(fallbackYtUrl)}</span>
+              </div>
+              <div style="display:flex;gap:6px;flex-wrap:wrap;">
+                <a class="openui-btn is-primary is-xs" href="${escapeHtml(fallbackYtUrl)}" target="_blank" rel="noopener noreferrer" style="text-decoration:none;">▶ 참고 음원 열기 ↗</a>
+                <button type="button" class="openui-btn is-xs" onclick="openContiModal()">+ 이 주간 음원 등록</button>
+              </div>
             </div>
-            <button type="button" class="openui-btn is-xs" onclick="openContiModal()">+ 참고 음원 등록</button>
-          </div>
-        `;
+          `
+          : `
+            <div class="openui-callout is-info" style="padding:12px 14px;">
+              <div class="callout-body">
+                <span class="callout-title">🎧 참고 음원 (YouTube 링크)</span>
+                <span class="callout-desc">유튜브 플레이리스트나 참고 영상을 연결해 주세요.</span>
+              </div>
+              <button type="button" class="openui-btn is-xs" onclick="openContiModal()">+ 참고 음원 등록</button>
+            </div>
+          `);
 
       return `
         <div class="openui-stack-row">
@@ -2083,7 +2292,7 @@
           <section class="openui-card">
             <div class="openui-card-header">
               <div>
-                <h2 class="openui-card-title">파트별 섬김이 명단 ${state.isAdmin ? "(EntityList)" : ""}</h2>
+                <h2 class="openui-card-title">파트별 섬김이 명단</h2>
                 <p class="openui-card-sub">${formatKoreanDate(dateStr, false)} 금요기도회 찬양팀</p>
               </div>
               <button type="button" class="openui-btn is-xs" onclick="setSubSurface('editable')">전체 파트 일괄 편집</button>
@@ -2097,8 +2306,8 @@
           <section class="openui-card">
             <div class="openui-card-header">
               <div>
-                <h2 class="openui-card-title">찬양 콘티 &amp; 참고 음원 ${state.isAdmin ? "(ListBlock)" : ""}</h2>
-                <p class="openui-card-sub">${parsedSetlist.headerNote ? `${parsedSetlist.headerNote}` : "이번 주 찬양 순서 및 코드 안내"}</p>
+                <h2 class="openui-card-title">찬양 콘티 &amp; 참고 음원</h2>
+                <p class="openui-card-sub">${parsedSetlist.headerNote ? `${parsedSetlist.headerNote}` : `${formatKoreanDate(dateStr, false)} 찬양 순서 및 참고 음원 (DB 콘티 ${allSetlistDates.length}주 · 음원 ${allYoutubeDates.length}건)`}</p>
               </div>
               <button type="button" class="openui-btn is-primary is-xs" onclick="openContiModal()">${parsedSetlist.songs.length || ytUrl ? "콘티·음원 수정" : "+ 콘티·음원 등록"}</button>
             </div>
@@ -2106,6 +2315,7 @@
               ${contiItems}
             </div>
             ${ytCallout}
+            ${recentContiPreviewHtml}
           </section>
         </div>
       `;
@@ -2119,10 +2329,10 @@
           <tr>
             <td style="font-weight:700;width:125px;">${cfg.emoji} ${role}</td>
             <td>
-              <input class="openui-inline-input" data-edit-role="${role}" value="${val}" placeholder="미배정 (복수 인원은 쉼표로 구분해 개별 PushKey 생성)">
+              <input class="openui-inline-input" data-edit-role="${role}" value="${val}" placeholder="미배정 (복수 인원은 쉼표로 구분해 개별 DB Key 생성)">
             </td>
             <td style="width:90px;text-align:right;">
-              <button type="button" class="openui-btn is-xs" onclick="openRoleModal('${role}')">칩 선택</button>
+              <button type="button" class="openui-btn is-xs" onclick="openRoleModal('${role}')">목록 선택</button>
             </td>
           </tr>
         `;
@@ -2132,8 +2342,8 @@
         <section class="openui-card">
           <div class="openui-card-header">
             <div>
-              <h2 class="openui-card-title">EditableTable · 9개 파트 일괄 인라인 편집</h2>
-              <p class="openui-card-sub">${formatKoreanDate(dateStr, false)} — 저장 시 각 이름마다 개별 Firebase PushKey 레코드로 동기화됩니다.</p>
+              <h2 class="openui-card-title">9개 파트 일괄 인라인 편집</h2>
+              <p class="openui-card-sub">${formatKoreanDate(dateStr, false)} — 저장 시 각 이름마다 개별 DB 레코드로 동기화됩니다.</p>
             </div>
             <div style="display:flex;gap:6px;">
               <button type="button" class="openui-btn is-xs" onclick="setSubSurface('briefing')">취소</button>
@@ -2144,7 +2354,7 @@
             <thead>
               <tr>
                 <th>파트 (role)</th>
-                <th>담당 섬김이 (쉼표 구분 시 개별 prayerList 레코드로 분리 저장)</th>
+                <th>담당 섬김이 (쉼표 구분 시 개별 DB 레코드로 분리 저장)</th>
                 <th style="text-align:right;">빠른 선택</th>
               </tr>
             </thead>
@@ -2156,7 +2366,7 @@
       `;
     }
 
-    // 특정 날짜·파트의 이름 배열을 원본 Firebase prayerList의 1:N 레코드 구조로 동기화
+    // 특정 날짜·파트의 이름 배열을 원본 DB prayerList의 1:N 레코드 구조로 동기화
     function syncRoleRecordsToFirebaseSchema(dateStr, role, newNamesArray, skipSnapshot) {
       if (!skipSnapshot) {
         pushSafeSnapshot(`${dateStr} ${role} 변경`);
@@ -2170,7 +2380,7 @@
           updates[`prayerList/${k}`] = null;
         }
       });
-      // 2) 새 이름마다 개별 Firebase Push Key 생성해 추가 (원본 스키마 100% 동일)
+      // 2) 새 이름마다 개별 DB Key 생성해 추가 (원본 스키마 100% 동일)
       newNamesArray.forEach((name, idx) => {
         const newKey = (state.firebaseConnected && firebaseDbRef)
           ? firebaseDbRef.ref("prayerList").push().key
@@ -2180,7 +2390,7 @@
         updates[`prayerList/${newKey}`] = recObj;
       });
       if (state.firebaseConnected && firebaseDbRef && Object.keys(updates).length > 0) {
-        firebaseDbRef.ref().update(updates).catch(err => console.error("Firebase prayerList 저장 오류:", err));
+        firebaseDbRef.ref().update(updates).catch(err => console.error("DB prayerList 저장 오류:", err));
       }
     }
 
@@ -2197,7 +2407,7 @@
       });
       state.subSurface = "briefing";
       renderMainSurface();
-      showToast("✅ 9개 파트를 원본 Firebase 1:N 규격으로 저장했습니다 (직전 상태 자동 백업 완료)");
+      showToast("✅ 9개 파트를 원본 DB 1:N 규격으로 저장했습니다 (직전 상태 자동 백업 완료)");
     }
 
     function renderCaptureSurface(dateStr, byRole, parsedSetlist) {
@@ -2226,7 +2436,7 @@
         <section class="openui-card" style="background:var(--openui-sunk-light);">
           <div class="openui-card-header">
             <div>
-              <h2 class="openui-card-title">📸 월·화요일 카카오톡 단톡방 캡처 전용 카드 (VisualCardBlock)</h2>
+              <h2 class="openui-card-title">📸 월·화요일 카카오톡 단톡방 캡처 전용 카드</h2>
               <p class="openui-card-sub">수정·삭제 버튼을 모두 숨겨 이 카드를 그대로 캡처해 카카오톡 단톡방에 공유할 수 있습니다.</p>
             </div>
             <div style="display:flex;gap:6px;">
@@ -2271,12 +2481,29 @@
         return `<tr><td style="font-weight:700;color:var(--openui-text-neutral-secondary);">${cfg.emoji} ${role}</td>${cells}</tr>`;
       }).join("");
 
+      const contiCells = fridays.map(dStr => {
+        const raw = (state.db.setlists && state.db.setlists[dStr]) || "";
+        const parsed = parseSetlistString(raw);
+        const yt = safeHttpUrl((state.db.youtubeLinks && state.db.youtubeLinks[dStr]) || "");
+        if (!parsed.songs.length && !yt) {
+          return `<td><button type="button" class="openui-tag is-neutral" style="border:0;cursor:pointer;" onclick="selectTab('${dStr}'); openContiModal()">+ 콘티·음원 등록</button></td>`;
+        }
+        return `
+          <td>
+            <div style="display:flex;flex-direction:column;gap:4px;">
+              ${parsed.songs.length ? `<span class="openui-tag is-brand" style="cursor:pointer;" onclick="selectTab('${dStr}')">🎵 콘티 ${parsed.songs.length}곡 보기</span>` : ""}
+              ${yt ? `<a class="openui-tag is-success" href="${escapeHtml(yt)}" target="_blank" rel="noopener noreferrer" style="text-decoration:none;">🎧 참고 음원 ↗</a>` : ""}
+            </div>
+          </td>
+        `;
+      }).join("");
+
       return `
         <section class="openui-card">
           <div class="openui-card-header">
             <div>
-              <h2 class="openui-card-title">${state.currentMonth.replace("-", "년 ")}월 전체 주차별 배정 매트릭스 (OpenUI Table)</h2>
-              <p class="openui-card-sub">모든 금요일×9개 파트의 배정 현황을 한눈에 비교하고 [+ 미배정]을 눌러 즉시 추가합니다.</p>
+              <h2 class="openui-card-title">${state.currentMonth.replace("-", "년 ")}월 전체 주차별 배정 매트릭스</h2>
+              <p class="openui-card-sub">모든 금요일×9개 파트의 배정 현황과 찬양 콘티·참고 음원을 한눈에 비교하고 [+ 미배정]을 눌러 즉시 추가합니다.</p>
             </div>
           </div>
           <div style="overflow-x:auto;">
@@ -2289,6 +2516,10 @@
               </thead>
               <tbody>
                 ${rows}
+                <tr>
+                  <td style="font-weight:700;color:var(--openui-text-brand);">🎼 콘티 · 음원</td>
+                  ${contiCells}
+                </tr>
               </tbody>
             </table>
           </div>
@@ -2311,12 +2542,12 @@
         <div class="openui-card-header" style="padding-bottom:8px;">
           <div>
             <h3 class="openui-card-title">${formatKoreanDate(dateStr, true)} · ${cfg.emoji} ${role} 배정</h3>
-            <p class="openui-card-sub">실제 DB 다빈도 섬김이 칩(${cfg.multi ? "복수 선택 가능" : "단일 선택"}) 또는 직접 입력</p>
+            <p class="openui-card-sub">실제 DB 다빈도 섬김이(${cfg.multi ? "복수 선택 가능" : "단일 선택"}) 또는 직접 입력</p>
           </div>
           <button type="button" class="openui-btn is-xs" onclick="closeModal()">✕</button>
         </div>
         <div>
-          <div class="followup-label" style="margin-bottom:6px;">1. 실제 DB 다빈도 섬김이 선택 (Chips)</div>
+          <div class="followup-label" style="margin-bottom:6px;">1. 실제 DB 다빈도 섬김이 선택</div>
           <div class="openui-chips">
             ${candidates.map(name => `
               <button type="button" class="openui-chip-item ${currentNames.includes(name) ? 'is-selected' : ''}" onclick="applyChipMember('${role}', '${name}')">
@@ -2330,8 +2561,8 @@
           <input id="modalRoleInput" class="openui-inline-input" value="${currentNames.join(', ')}" placeholder="담당자 이름 또는 특별기도회 안내 입력">
         </div>
         <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:4px;">
-          <button type="button" class="openui-btn" onclick="saveRoleModal('${role}', true)">배정 비우기</button>
-          <button type="button" class="openui-btn is-primary" onclick="saveRoleModal('${role}', false)">저장하기 (prayerList 반영)</button>
+          <button type="button" class="openui-btn" onclick="closeModal()">취소</button>
+          <button type="button" class="openui-btn is-primary" onclick="saveRoleModal('${role}', false)">저장하기 (DB 반영)</button>
         </div>
       `;
       document.getElementById("openuiModalBackdrop").classList.add("is-open");
@@ -2383,17 +2614,17 @@
       modal.innerHTML = `
         <div class="openui-card-header" style="padding-bottom:8px;">
           <div>
-            <h3 class="openui-card-title">${formatKoreanDate(dateStr, true)} 찬양 콘티(setlists) 편집</h3>
-            <p class="openui-card-sub">원본 Firebase의 멀티라인 문자열 그대로 저장되어 기존 데이터와 100% 호환됩니다.</p>
+            <h3 class="openui-card-title">${formatKoreanDate(dateStr, true)} 찬양 콘티 &amp; 참고 음원 편집</h3>
+            <p class="openui-card-sub">원본 DB의 멀티라인 문자열 그대로 저장되어 기존 데이터와 100% 호환됩니다.</p>
           </div>
           <button type="button" class="openui-btn is-xs" onclick="closeModal()">✕</button>
         </div>
         <div>
-          <div class="followup-label" style="margin-bottom:6px;">찬양 순서 (setlists/${dateStr})</div>
+          <div class="followup-label" style="margin-bottom:6px;">찬양 순서 (DB setlists/${dateStr})</div>
           <textarea id="modalContiText" class="openui-inline-input" rows="6" style="font-family:inherit;line-height:1.5;" placeholder="1. 하나님의 음성을 C&#10;2. 정결한 맘 주시옵소서 F">${rawText}</textarea>
         </div>
         <div>
-          <div class="followup-label" style="margin-bottom:6px;">유튜브 URL (youtubeLinks/${dateStr})</div>
+          <div class="followup-label" style="margin-bottom:6px;">유튜브 참고 음원 URL (DB youtubeLinks/${dateStr})</div>
           <input id="modalYtInput" class="openui-inline-input" value="${ytUrl}" placeholder="https://youtube.com/playlist?list=...">
         </div>
         <div style="display:flex;justify-content:flex-end;gap:8px;">
@@ -2422,12 +2653,12 @@
         const updates = {};
         updates[`setlists/${dateStr}`] = raw || null;
         updates[`youtubeLinks/${dateStr}`] = yt || null;
-        firebaseDbRef.ref().update(updates).catch(err => console.error("Firebase 콘티/음원 저장 오류:", err));
+        firebaseDbRef.ref().update(updates).catch(err => console.error("DB 콘티/음원 저장 오류:", err));
       }
 
       closeModal();
       renderMainSurface();
-      showToast("✅ setlists 및 youtubeLinks를 원본 Firebase 포맷으로 저장했습니다");
+      showToast("✅ 찬양 콘티 및 참고 음원을 DB에 저장했습니다");
     }
 
     function closeModal() {
@@ -2510,7 +2741,7 @@
   <span class="code-comp">SnippetCardItem</span>(<span class="code-str">"share"</span>, <span class="code-comp">IconText</span>(<span class="code-str">"카톡 공지"</span>), <span class="code-comp">BoldText</span>(<span class="code-str">"캡처 카드"</span>))
 ])
 
-<span class="code-act">// 원본 Firebase RTDB (prayerList 1:N 실시간 매핑)</span>
+<span class="code-act">// 원본 실시간 DB (prayerList 1:N 실시간 매핑)</span>
 prayerList[${dateStr}] = {
 ${sampleRecs || '  // 등록된 일정 없음'}
 }`;
@@ -2523,7 +2754,7 @@ ${sampleRecs || '  // 등록된 일정 없음'}
           <div class="openui-card-header">
             <div>
               <h2 class="openui-card-title">1. 원본 저장소(difains/friday-prayer-schedule) 데이터·기능 호환성 검토 결과</h2>
-              <p class="openui-card-sub">실제 운영 중인 Firebase RTDB(prayerList 563건, setlists 59건, youtubeLinks 28건) 전수 검사 및 UI 반영 내역</p>
+              <p class="openui-card-sub">실제 운영 중인 실시간 DB(prayerList 563건, setlists 59건, youtubeLinks 28건) 전수 검사 및 UI 반영 내역</p>
             </div>
             <button type="button" class="openui-btn is-primary" onclick="setLayoutMode('split')">🖥️ 본 화면으로 돌아가기</button>
           </div>
@@ -2539,9 +2770,9 @@ ${sampleRecs || '  // 등록된 일정 없음'}
             <tbody>
               <tr>
                 <td><b>1. prayerList 1:N 구조</b></td>
-                <td>배정 1건마다 개별 PushKey(<code>{date, role, name}</code>). 한 날에 싱어 최대 5명, 엔지니어 최대 2명</td>
+                <td>배정 1건마다 개별 DB Key(<code>{date, role, name}</code>). 한 날에 싱어 최대 5명, 엔지니어 최대 2명</td>
                 <td>쉼표로 합쳐 1개 문자열로 저장하면 기존 개별 Key 수정·삭제 불가</td>
-                <td>이름마다 개별 PushKey 레코드로 분리 저장·삭제하도록 100% 호환 구현</td>
+                <td>이름마다 개별 DB Key 레코드로 분리 저장·삭제하도록 100% 호환 구현</td>
               </tr>
               <tr>
                 <td><b>2. setlists 자유 텍스트</b></td>
@@ -2558,8 +2789,8 @@ ${sampleRecs || '  // 등록된 일정 없음'}
               <tr>
                 <td><b>4. 특수 주간명 입력</b></td>
                 <td><code>11/6 그루터기</code>, <code>11/13 추수감사특별새벽기도회</code>처럼 <code>name</code>에 주간 안내 입력</td>
-                <td>고정 팀원 칩만 제공하면 특수 주간 입력 불가</td>
-                <td>실제 DB 다빈도 팀원 칩(Chips) + 자유 텍스트 직접 입력(Input) 동시 제공</td>
+                <td>고정 팀원 목록만 제공하면 특수 주간 입력 불가</td>
+                <td>실제 DB 다빈도 팀원 선택 버튼 + 자유 텍스트 직접 입력(Input) 동시 제공</td>
               </tr>
               <tr>
                 <td><b>5. 빈 금요일 콘티 등록</b></td>
@@ -2577,4 +2808,4 @@ ${sampleRecs || '  // 등록된 일정 없음'}
     initRealtimeFirebase();
   </script>
 </body>
-  </html>
+            </html>
