@@ -1260,34 +1260,31 @@
       }
     }
 
-    /* 주간 기도회 흐름 스테퍼 (일반 모드: 그레이톤 bg + 선택된 주차 화이트톤) */
+    /* 주간 기도회 흐름 스테퍼 (일반 모드: 그레이톤 bg + 이번주 화이트톤 고정 + 하단 텍스트 왕복 모션) */
     .weekly-flow-stepper-wrap {
       background: #f1f3f5;
       border: 1.5px solid #1d1d1b;
       border-radius: var(--openui-radius-2xl, 16px);
-      padding: 12px 14px 8px;
+      padding: 12px 14px 10px;
       margin-bottom: 14px;
       box-shadow: var(--openui-shadow-sm, 0 1px 2px rgba(0,0,0,0.05));
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
+      overflow: hidden;
     }
     .weekly-flow-track {
       display: flex;
-      align-items: flex-start;
+      align-items: center;
       justify-content: center;
       gap: 8px;
       min-width: max-content;
       margin: 0 auto;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      padding: 2px 4px;
     }
     @media (max-width: 520px) {
       .weekly-flow-track {
         justify-content: flex-start;
       }
-    }
-    .flow-col {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
     }
     .flow-card {
       width: 80px;
@@ -1296,7 +1293,7 @@
       border: 1.5px solid #d1d5db;
       background: #e5e7eb;
       color: #4b5563;
-      display: flex;
+      display: inline-flex;
       align-items: center;
       justify-content: center;
       padding: 6px 10px;
@@ -1304,6 +1301,7 @@
       font-family: inherit;
       transition: transform 0.12s ease, background 0.12s ease, border-color 0.12s ease, color 0.12s ease, box-shadow 0.12s ease;
       touch-action: manipulation;
+      flex-shrink: 0;
     }
     .flow-card:hover {
       background: #edf0f3;
@@ -1314,7 +1312,8 @@
       background: #ffffff;
       border: 2px solid #1d1d1b;
       color: #111827;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+      font-weight: 800;
     }
     .flow-week {
       font-size: 15px;
@@ -1322,28 +1321,58 @@
       line-height: 1;
     }
     .flow-arrow {
-      display: flex;
+      display: inline-flex;
       align-items: center;
       justify-content: center;
       height: 44px;
       color: #9ca3af;
       padding: 0 1px;
+      flex-shrink: 0;
     }
-    .flow-indicator {
-      font-size: 12px;
-      font-weight: 700;
-      color: #1d1d1b;
-      text-align: center;
-      min-height: 20px;
-      margin-top: 6px;
+    .weekly-flow-motion-bar {
+      position: relative;
+      width: 100%;
+      min-height: 24px;
+      margin-top: 8px;
       display: flex;
       align-items: center;
       justify-content: center;
-      visibility: hidden;
+      overflow: hidden;
     }
-    .flow-indicator.is-today-active,
-    .flow-indicator.is-selected-active {
-      visibility: visible;
+    .weekly-flow-motion-text {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      font-size: 13px;
+      font-weight: 700;
+      color: #1d1d1b;
+      white-space: nowrap;
+      animation: weekly-motion-pingpong 4.6s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite alternate;
+      will-change: transform;
+    }
+    @keyframes weekly-motion-pingpong {
+      0% {
+        transform: translateX(-110px);
+      }
+      100% {
+        transform: translateX(110px);
+      }
+    }
+    @media (max-width: 480px) {
+      @keyframes weekly-motion-pingpong {
+        0% {
+          transform: translateX(-65px);
+        }
+        100% {
+          transform: translateX(65px);
+        }
+      }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .weekly-flow-motion-text {
+        animation: none;
+      }
     }
     body.is-large-text .flow-card {
       width: 90px;
@@ -1352,8 +1381,8 @@
     body.is-large-text .flow-week {
       font-size: 17px;
     }
-    body.is-large-text .flow-indicator {
-      font-size: 13.5px;
+    body.is-large-text .weekly-flow-motion-text {
+      font-size: 14.5px;
     }
     </style>
   <script>
@@ -2810,22 +2839,21 @@
       `;
     }
 
-    // 일반 모드: 1주차 -> 2주차 -> 3주차 주간 기도회 흐름 스테퍼 (주차만 깔끔하게 노출)
+    // 일반 모드: 1주차 -> 2주차 -> 3주차 주간 기도회 흐름 스테퍼
+    // - 박스: 이번 주에 해당하는 것만 화이트톤 선택효과 넣고 고정
+    // - 아래 텍스트: 좌우로 부드럽게 왔다갔다하는 모션 적용
     function renderWeeklyFlowStepper(fridays) {
       const thisWeekFri = getThisWeekFriday();
       const hasTodayInMonth = fridays.includes(thisWeekFri);
 
-      const stepsHtml = fridays.map((f, idx) => {
+      const boxesHtml = fridays.map((f, idx) => {
         const weekNum = idx + 1;
-        const isToday = (f === thisWeekFri);
-        const isSelected = (f === state.selectedDate);
-
-        const [y, m, d] = f.split("-").map(Number);
+        // 박스에 이번주에 해당하는 것만 선택효과 넣고 고정 (해당 월에 오늘이 없으면 선택된 날짜에 표시)
+        const isSelectedEffect = hasTodayInMonth ? (f === thisWeekFri) : (f === state.selectedDate);
 
         const cardClasses = [
           "flow-card",
-          isToday ? "is-today" : "",
-          isSelected ? "is-selected" : ""
+          isSelectedEffect ? "is-selected" : "is-unselected"
         ].filter(Boolean).join(" ");
 
         const arrowHtml = (idx < fridays.length - 1)
@@ -2838,22 +2866,27 @@
           : "";
 
         return `
-          <div class="flow-col">
-            <button type="button" class="${cardClasses}" onclick="selectFriday('${f}')" aria-label="${m}월 ${d}일 ${weekNum}주차">
-              <span class="flow-week">${weekNum}주차</span>
-            </button>
-            <div class="flow-indicator ${isToday ? 'is-today-active' : (isSelected && !hasTodayInMonth ? 'is-selected-active' : '')}">
-              ${isToday ? "▲ 오늘 (이번 주)" : (isSelected && !hasTodayInMonth ? "▲ 선택됨" : "")}
-            </div>
-          </div>
+          <button type="button" class="${cardClasses}" onclick="selectFriday('${f}')" aria-label="${formatKoreanDate(f, true)} ${weekNum}주차">
+            <span class="flow-week">${weekNum}주차</span>
+          </button>
           ${arrowHtml}
         `;
       }).join("");
 
+      // 아래 왔다갔다하는 모션 텍스트 (기본 문구: 이번 주 금요기도회 함께 준비해요)
+      const motionText = hasTodayInMonth
+        ? "▲ 이번 주 금요기도회 함께 준비해요"
+        : `▲ ${formatKoreanDate(state.selectedDate, true)} 금요기도회 일정`;
+
       return `
         <div class="weekly-flow-stepper-wrap" aria-label="월간 주차별 기도회 일정 흐름">
           <div class="weekly-flow-track">
-            ${stepsHtml}
+            ${boxesHtml}
+          </div>
+          <div class="weekly-flow-motion-bar" aria-hidden="true">
+            <div class="weekly-flow-motion-text">
+              ${motionText}
+            </div>
           </div>
         </div>
       `;
