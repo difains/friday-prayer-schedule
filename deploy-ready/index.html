@@ -13,6 +13,284 @@
         y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
     })(window, document, "clarity", "script", "tilho7v35y");
 
+
+    // ==========================================
+    // 교육 자료 설정 & 관리자 제어 (ON/OFF 및 항목 관리)
+    // ==========================================
+    const DEFAULT_EDU_CONFIG = {
+      sectionEnabled: true,
+      sermonEnabled: true,
+      items: [
+        {
+          id: "edu_workshop_2026",
+          icon: "📖",
+          tag: "예배자 영성",
+          title: "2026 찬양팀 예배자 교육",
+          subtext: "가짜 예배자 — 찬양팀의 본질과 사명, 예배자의 영적 태도 및 파트별 에티켓 교육 슬라이드",
+          linkUrl: "https://difains.github.io/2026-worship-workshop/",
+          linkLabel: "교육 슬라이드 열기 ↗"
+        },
+        {
+          id: "edu_bandmaster_guide",
+          icon: "🎸",
+          tag: "사역 가이드북",
+          title: "금요기도회 밴드마스터 가이드북 v1.0",
+          subtext: "금요기도회 찬양팀 밴드 편곡 원리, 사운드 밸런스 조율, 큐시트 및 세션 디렉팅 실무 가이드",
+          linkUrl: "https://difains.github.io/Friday_Bandmaster_Guidebook/",
+          linkLabel: "가이드북 웹뷰 ↗"
+        },
+        {
+          id: "edu_indoja_education",
+          icon: "🎤",
+          tag: "인도자 훈련",
+          title: "찬양 인도자 양성 교육",
+          subtext: "고등부 찬양 인도자 양성 — 영적 리더십, 콘티 선곡 흐름, 멘트 전달 및 회중 찬양 인도 실무",
+          linkUrl: "https://difains.github.io/indojavider-education/",
+          linkLabel: "인도자 가이드 ↗"
+        }
+      ]
+    };
+
+    function getEduConfig() {
+      if (state.eduConfig) return state.eduConfig;
+      try {
+        const saved = localStorage.getItem("fridayPrayer_eduConfig");
+        if (saved) {
+          state.eduConfig = JSON.parse(saved);
+          if (state.eduConfig.sectionEnabled === undefined) state.eduConfig.sectionEnabled = true;
+          if (state.eduConfig.sermonEnabled === undefined) state.eduConfig.sermonEnabled = true;
+          if (!Array.isArray(state.eduConfig.items)) state.eduConfig.items = DEFAULT_EDU_CONFIG.items;
+          return state.eduConfig;
+        }
+      } catch(e) {}
+      state.eduConfig = JSON.parse(JSON.stringify(DEFAULT_EDU_CONFIG));
+      return state.eduConfig;
+    }
+
+    function saveEduConfig(newConfig) {
+      state.eduConfig = newConfig;
+      try {
+        localStorage.setItem("fridayPrayer_eduConfig", JSON.stringify(newConfig));
+      } catch(e) {}
+      if (firebaseDbRef && state.firebaseConnected) {
+        firebaseDbRef.ref("eduConfig").set(newConfig).catch(err => console.error("Firebase eduConfig 저장 오류:", err));
+      }
+      renderUI();
+    }
+
+    function toggleEduSection(enable) {
+      const cfg = getEduConfig();
+      cfg.sectionEnabled = enable;
+      saveEduConfig(cfg);
+    }
+
+    function toggleSermonSection(enable) {
+      const cfg = getEduConfig();
+      cfg.sermonEnabled = enable;
+      saveEduConfig(cfg);
+    }
+
+    let editingEduItemId = null;
+    function openEduItemModal(itemId) {
+      editingEduItemId = itemId || null;
+      const cfg = getEduConfig();
+      const item = itemId ? (cfg.items.find(it => it.id === itemId) || {}) : {};
+
+      const titleEl = document.getElementById("eduModalHeaderTitle");
+      if (titleEl) titleEl.textContent = itemId ? "교육 자료 수정" : "새 교육 자료 추가";
+
+      document.getElementById("eduFormIcon").value = item.icon || "📖";
+      document.getElementById("eduFormTag").value = item.tag || "";
+      document.getElementById("eduFormTitle").value = item.title || "";
+      document.getElementById("eduFormSubtext").value = item.subtext || "";
+      document.getElementById("eduFormLinkUrl").value = item.linkUrl || "";
+      document.getElementById("eduFormLinkLabel").value = item.linkLabel || "자료 열기 ↗";
+
+      const modal = document.getElementById("eduItemModal");
+      if (modal) modal.style.display = "flex";
+    }
+
+    function closeEduItemModal() {
+      const modal = document.getElementById("eduItemModal");
+      if (modal) modal.style.display = "none";
+    }
+
+    function saveEduItemFromModal() {
+      const icon = document.getElementById("eduFormIcon").value.trim() || "📖";
+      const tag = document.getElementById("eduFormTag").value.trim() || "교육 자료";
+      const title = document.getElementById("eduFormTitle").value.trim();
+      const subtext = document.getElementById("eduFormSubtext").value.trim();
+      const linkUrl = document.getElementById("eduFormLinkUrl").value.trim();
+      const linkLabel = document.getElementById("eduFormLinkLabel").value.trim() || "자료 열기 ↗";
+
+      if (!title) {
+        alert("타이틀을 입력해주세요.");
+        return;
+      }
+      if (!linkUrl) {
+        alert("링크 URL을 입력해주세요.");
+        return;
+      }
+
+      const cfg = getEduConfig();
+      if (editingEduItemId) {
+        const idx = cfg.items.findIndex(it => it.id === editingEduItemId);
+        if (idx !== -1) {
+          cfg.items[idx] = { ...cfg.items[idx], icon, tag, title, subtext, linkUrl, linkLabel };
+        }
+      } else {
+        cfg.items.push({
+          id: "edu_" + Date.now(),
+          icon, tag, title, subtext, linkUrl, linkLabel
+        });
+      }
+      saveEduConfig(cfg);
+      closeEduItemModal();
+    }
+
+    function deleteEduItem(itemId) {
+      if (!confirm("이 교육 자료를 삭제하시겠습니까?")) return;
+      const cfg = getEduConfig();
+      cfg.items = cfg.items.filter(it => it.id !== itemId);
+      saveEduConfig(cfg);
+    }
+
+    function renderEducationCard() {
+      const eduCfg = getEduConfig();
+
+      // 일반 사용자 모드에서 전체 영역 비공개(OFF)인 경우 표시 안 함
+      if (!state.isAdmin && !eduCfg.sectionEnabled) {
+        return "";
+      }
+
+      // 관리자 전용 제어 바 (공개/비공개 토글, 자료 추가 버튼)
+      const adminHeaderControls = state.isAdmin ? `
+        <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+          <button type="button" class="openui-btn is-xs ${eduCfg.sectionEnabled ? 'is-success' : ''}"
+                  style="${!eduCfg.sectionEnabled ? 'background:#fee2e2;color:#991b1b;border-color:#fca5a5;' : ''}"
+                  onclick="toggleEduSection(${!eduCfg.sectionEnabled})"
+                  title="클릭 시 일반 사용자에게 교육자료 전체 ${eduCfg.sectionEnabled ? '비공개(OFF)' : '공개(ON)'}">
+            ${eduCfg.sectionEnabled ? '👁️ 전체 공개 (ON)' : '🔒 비공개 (OFF)'}
+          </button>
+          <button type="button" class="openui-btn is-xs is-primary" onclick="openEduItemModal()">+ 자료 추가</button>
+        </div>
+      ` : "";
+
+      // 관리자 모드에서 전체 비공개일 때 경고 배너
+      const adminNotice = (state.isAdmin && !eduCfg.sectionEnabled) ? `
+        <div class="openui-callout is-warning" style="margin-bottom:10px;padding:8px 12px;font-size:12px;">
+          ⚠️ 현재 일반 사용자에게는 이 교육자료 영역이 비공개(OFF) 처리되어 표시되지 않습니다. (관리자 모드 전용 표시 중)
+        </div>
+      ` : "";
+
+      // 교육 자료 항목 렌더링 (GitHub 버튼 제거, 관리자 모드 시 수정/삭제 버튼 제공)
+      const itemsHtml = (eduCfg.items || []).map(item => {
+        const adminItemControls = state.isAdmin ? `
+          <div style="display:flex;gap:4px;margin-left:auto;">
+            <button type="button" class="openui-btn is-xs" style="padding:2px 6px;" onclick="openEduItemModal('${item.id}')" title="수정">✏️</button>
+            <button type="button" class="openui-btn is-xs" style="padding:2px 6px;color:#ef4444;" onclick="deleteEduItem('${item.id}')" title="삭제">🗑️</button>
+          </div>
+        ` : "";
+
+        return `
+          <div class="openui-edu-item" style="border:1px solid var(--openui-border-default);border-radius:var(--openui-radius-lg);padding:14px 16px;background:var(--openui-sunk-light);display:flex;flex-direction:column;justify-content:space-between;gap:12px;transition:transform 0.2s, box-shadow 0.2s;">
+            <div>
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+                <span style="font-size:20px;">${item.icon || '📖'}</span>
+                <div style="display:flex;align-items:center;gap:6px;">
+                  <span class="openui-tag" style="background:#eef2ff;color:#4338ca;font-size:11px;font-weight:700;">${item.tag || '교육 자료'}</span>
+                  ${adminItemControls}
+                </div>
+              </div>
+              <h3 style="font-size:14.5px;font-weight:800;color:var(--openui-text-title);margin:0 0 4px;">${item.title}</h3>
+              <p style="font-size:12px;color:var(--openui-text-sub);line-height:1.5;margin:0;">${item.subtext}</p>
+            </div>
+            <div style="display:flex;gap:6px;flex-wrap:wrap;padding-top:4px;">
+              <a href="${item.linkUrl}" target="_blank" rel="noopener noreferrer" class="openui-btn is-primary is-xs" style="text-decoration:none;display:inline-flex;align-items:center;gap:4px;">${item.linkLabel || '자료 열기 ↗'}</a>
+            </div>
+          </div>
+        `;
+      }).join("");
+
+      // 특새 말씀 요약 영역
+      let sermonWidgetHtml = "";
+      if (state.isAdmin || eduCfg.sermonEnabled) {
+        const adminSermonControls = state.isAdmin ? `
+          <button type="button" class="openui-btn is-xs ${eduCfg.sermonEnabled ? 'is-success' : ''}"
+                  style="${!eduCfg.sermonEnabled ? 'background:#fee2e2;color:#991b1b;border-color:#fca5a5;' : ''}"
+                  onclick="toggleSermonSection(${!eduCfg.sermonEnabled})"
+                  title="클릭 시 특새 요약 ${eduCfg.sermonEnabled ? '숨김' : '공개'}">
+            ${eduCfg.sermonEnabled ? '🌾 특새요약: ON' : '🌾 특새요약: OFF'}
+          </button>
+        ` : "";
+
+        if (!eduCfg.sermonEnabled && state.isAdmin) {
+          sermonWidgetHtml = `
+            <div style="margin-top:4px;padding:12px 16px;border:1px dashed #fdba74;background:#fff7ed;border-radius:var(--openui-radius-xl);display:flex;align-items:center;justify-content:space-between;gap:8px;">
+              <div style="display:flex;align-items:center;gap:8px;">
+                <span style="font-size:18px;">🌾</span>
+                <span style="font-size:12.5px;color:#9a3412;font-weight:600;">2026 하반기 추수감사 특새 말씀 요약이 현재 <strong>비공개(OFF)</strong> 상태입니다.</span>
+              </div>
+              ${adminSermonControls}
+            </div>
+          `;
+        } else if (eduCfg.sermonEnabled) {
+          sermonWidgetHtml = `
+            <div style="margin-top:4px;padding:16px;border:1px solid #fed7aa;background:linear-gradient(135deg, #fffbeb 0%, #fff7ed 100%);border-radius:var(--openui-radius-2xl);">
+              <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:12px;">
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <span style="font-size:20px;">🌾</span>
+                  <div>
+                    <h3 style="font-size:14px;font-weight:800;color:#9a3412;margin:0;">2026 하반기 추수감사 특별새벽기도회 말씀 요약</h3>
+                    <p style="font-size:11.5px;color:#c2410c;margin:2px 0 0;">김진영 목사 설교 비주얼 씽킹 마인드맵 (11/13 특새 주간 1~5일차 · 클릭 시 고화질 확대)</p>
+                  </div>
+                </div>
+                <div style="display:flex;align-items:center;gap:6px;">
+                  <span class="openui-tag" style="background:#ffedd5;color:#9a3412;border:1px solid #fdba74;font-size:11px;font-weight:700;">11/13 특새 주간</span>
+                  ${adminSermonControls}
+                </div>
+              </div>
+
+              <!-- Day Selector Tabs -->
+              <div class="sermon-day-tabs" style="display:flex;gap:6px;overflow-x:auto;padding-bottom:6px;margin-bottom:14px;-webkit-overflow-scrolling:touch;">
+                <button type="button" class="sermon-tab-btn is-active" data-sermon-day="1" onclick="switchSermonDay(1)">1일차: 마게도냐 교회</button>
+                <button type="button" class="sermon-tab-btn" data-sermon-day="2" onclick="switchSermonDay(2)">2일차: 거룩한 근심</button>
+                <button type="button" class="sermon-tab-btn" data-sermon-day="3" onclick="switchSermonDay(3)">3일차: 올바른 청지기직</button>
+                <button type="button" class="sermon-tab-btn" data-sermon-day="4" onclick="switchSermonDay(4)">4일차: 기쁨의 헌금</button>
+                <button type="button" class="sermon-tab-btn" data-sermon-day="5" onclick="switchSermonDay(5)">5일차: 주 안의 자랑</button>
+              </div>
+
+              <!-- Sermon Content Container -->
+              <div id="sermonContentContainer" style="display:grid;grid-template-columns:1.1fr 0.9fr;gap:16px;align-items:start;">
+                <!-- Filled dynamically by JS -->
+              </div>
+            </div>
+          `;
+        }
+      }
+
+      return `
+        <section class="openui-card" id="worshipEducationSection">
+          <div class="openui-card-header">
+            <div>
+              <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+                <h2 class="openui-card-title">찬양팀 사역 &amp; 예배자 교육 자료</h2>
+                <span class="openui-tag" style="background:#eef2ff;color:#4338ca;border:1px solid #c7d2fe;font-weight:700;">교육 &amp; 영성</span>
+                ${!eduCfg.sectionEnabled ? '<span class="openui-tag" style="background:#fee2e2;color:#991b1b;font-weight:700;">🔒 비공개 상태</span>' : ''}
+              </div>
+              <p class="openui-card-sub">예배자 영성 교육 · 밴드마스터 사역 가이드북 · 찬양 인도자 훈련 및 특새 말씀 요약</p>
+            </div>
+            ${adminHeaderControls}
+          </div>
+          ${adminNotice}
+          <div class="openui-edu-grid" style="display:grid;grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));gap:12px;">
+            ${itemsHtml}
+          </div>
+          ${sermonWidgetHtml}
+        </section>
+      `;
+    }
+
     // ==========================================
     // 2026 추수감사 특별새벽기도회 & 교육자료 모듈
     // ==========================================
@@ -3225,97 +3503,7 @@
             </div>
           </section>
 
-          <!-- Card 3: 찬양팀 사역 & 교육 자료 (Worship Education & Sermon Summaries) -->
-          <section class="openui-card" id="worshipEducationSection">
-            <div class="openui-card-header">
-              <div>
-                <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
-                  <h2 class="openui-card-title">찬양팀 사역 &amp; 예배자 교육 자료</h2>
-                  <span class="openui-tag" style="background:#eef2ff;color:#4338ca;border:1px solid #c7d2fe;font-weight:700;">교육 &amp; 영성</span>
-                </div>
-                <p class="openui-card-sub">예배자 영성 교육 · 밴드마스터 사역 가이드북 · 찬양 인도자 훈련 및 특새 말씀 요약</p>
-              </div>
-            </div>
-
-            <!-- 3 Educational Resources Grid -->
-            <div class="openui-edu-grid" style="display:grid;grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));gap:12px;">
-              <!-- 1. 예배자 교육 자료 -->
-              <div class="openui-edu-item" style="border:1px solid var(--openui-border-default);border-radius:var(--openui-radius-lg);padding:14px 16px;background:var(--openui-sunk-light);display:flex;flex-direction:column;justify-content:space-between;gap:12px;transition:transform 0.2s, box-shadow 0.2s;">
-                <div>
-                  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
-                    <span style="font-size:20px;">📖</span>
-                    <span class="openui-tag" style="background:#fef3c7;color:#92400e;font-size:11px;font-weight:700;">예배자 영성</span>
-                  </div>
-                  <h3 style="font-size:14.5px;font-weight:800;color:var(--openui-text-title);margin:0 0 4px;">2026 찬양팀 예배자 교육</h3>
-                  <p style="font-size:12px;color:var(--openui-text-sub);line-height:1.5;margin:0;">가짜 예배자 — 찬양팀의 본질과 사명, 예배자의 영적 태도 및 파트별 에티켓 교육 슬라이드</p>
-                </div>
-                <div style="display:flex;gap:6px;flex-wrap:wrap;padding-top:4px;">
-                  <a href="https://difains.github.io/2026-worship-workshop/" target="_blank" rel="noopener noreferrer" class="openui-btn is-primary is-xs" style="text-decoration:none;display:inline-flex;align-items:center;gap:4px;">교육 슬라이드 열기 ↗</a>
-                  <a href="https://github.com/difains/2026-worship-workshop" target="_blank" rel="noopener noreferrer" class="openui-btn is-xs" style="text-decoration:none;display:inline-flex;align-items:center;gap:4px;">GitHub ↗</a>
-                </div>
-              </div>
-
-              <!-- 2. 밴드마스터 가이드북 -->
-              <div class="openui-edu-item" style="border:1px solid var(--openui-border-default);border-radius:var(--openui-radius-lg);padding:14px 16px;background:var(--openui-sunk-light);display:flex;flex-direction:column;justify-content:space-between;gap:12px;transition:transform 0.2s, box-shadow 0.2s;">
-                <div>
-                  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
-                    <span style="font-size:20px;">🎸</span>
-                    <span class="openui-tag" style="background:#e0f2fe;color:#0369a1;font-size:11px;font-weight:700;">사역 가이드북</span>
-                  </div>
-                  <h3 style="font-size:14.5px;font-weight:800;color:var(--openui-text-title);margin:0 0 4px;">금요기도회 밴드마스터 가이드북 v1.0</h3>
-                  <p style="font-size:12px;color:var(--openui-text-sub);line-height:1.5;margin:0;">금요기도회 찬양팀 밴드 편곡 원리, 사운드 밸런스 조율, 큐시트 및 세션 디렉팅 실무 가이드</p>
-                </div>
-                <div style="display:flex;gap:6px;flex-wrap:wrap;padding-top:4px;">
-                  <a href="https://difains.github.io/Friday_Bandmaster_Guidebook/" target="_blank" rel="noopener noreferrer" class="openui-btn is-primary is-xs" style="text-decoration:none;display:inline-flex;align-items:center;gap:4px;">가이드북 웹뷰 ↗</a>
-                  <a href="https://github.com/difains/Friday_Bandmaster_Guidebook" target="_blank" rel="noopener noreferrer" class="openui-btn is-xs" style="text-decoration:none;display:inline-flex;align-items:center;gap:4px;">GitHub ↗</a>
-                </div>
-              </div>
-
-              <!-- 3. 인도자 교육 -->
-              <div class="openui-edu-item" style="border:1px solid var(--openui-border-default);border-radius:var(--openui-radius-lg);padding:14px 16px;background:var(--openui-sunk-light);display:flex;flex-direction:column;justify-content:space-between;gap:12px;transition:transform 0.2s, box-shadow 0.2s;">
-                <div>
-                  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
-                    <span style="font-size:20px;">🎤</span>
-                    <span class="openui-tag" style="background:#ecfdf5;color:#047857;font-size:11px;font-weight:700;">인도자 훈련</span>
-                  </div>
-                  <h3 style="font-size:14.5px;font-weight:800;color:var(--openui-text-title);margin:0 0 4px;">찬양 인도자 양성 교육</h3>
-                  <p style="font-size:12px;color:var(--openui-text-sub);line-height:1.5;margin:0;">고등부 찬양 인도자 양성 — 영적 리더십, 콘티 선곡 흐름, 멘트 전달 및 회중 찬양 인도 실무</p>
-                </div>
-                <div style="display:flex;gap:6px;flex-wrap:wrap;padding-top:4px;">
-                  <a href="https://difains.github.io/indojavider-education/" target="_blank" rel="noopener noreferrer" class="openui-btn is-primary is-xs" style="text-decoration:none;display:inline-flex;align-items:center;gap:4px;">인도자 가이드 ↗</a>
-                  <a href="https://github.com/difains/indojavider-education" target="_blank" rel="noopener noreferrer" class="openui-btn is-xs" style="text-decoration:none;display:inline-flex;align-items:center;gap:4px;">GitHub ↗</a>
-                </div>
-              </div>
-            </div>
-
-            <!-- 하반기 추수감사 특별새벽기도회 말씀 요약 인터랙티브 위젯 -->
-            <div style="margin-top:4px;padding:16px;border:1px solid #fed7aa;background:linear-gradient(135deg, #fffbeb 0%, #fff7ed 100%);border-radius:var(--openui-radius-2xl);">
-              <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:12px;">
-                <div style="display:flex;align-items:center;gap:8px;">
-                  <span style="font-size:20px;">🌾</span>
-                  <div>
-                    <h3 style="font-size:14px;font-weight:800;color:#9a3412;margin:0;">2026 하반기 추수감사 특별새벽기도회 말씀 요약</h3>
-                    <p style="font-size:11.5px;color:#c2410c;margin:2px 0 0;">김진영 목사 설교 비주얼 씽킹 마인드맵 (11/13 특새 주간 1~5일차 · 클릭 시 고화질 확대)</p>
-                  </div>
-                </div>
-                <span class="openui-tag" style="background:#ffedd5;color:#9a3412;border:1px solid #fdba74;font-size:11px;font-weight:700;">11/13 특새 주간</span>
-              </div>
-
-              <!-- Day Selector Tabs -->
-              <div class="sermon-day-tabs" style="display:flex;gap:6px;overflow-x:auto;padding-bottom:6px;margin-bottom:14px;-webkit-overflow-scrolling:touch;">
-                <button type="button" class="sermon-tab-btn is-active" data-sermon-day="1" onclick="switchSermonDay(1)">1일차: 마게도냐 교회</button>
-                <button type="button" class="sermon-tab-btn" data-sermon-day="2" onclick="switchSermonDay(2)">2일차: 거룩한 근심</button>
-                <button type="button" class="sermon-tab-btn" data-sermon-day="3" onclick="switchSermonDay(3)">3일차: 올바른 청지기직</button>
-                <button type="button" class="sermon-tab-btn" data-sermon-day="4" onclick="switchSermonDay(4)">4일차: 기쁨의 헌금</button>
-                <button type="button" class="sermon-tab-btn" data-sermon-day="5" onclick="switchSermonDay(5)">5일차: 주 안의 자랑</button>
-              </div>
-
-              <!-- Sermon Content Container -->
-              <div id="sermonContentContainer" style="display:grid;grid-template-columns:1.1fr 0.9fr;gap:16px;align-items:start;">
-                <!-- Filled dynamically by JS -->
-              </div>
-            </div>
-          </section>
+          ${renderEducationCard()}
 
         </div>
       `;
@@ -3509,97 +3697,7 @@
             ${recentContiPreviewHtml}
           </section>
 
-          <!-- Card 3: 찬양팀 사역 & 교육 자료 (Worship Education & Sermon Summaries) -->
-          <section class="openui-card" id="worshipEducationSection">
-            <div class="openui-card-header">
-              <div>
-                <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
-                  <h2 class="openui-card-title">찬양팀 사역 &amp; 예배자 교육 자료</h2>
-                  <span class="openui-tag" style="background:#eef2ff;color:#4338ca;border:1px solid #c7d2fe;font-weight:700;">교육 &amp; 영성</span>
-                </div>
-                <p class="openui-card-sub">예배자 영성 교육 · 밴드마스터 사역 가이드북 · 찬양 인도자 훈련 및 특새 말씀 요약</p>
-              </div>
-            </div>
-
-            <!-- 3 Educational Resources Grid -->
-            <div class="openui-edu-grid" style="display:grid;grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));gap:12px;">
-              <!-- 1. 예배자 교육 자료 -->
-              <div class="openui-edu-item" style="border:1px solid var(--openui-border-default);border-radius:var(--openui-radius-lg);padding:14px 16px;background:var(--openui-sunk-light);display:flex;flex-direction:column;justify-content:space-between;gap:12px;transition:transform 0.2s, box-shadow 0.2s;">
-                <div>
-                  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
-                    <span style="font-size:20px;">📖</span>
-                    <span class="openui-tag" style="background:#fef3c7;color:#92400e;font-size:11px;font-weight:700;">예배자 영성</span>
-                  </div>
-                  <h3 style="font-size:14.5px;font-weight:800;color:var(--openui-text-title);margin:0 0 4px;">2026 찬양팀 예배자 교육</h3>
-                  <p style="font-size:12px;color:var(--openui-text-sub);line-height:1.5;margin:0;">가짜 예배자 — 찬양팀의 본질과 사명, 예배자의 영적 태도 및 파트별 에티켓 교육 슬라이드</p>
-                </div>
-                <div style="display:flex;gap:6px;flex-wrap:wrap;padding-top:4px;">
-                  <a href="https://difains.github.io/2026-worship-workshop/" target="_blank" rel="noopener noreferrer" class="openui-btn is-primary is-xs" style="text-decoration:none;display:inline-flex;align-items:center;gap:4px;">교육 슬라이드 열기 ↗</a>
-                  <a href="https://github.com/difains/2026-worship-workshop" target="_blank" rel="noopener noreferrer" class="openui-btn is-xs" style="text-decoration:none;display:inline-flex;align-items:center;gap:4px;">GitHub ↗</a>
-                </div>
-              </div>
-
-              <!-- 2. 밴드마스터 가이드북 -->
-              <div class="openui-edu-item" style="border:1px solid var(--openui-border-default);border-radius:var(--openui-radius-lg);padding:14px 16px;background:var(--openui-sunk-light);display:flex;flex-direction:column;justify-content:space-between;gap:12px;transition:transform 0.2s, box-shadow 0.2s;">
-                <div>
-                  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
-                    <span style="font-size:20px;">🎸</span>
-                    <span class="openui-tag" style="background:#e0f2fe;color:#0369a1;font-size:11px;font-weight:700;">사역 가이드북</span>
-                  </div>
-                  <h3 style="font-size:14.5px;font-weight:800;color:var(--openui-text-title);margin:0 0 4px;">금요기도회 밴드마스터 가이드북 v1.0</h3>
-                  <p style="font-size:12px;color:var(--openui-text-sub);line-height:1.5;margin:0;">금요기도회 찬양팀 밴드 편곡 원리, 사운드 밸런스 조율, 큐시트 및 세션 디렉팅 실무 가이드</p>
-                </div>
-                <div style="display:flex;gap:6px;flex-wrap:wrap;padding-top:4px;">
-                  <a href="https://difains.github.io/Friday_Bandmaster_Guidebook/" target="_blank" rel="noopener noreferrer" class="openui-btn is-primary is-xs" style="text-decoration:none;display:inline-flex;align-items:center;gap:4px;">가이드북 웹뷰 ↗</a>
-                  <a href="https://github.com/difains/Friday_Bandmaster_Guidebook" target="_blank" rel="noopener noreferrer" class="openui-btn is-xs" style="text-decoration:none;display:inline-flex;align-items:center;gap:4px;">GitHub ↗</a>
-                </div>
-              </div>
-
-              <!-- 3. 인도자 교육 -->
-              <div class="openui-edu-item" style="border:1px solid var(--openui-border-default);border-radius:var(--openui-radius-lg);padding:14px 16px;background:var(--openui-sunk-light);display:flex;flex-direction:column;justify-content:space-between;gap:12px;transition:transform 0.2s, box-shadow 0.2s;">
-                <div>
-                  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
-                    <span style="font-size:20px;">🎤</span>
-                    <span class="openui-tag" style="background:#ecfdf5;color:#047857;font-size:11px;font-weight:700;">인도자 훈련</span>
-                  </div>
-                  <h3 style="font-size:14.5px;font-weight:800;color:var(--openui-text-title);margin:0 0 4px;">찬양 인도자 양성 교육</h3>
-                  <p style="font-size:12px;color:var(--openui-text-sub);line-height:1.5;margin:0;">고등부 찬양 인도자 양성 — 영적 리더십, 콘티 선곡 흐름, 멘트 전달 및 회중 찬양 인도 실무</p>
-                </div>
-                <div style="display:flex;gap:6px;flex-wrap:wrap;padding-top:4px;">
-                  <a href="https://difains.github.io/indojavider-education/" target="_blank" rel="noopener noreferrer" class="openui-btn is-primary is-xs" style="text-decoration:none;display:inline-flex;align-items:center;gap:4px;">인도자 가이드 ↗</a>
-                  <a href="https://github.com/difains/indojavider-education" target="_blank" rel="noopener noreferrer" class="openui-btn is-xs" style="text-decoration:none;display:inline-flex;align-items:center;gap:4px;">GitHub ↗</a>
-                </div>
-              </div>
-            </div>
-
-            <!-- 하반기 추수감사 특별새벽기도회 말씀 요약 인터랙티브 위젯 -->
-            <div style="margin-top:4px;padding:16px;border:1px solid #fed7aa;background:linear-gradient(135deg, #fffbeb 0%, #fff7ed 100%);border-radius:var(--openui-radius-2xl);">
-              <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:12px;">
-                <div style="display:flex;align-items:center;gap:8px;">
-                  <span style="font-size:20px;">🌾</span>
-                  <div>
-                    <h3 style="font-size:14px;font-weight:800;color:#9a3412;margin:0;">2026 하반기 추수감사 특별새벽기도회 말씀 요약</h3>
-                    <p style="font-size:11.5px;color:#c2410c;margin:2px 0 0;">김진영 목사 설교 비주얼 씽킹 마인드맵 (11/13 특새 주간 1~5일차 · 클릭 시 고화질 확대)</p>
-                  </div>
-                </div>
-                <span class="openui-tag" style="background:#ffedd5;color:#9a3412;border:1px solid #fdba74;font-size:11px;font-weight:700;">11/13 특새 주간</span>
-              </div>
-
-              <!-- Day Selector Tabs -->
-              <div class="sermon-day-tabs" style="display:flex;gap:6px;overflow-x:auto;padding-bottom:6px;margin-bottom:14px;-webkit-overflow-scrolling:touch;">
-                <button type="button" class="sermon-tab-btn is-active" data-sermon-day="1" onclick="switchSermonDay(1)">1일차: 마게도냐 교회</button>
-                <button type="button" class="sermon-tab-btn" data-sermon-day="2" onclick="switchSermonDay(2)">2일차: 거룩한 근심</button>
-                <button type="button" class="sermon-tab-btn" data-sermon-day="3" onclick="switchSermonDay(3)">3일차: 올바른 청지기직</button>
-                <button type="button" class="sermon-tab-btn" data-sermon-day="4" onclick="switchSermonDay(4)">4일차: 기쁨의 헌금</button>
-                <button type="button" class="sermon-tab-btn" data-sermon-day="5" onclick="switchSermonDay(5)">5일차: 주 안의 자랑</button>
-              </div>
-
-              <!-- Sermon Content Container -->
-              <div id="sermonContentContainer" style="display:grid;grid-template-columns:1.1fr 0.9fr;gap:16px;align-items:start;">
-                <!-- Filled dynamically by JS -->
-              </div>
-            </div>
-          </section>
+          ${renderEducationCard()}
 
         </div>
       `;
@@ -4263,5 +4361,60 @@ ${sampleRecs || '  // 등록된 일정 없음'}
     </div>
   </div>
 
+
+  <!-- Edu Item Edit Modal -->
+  <div id="eduItemModal" class="openui-modal-backdrop" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;align-items:center;justify-content:center;z-index:99999;background:rgba(0,0,0,0.6);backdrop-filter:blur(4px);padding:16px;" onclick="if(event.target===this)closeEduItemModal()">
+    <div style="background:#ffffff;border-radius:var(--openui-radius-2xl);max-width:540px;width:100%;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 20px 40px rgba(0,0,0,0.25);">
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid #e5e7eb;background:#f9fafb;">
+        <h3 id="eduModalHeaderTitle" style="font-size:15px;font-weight:800;color:#111827;margin:0;">교육 자료 편집</h3>
+        <button type="button" class="openui-btn is-xs" onclick="closeEduItemModal()">✕</button>
+      </div>
+      <div style="padding:20px;display:flex;flex-direction:column;gap:14px;overflow-y:auto;max-height:80vh;">
+        <div style="display:grid;grid-template-columns:85px 1fr;gap:12px;">
+          <div>
+            <label style="display:block;font-size:12px;font-weight:700;color:#374151;margin-bottom:4px;">아이콘</label>
+            <input id="eduFormIcon" class="openui-inline-input" value="📖" style="width:100%;text-align:center;font-size:18px;">
+          </div>
+          <div>
+            <label style="display:block;font-size:12px;font-weight:700;color:#374151;margin-bottom:4px;">카테고리 / 태그</label>
+            <input id="eduFormTag" class="openui-inline-input" placeholder="예: 예배자 영성, 사역 가이드북, 인도자 훈련" style="width:100%;">
+          </div>
+        </div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+          <span style="font-size:11px;color:#6b7280;">추천:</span>
+          <button type="button" class="openui-btn is-xs" style="padding:2px 8px;font-size:14px;" onclick="document.getElementById('eduFormIcon').value='📖'">📖</button>
+          <button type="button" class="openui-btn is-xs" style="padding:2px 8px;font-size:14px;" onclick="document.getElementById('eduFormIcon').value='🎸'">🎸</button>
+          <button type="button" class="openui-btn is-xs" style="padding:2px 8px;font-size:14px;" onclick="document.getElementById('eduFormIcon').value='🎤'">🎤</button>
+          <button type="button" class="openui-btn is-xs" style="padding:2px 8px;font-size:14px;" onclick="document.getElementById('eduFormIcon').value='🎵'">🎵</button>
+          <button type="button" class="openui-btn is-xs" style="padding:2px 8px;font-size:14px;" onclick="document.getElementById('eduFormIcon').value='📑'">📑</button>
+          <button type="button" class="openui-btn is-xs" style="padding:2px 8px;font-size:14px;" onclick="document.getElementById('eduFormIcon').value='💡'">💡</button>
+          <button type="button" class="openui-btn is-xs" style="padding:2px 8px;font-size:14px;" onclick="document.getElementById('eduFormIcon').value='✝️'">✝️</button>
+          <button type="button" class="openui-btn is-xs" style="padding:2px 8px;font-size:14px;" onclick="document.getElementById('eduFormIcon').value='🎹'">🎹</button>
+          <button type="button" class="openui-btn is-xs" style="padding:2px 8px;font-size:14px;" onclick="document.getElementById('eduFormIcon').value='🥁'">🥁</button>
+        </div>
+        <div>
+          <label style="display:block;font-size:12px;font-weight:700;color:#374151;margin-bottom:4px;">자료 타이틀 <span style="color:#ef4444;">*</span></label>
+          <input id="eduFormTitle" class="openui-inline-input" placeholder="예: 2026 찬양팀 예배자 교육" style="width:100%;font-weight:700;">
+        </div>
+        <div>
+          <label style="display:block;font-size:12px;font-weight:700;color:#374151;margin-bottom:4px;">서브텍스트 (설명 문구)</label>
+          <textarea id="eduFormSubtext" class="openui-inline-input" rows="2" placeholder="자료에 대한 간략한 설명을 입력하세요" style="width:100%;resize:vertical;"></textarea>
+        </div>
+        <div>
+          <label style="display:block;font-size:12px;font-weight:700;color:#374151;margin-bottom:4px;">웹 링크 URL <span style="color:#ef4444;">*</span></label>
+          <input id="eduFormLinkUrl" class="openui-inline-input" placeholder="https://..." style="width:100%;">
+        </div>
+        <div>
+          <label style="display:block;font-size:12px;font-weight:700;color:#374151;margin-bottom:4px;">버튼 문구</label>
+          <input id="eduFormLinkLabel" class="openui-inline-input" placeholder="예: 교육 슬라이드 열기 ↗, 가이드북 웹뷰 ↗" style="width:100%;">
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:flex-end;gap:8px;padding:14px 20px;border-top:1px solid #e5e7eb;background:#f9fafb;">
+        <button type="button" class="openui-btn is-xs" onclick="closeEduItemModal()">취소</button>
+        <button type="button" class="openui-btn is-primary is-xs" onclick="saveEduItemFromModal()">저장하기</button>
+      </div>
+    </div>
+  </div>
+
 </body>
-  </html>
+        </html>
