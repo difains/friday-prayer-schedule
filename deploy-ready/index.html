@@ -1314,6 +1314,22 @@
       color: #111827;
       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
       font-weight: 800;
+      animation: flow-card-blink 1.8s ease-in-out infinite;
+      will-change: background, border-color, box-shadow;
+    }
+    @keyframes flow-card-blink {
+      0%, 100% {
+        background: #ffffff;
+        border-color: #1d1d1b;
+        box-shadow: 0 0 0 3px rgba(29, 29, 27, 0.22), 0 2px 8px rgba(0, 0, 0, 0.12);
+        color: #111827;
+      }
+      50% {
+        background: #e5e7eb;
+        border-color: #9ca3af;
+        box-shadow: 0 0 0 0 rgba(29, 29, 27, 0), 0 1px 3px rgba(0, 0, 0, 0.04);
+        color: #4b5563;
+      }
     }
     .flow-week {
       font-size: 15px;
@@ -1370,7 +1386,8 @@
       }
     }
     @media (prefers-reduced-motion: reduce) {
-      .weekly-flow-motion-text {
+      .weekly-flow-motion-text,
+      .flow-card.is-selected {
         animation: none;
       }
     }
@@ -3245,4 +3262,4 @@ ${sampleRecs || '  // 등록된 일정 없음'}
     initRealtimeFirebase();
   </script>
 </body>
-</html>
+  </html>
