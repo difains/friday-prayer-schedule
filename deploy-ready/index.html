@@ -75,19 +75,21 @@
       if (firebaseDbRef && state.firebaseConnected) {
         firebaseDbRef.ref("eduConfig").set(newConfig).catch(err => console.error("Firebase eduConfig 저장 오류:", err));
       }
-      renderUI();
+      renderMainSurface();
     }
 
     function toggleEduSection(enable) {
       const cfg = getEduConfig();
       cfg.sectionEnabled = enable;
       saveEduConfig(cfg);
+      showToast(enable ? "교육자료 영역이 공개(ON)되었습니다." : "교육자료 영역이 비공개(OFF)되었습니다.");
     }
 
     function toggleSermonSection(enable) {
       const cfg = getEduConfig();
       cfg.sermonEnabled = enable;
       saveEduConfig(cfg);
+      showToast(enable ? "특새 말씀요약이 공개(ON)되었습니다." : "특새 말씀요약이 비공개(OFF)되었습니다.");
     }
 
     let editingEduItemId = null;
@@ -113,6 +115,7 @@
     function closeEduItemModal() {
       const modal = document.getElementById("eduItemModal");
       if (modal) modal.style.display = "none";
+      document.body.style.overflow = "";
     }
 
     function saveEduItemFromModal() {
@@ -144,8 +147,9 @@
           icon, tag, title, subtext, linkUrl, linkLabel
         });
       }
-      saveEduConfig(cfg);
       closeEduItemModal();
+      saveEduConfig(cfg);
+      showToast("저장되었습니다.");
     }
 
     function deleteEduItem(itemId) {
@@ -1731,7 +1735,7 @@
       font-size: 12.5px;
       font-weight: 600;
       box-shadow: var(--openui-shadow-elevated);
-      z-index: 200;
+      z-index: 999999;
       display: none;
     }
     .openui-toast.is-shown {
@@ -4417,4 +4421,4 @@ ${sampleRecs || '  // 등록된 일정 없음'}
   </div>
 
 </body>
-        </html>
+  </html>
