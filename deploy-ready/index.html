@@ -795,6 +795,58 @@
       font-weight: 700;
       color: var(--openui-text-neutral-primary);
     }
+    /* 상위 5명 다빈도 섬김이 빛나는 텍스트 효과 (Shimmering Top 5 Servants) */
+    .member-record-pill.is-top-servant {
+      background: #1d1d1b;
+      border: 1.5px solid #3f3f46;
+      color: #fafafa;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.18), 0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+      transition: transform 0.14s ease, box-shadow 0.14s ease;
+      cursor: default;
+    }
+    .member-record-pill.is-top-servant:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(255, 255, 255, 0.18) inset;
+      border-color: #52525b;
+    }
+    .member-record-pill.is-top-servant .shimmer-name {
+      display: inline-block;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+      background: linear-gradient(
+        90deg,
+        #71717a 0%,
+        #9ca3af 20%,
+        #ffffff 50%,
+        #ffffff 55%,
+        #9ca3af 80%,
+        #71717a 100%
+      );
+      background-size: 250% 100%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: member-text-shimmer 2.4s linear infinite;
+      will-change: background-position;
+    }
+    @keyframes member-text-shimmer {
+      0% {
+        background-position: 150% 0;
+      }
+      100% {
+        background-position: -150% 0;
+      }
+    }
+    body.is-large-text .member-record-pill.is-top-servant .shimmer-name {
+      font-size: 18.5px;
+      font-weight: 800;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .member-record-pill.is-top-servant .shimmer-name {
+        animation: none;
+        -webkit-text-fill-color: #ffffff;
+        color: #ffffff;
+      }
+    }
 
     .openui-table {
       width: 100%;
@@ -2529,16 +2581,55 @@
       updateOpenUILangCode();
     }
 
+    // 해당 연도 1월 1일부터 누적된 파트별 섬김 횟수 합산하여 상위 5명(Top 5) 반환
+    function getTop5ServantsOfYear(year) {
+      const counts = {};
+      const prefix = `${year}-`;
+      const prayerList = (state.db && state.db.prayerList) || {};
+      Object.values(prayerList).forEach(rec => {
+        if (!rec || !rec.date || !rec.name) return;
+        if (rec.date.startsWith(prefix)) {
+          const name = rec.name.trim();
+          if (name) {
+            counts[name] = (counts[name] || 0) + 1;
+          }
+        }
+      });
+
+      const sorted = Object.entries(counts)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 5);
+
+      const topMap = {};
+      sorted.forEach(([name, count], index) => {
+        topMap[name] = { count, rank: index + 1 };
+      });
+      return topMap;
+    }
+
     function renderBriefingSurface(dateStr, byRole, parsedSetlist) {
+      const year = (dateStr || getTodayIsoString()).split("-")[0];
+      const top5Servants = getTop5ServantsOfYear(year);
+
       const entityRows = ROLES.map(role => {
         const cfg = ROLE_CONFIG[role];
         const records = byRole[role] || [];
         const isEmpty = records.length === 0;
-        const memberPills = records.map(rec => `
-          <span class="member-record-pill" ${state.isAdmin ? `title="DB Key: ${rec.firebaseKey}"` : ""}>
-            ${rec.name}
-          </span>
-        `).join("");
+        const memberPills = records.map(rec => {
+          const topInfo = top5Servants[rec.name];
+          if (topInfo) {
+            return `
+              <span class="member-record-pill is-top-servant" title="${year}년 1월부터 누적 섬김 ${topInfo.count}회 (상위 ${topInfo.rank}위) ✨${state.isAdmin ? ` · DB Key: ${rec.firebaseKey}` : ''}">
+                <span class="shimmer-name">${rec.name}</span>
+              </span>
+            `;
+          }
+          return `
+            <span class="member-record-pill" ${state.isAdmin ? `title="DB Key: ${rec.firebaseKey}"` : ""}>
+              ${rec.name}
+            </span>
+          `;
+        }).join("");
 
         return `
           <div class="openui-entity-row">
@@ -2676,7 +2767,10 @@
           <section class="openui-card">
             <div class="openui-card-header">
               <div>
-                <h2 class="openui-card-title">파트별 섬김이 명단</h2>
+                <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+                  <h2 class="openui-card-title">파트별 섬김이 명단</h2>
+                  <span class="openui-tag is-brand" style="font-size:11px;" title="${year}년 1월부터 합산된 최다 섬김이 상위 5명에게 빛나는 텍스트 효과가 적용됩니다">${year}년 최다 섬김 Top 5 ✨</span>
+                </div>
                 <p class="openui-card-sub">${formatKoreanDate(dateStr, false)} 금요기도회 찬양팀</p>
               </div>
               <button type="button" class="openui-btn is-xs" onclick="setSubSurface('editable')">전체 파트 한번에 편집</button>
@@ -3262,4 +3356,4 @@ ${sampleRecs || '  // 등록된 일정 없음'}
     initRealtimeFirebase();
   </script>
 </body>
-  </html>
+</html>
