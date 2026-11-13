@@ -339,6 +339,49 @@
       gap: 8px;
       flex-wrap: wrap;
     }
+    .openui-inline-header h1 > span:first-child {
+      display: inline-block;
+      background: linear-gradient(
+        90deg,
+        #1d1d1b 0%,
+        #1d1d1b 30%,
+        #9c9486 50%,
+        #1d1d1b 70%,
+        #1d1d1b 100%
+      );
+      background-size: 200% 100%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: title-processing-sweep 3.6s ease-in-out infinite;
+      will-change: background-position;
+    }
+    .openui-inline-header h1 .openui-tag.is-brand {
+      position: relative;
+      overflow: hidden;
+      display: inline-flex;
+      align-items: center;
+    }
+    .openui-inline-header h1 .openui-tag.is-brand::after {
+      content: "";
+      position: absolute;
+      top: -50%;
+      left: -80%;
+      width: 60%;
+      height: 200%;
+      background: linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.75) 50%,
+        rgba(255, 255, 255, 0) 100%
+      );
+      transform: rotate(25deg);
+      animation: header-tag-sweep 3.6s ease-in-out infinite;
+      pointer-events: none;
+    }
+    @keyframes header-tag-sweep {
+      0% { left: -80%; }
+      100% { left: 160%; }
+    }
     .openui-inline-header p {
       margin: 3px 0 0;
       font-size: 13px;
@@ -695,6 +738,66 @@
     .callout-title {
       font-size: 14px;
       font-weight: 700;
+      letter-spacing: -0.2px;
+      display: inline-block;
+      background: linear-gradient(
+        90deg,
+        #1d1d1b 0%,
+        #1d1d1b 30%,
+        #9c9486 50%,
+        #1d1d1b 70%,
+        #1d1d1b 100%
+      );
+      background-size: 200% 100%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: title-processing-sweep 3.6s ease-in-out infinite;
+      will-change: background-position;
+    }
+    .openui-callout.is-warning .callout-title {
+      background: linear-gradient(
+        90deg,
+        #92400e 0%,
+        #92400e 30%,
+        #f59e0b 50%,
+        #92400e 70%,
+        #92400e 100%
+      );
+      background-size: 200% 100%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: title-processing-sweep 3.6s ease-in-out infinite;
+      will-change: background-position;
+    }
+    .openui-callout.is-success .callout-title {
+      background: linear-gradient(
+        90deg,
+        #065f46 0%,
+        #065f46 30%,
+        #10b981 50%,
+        #065f46 70%,
+        #065f46 100%
+      );
+      background-size: 200% 100%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: title-processing-sweep 3.6s ease-in-out infinite;
+      will-change: background-position;
+    }
+    .openui-callout.is-info .callout-title {
+      background: linear-gradient(
+        90deg,
+        #1e40af 0%,
+        #1e40af 30%,
+        #60a5fa 50%,
+        #1e40af 70%,
+        #1e40af 100%
+      );
+      background-size: 200% 100%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: title-processing-sweep 3.6s ease-in-out infinite;
+      will-change: background-position;
     }
     .callout-desc {
       font-size: 13px;
@@ -752,7 +855,13 @@
     }
     @media (prefers-reduced-motion: reduce) {
       .openui-card-title,
-      .snippet-title {
+      .snippet-title,
+      .callout-title,
+      .openui-callout.is-warning .callout-title,
+      .openui-callout.is-success .callout-title,
+      .openui-callout.is-info .callout-title,
+      .openui-inline-header h1 > span:first-child,
+      .openui-inline-header h1 .openui-tag.is-brand::after {
         background: none !important;
         -webkit-text-fill-color: currentColor !important;
         animation: none !important;
@@ -3074,11 +3183,10 @@
           <section class="openui-card">
             <div class="openui-card-header">
               <div>
-                <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+                <div>
                   <h2 class="openui-card-title">파트별 섬김이 명단</h2>
-                  <span class="openui-tag is-brand" style="font-size:11px;" title="${year}년 1월부터 합산된 최다 섬김이 상위 5명에게 빛나는 텍스트 효과가 적용됩니다">${year}년 최다 섬김 Top 5 ✨</span>
+                  <p class="openui-card-sub">${formatKoreanDate(dateStr, false)} 금요기도회 찬양팀</p>
                 </div>
-                <p class="openui-card-sub">${formatKoreanDate(dateStr, false)} 금요기도회 찬양팀</p>
               </div>
               <button type="button" class="openui-btn is-xs" onclick="setSubSurface('editable')">전체 파트 한번에 편집</button>
             </div>
