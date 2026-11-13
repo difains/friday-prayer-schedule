@@ -1312,7 +1312,7 @@
       }
     }
 
-    /* 주간 기도회 흐름 스테퍼 (일반 모드: 그레이톤 bg + 이번주 화이트톤 특별 반짝임 + 주차 박스 모션 + 모바일 부드러운 슬라이딩 & 자동 위치) */
+    /* 주간 기도회 흐름 스테퍼 (순차 셀렉트 이동: 1주차 -> 2주차 -> 3주차 + 해당 주차 특별 반짝임 + 모바일 부드러운 슬라이딩 & 자동 위치) */
     .weekly-flow-stepper-wrap {
       background: #f1f3f5;
       border: 1.5px solid #1d1d1b;
@@ -1358,33 +1358,7 @@
         padding: 4px 20px;
       }
     }
-    /* 주차 박스들 부드러운 왕복 모션 */
-    .weekly-flow-track.has-boxes-motion {
-      animation: weekly-boxes-glide 5.0s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite alternate;
-      will-change: transform;
-    }
-    @keyframes weekly-boxes-glide {
-      0% {
-        transform: translateX(-16px);
-      }
-      100% {
-        transform: translateX(16px);
-      }
-    }
-    @media (max-width: 480px) {
-      @keyframes weekly-boxes-glide {
-        0% {
-          transform: translateX(-10px);
-        }
-        100% {
-          transform: translateX(10px);
-        }
-      }
-    }
-    .weekly-flow-scroll-viewport:hover .weekly-flow-track.has-boxes-motion,
-    .weekly-flow-scroll-viewport:active .weekly-flow-track.has-boxes-motion {
-      animation-play-state: paused;
-    }
+    /* 기본 주차 박스: 1주차 -> 2주차 -> 3주차 순으로 셀렉트 하이라이트가 이동하는 순차 모션 */
     .flow-card {
       width: 82px;
       min-height: 44px;
@@ -1398,31 +1372,52 @@
       padding: 6px 10px;
       cursor: pointer;
       font-family: inherit;
-      transition: transform 0.14s ease, background 0.14s ease, border-color 0.14s ease, color 0.14s ease, box-shadow 0.14s ease;
+      transition: transform 0.16s ease, background 0.16s ease, border-color 0.16s ease, color 0.16s ease, box-shadow 0.16s ease;
       touch-action: pan-x;
       flex-shrink: 0;
       position: relative;
       overflow: hidden;
+      animation: flow-seq-step calc(var(--total-steps, 4) * 1.3s) ease-in-out infinite;
+      animation-delay: calc(var(--step-idx, 0) * 1.3s);
+      will-change: background, border-color, box-shadow, transform;
     }
     .flow-card:hover {
       background: #edf0f3;
       color: #111827;
       border-color: #9ca3af;
     }
-    /* 해당 주차 특별 반짝임 효과 (화이트톤 + 빔 스윕 + 골드/실버 트윙클 + 앰비언트 글로우) */
+    @keyframes flow-seq-step {
+      0%, 22% {
+        /* 순차 셀렉트 도착: 화이트 하이라이트 + 다크 테두리 + 부드러운 팝업 */
+        background: #ffffff;
+        border-color: #1d1d1b;
+        color: #111827;
+        box-shadow: 0 0 0 2.5px rgba(29, 29, 27, 0.22), 0 3px 8px rgba(0, 0, 0, 0.1);
+        transform: translateY(-2px);
+      }
+      28%, 100% {
+        /* 대기 상태: 그레이톤 */
+        background: #e5e7eb;
+        border-color: #d1d5db;
+        color: #4b5563;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+        transform: translateY(0);
+      }
+    }
+    /* 해당 주차(이번 주차) 특별 반짝임: 순차 모션과 별개로 항상 화이트톤 + 빛나는 빔 스윕 + 트윙클 스타 + 앰비언트 글로우 */
     .flow-card.is-selected {
       background: #ffffff !important;
       border: 2px solid #1d1d1b !important;
       color: #111827 !important;
-      box-shadow: 0 0 0 2px rgba(29, 29, 27, 0.18), 0 0 16px rgba(29, 29, 27, 0.2), 0 3px 8px rgba(0, 0, 0, 0.1);
       font-weight: 800;
-      animation: flow-card-glow 2.2s ease-in-out infinite;
+      animation: flow-card-glow 2.2s ease-in-out infinite, flow-selected-seq-boost calc(var(--total-steps, 4) * 1.3s) ease-in-out infinite !important;
+      animation-delay: 0s, calc(var(--step-idx, 0) * 1.3s) !important;
       will-change: box-shadow, transform;
       z-index: 2;
     }
     @keyframes flow-card-glow {
       0%, 100% {
-        box-shadow: 0 0 0 2px rgba(29, 29, 27, 0.28), 0 0 18px rgba(29, 29, 27, 0.24), 0 3px 8px rgba(0, 0, 0, 0.12);
+        box-shadow: 0 0 0 2px rgba(29, 29, 27, 0.24), 0 0 16px rgba(29, 29, 27, 0.2), 0 3px 8px rgba(0, 0, 0, 0.1);
         transform: translateY(-1.5px);
       }
       50% {
@@ -1430,7 +1425,17 @@
         transform: translateY(0);
       }
     }
-    /* 카드 표면을 가로지르는 대각선 빛나는 빔 스윕 */
+    @keyframes flow-selected-seq-boost {
+      0%, 22% {
+        transform: translateY(-3px) scale(1.03);
+        box-shadow: 0 0 0 3px rgba(29, 29, 27, 0.35), 0 0 22px rgba(29, 29, 27, 0.32), 0 4px 12px rgba(0, 0, 0, 0.16);
+      }
+      28%, 100% {
+        transform: translateY(-1.5px) scale(1);
+        box-shadow: 0 0 0 2px rgba(29, 29, 27, 0.24), 0 0 16px rgba(29, 29, 27, 0.2), 0 3px 8px rgba(0, 0, 0, 0.1);
+      }
+    }
+    /* 해당 주차 카드 표면을 가로지르는 대각선 빛나는 빔 스윕 (특별 반짝임) */
     .flow-card.is-selected::after {
       content: "";
       position: absolute;
@@ -1441,7 +1446,7 @@
       background: linear-gradient(
         90deg,
         rgba(255, 255, 255, 0) 0%,
-        rgba(255, 255, 255, 0.9) 50%,
+        rgba(255, 255, 255, 0.92) 50%,
         rgba(255, 255, 255, 0) 100%
       );
       transform: rotate(25deg);
@@ -1488,6 +1493,7 @@
         filter: drop-shadow(0 0 6px rgba(255, 215, 0, 1));
       }
     }
+    /* 화살표 순차 연결 점등 (1주차 -> 2주차 -> 3주차 순서 강조) */
     .flow-arrow {
       display: inline-flex;
       align-items: center;
@@ -1496,8 +1502,22 @@
       color: #9ca3af;
       padding: 0 1px;
       flex-shrink: 0;
+      transition: color 0.16s ease, transform 0.16s ease;
+      animation: flow-arrow-step calc(var(--total-steps, 4) * 1.3s) ease-in-out infinite;
+      animation-delay: calc((var(--step-idx, 0) + 0.45) * 1.3s);
+      will-change: color, transform;
     }
-    /* 하단 안내 텍스트: 이번 주차 위치에 고정 (왕복 모션 제거, 차분한 고정 유지) */
+    @keyframes flow-arrow-step {
+      0%, 20% {
+        color: #1d1d1b;
+        transform: scale(1.22) translateX(1px);
+      }
+      26%, 100% {
+        color: #9ca3af;
+        transform: scale(1) translateX(0);
+      }
+    }
+    /* 하단 안내 텍스트: 이번 주차 위치에 고정 유지 */
     .weekly-flow-motion-bar {
       position: relative;
       width: 100%;
@@ -1524,9 +1544,10 @@
       color: #1d1d1b;
     }
     @media (prefers-reduced-motion: reduce) {
-      .weekly-flow-track.has-boxes-motion,
+      .flow-card,
       .flow-card.is-selected,
       .flow-card.is-selected::after,
+      .flow-arrow,
       .flow-sparkle-icon {
         animation: none;
       }
@@ -3194,6 +3215,7 @@
     function renderWeeklyFlowStepper(fridays) {
       const thisWeekFri = getThisWeekFriday();
       const hasTodayInMonth = fridays.includes(thisWeekFri);
+      const totalSteps = fridays.length;
 
       const boxesHtml = fridays.map((f, idx) => {
         const weekNum = idx + 1;
@@ -3206,7 +3228,7 @@
         ].filter(Boolean).join(" ");
 
         const arrowHtml = (idx < fridays.length - 1)
-          ? `<div class="flow-arrow" aria-hidden="true">
+          ? `<div class="flow-arrow" aria-hidden="true" style="--step-idx:${idx};--total-steps:${totalSteps};">
                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                  <line x1="5" y1="12" x2="19" y2="12"></line>
                  <polyline points="12 5 19 12 12 19"></polyline>
@@ -3217,7 +3239,7 @@
         const sparkleHtml = isSelectedEffect ? `<span class="flow-sparkle-icon" aria-hidden="true">✨</span>` : "";
 
         return `
-          <button type="button" class="${cardClasses}" onclick="selectFriday('${f}')" aria-label="${formatKoreanDate(f, true)} ${weekNum}주차">
+          <button type="button" class="${cardClasses}" onclick="selectFriday('${f}')" aria-label="${formatKoreanDate(f, true)} ${weekNum}주차" style="--step-idx:${idx};--total-steps:${totalSteps};">
             <span class="flow-week">${sparkleHtml}${weekNum}주차</span>
           </button>
           ${arrowHtml}
@@ -3230,9 +3252,9 @@
         : `${formatKoreanDate(state.selectedDate, true)} 금요기도회 일정`;
 
       return `
-        <div class="weekly-flow-stepper-wrap" aria-label="월간 주차별 기도회 일정 흐름">
+        <div class="weekly-flow-stepper-wrap" aria-label="월간 주차별 기도회 일정 흐름" style="--total-steps:${totalSteps};">
           <div class="weekly-flow-scroll-viewport" id="weeklyFlowViewport">
-            <div class="weekly-flow-track has-boxes-motion">
+            <div class="weekly-flow-track">
               ${boxesHtml}
             </div>
           </div>
@@ -3669,4 +3691,4 @@ ${sampleRecs || '  // 등록된 일정 없음'}
     initRealtimeFirebase();
   </script>
 </body>
-                                                      </html>
+</html>
