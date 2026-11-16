@@ -1367,19 +1367,19 @@
       font-weight: 700;
       color: var(--openui-text-neutral-primary);
     }
-    /* 상위 5명 다빈도 섬김이 빛나는 텍스트 효과 (Shimmering Top 5 Servants) */
+    /* 상위 5명 다빈도 섬김이 뱃지 (다른 이름 뱃지와 동일한 배경색 + 이름 텍스트만 은은한 골드 쉬머 효과) */
     .member-record-pill.is-top-servant {
-      background: #1d1d1b;
-      border: 1.5px solid #3f3f46;
-      color: #fafafa;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.18), 0 0 0 1px rgba(255, 255, 255, 0.1) inset;
-      transition: transform 0.14s ease, box-shadow 0.14s ease;
+      background: var(--openui-sunk);
+      border: 1px solid var(--openui-border-default);
+      color: var(--openui-text-neutral-primary);
+      box-shadow: none;
+      transition: transform 0.14s ease, border-color 0.14s ease, box-shadow 0.14s ease;
       cursor: default;
     }
     .member-record-pill.is-top-servant:hover {
       transform: translateY(-1px);
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(255, 255, 255, 0.18) inset;
-      border-color: #52525b;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+      border-color: rgba(29, 29, 27, 0.25);
     }
     .member-record-pill.is-top-servant .shimmer-name {
       display: inline-block;
@@ -1387,17 +1387,18 @@
       letter-spacing: -0.01em;
       background: linear-gradient(
         90deg,
-        #71717a 0%,
-        #9ca3af 20%,
-        #ffffff 50%,
-        #ffffff 55%,
-        #9ca3af 80%,
-        #71717a 100%
+        #1d1d1b 0%,
+        #1d1d1b 25%,
+        #b45309 45%,
+        #f59e0b 50%,
+        #b45309 55%,
+        #1d1d1b 75%,
+        #1d1d1b 100%
       );
       background-size: 250% 100%;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      animation: member-text-shimmer 2.4s linear infinite;
+      animation: member-text-shimmer 2.8s linear infinite;
       will-change: background-position;
     }
     @keyframes member-text-shimmer {
@@ -1415,8 +1416,8 @@
     @media (prefers-reduced-motion: reduce) {
       .member-record-pill.is-top-servant .shimmer-name {
         animation: none;
-        -webkit-text-fill-color: #ffffff;
-        color: #ffffff;
+        -webkit-text-fill-color: var(--openui-text-neutral-primary);
+        color: var(--openui-text-neutral-primary);
       }
     }
 
